@@ -1,14 +1,10 @@
-<!DOCTYPE html>
-<html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Device List</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-Zenh87qX5JnK2Jl0vWa8Ck2rdkQ2Bzep5IDxbcnCeuOxjzrPF/et3URy9Bv1WTRi" crossorigin="anonymous">
-    <link href="device-list.css" rel="stylesheet">
 </head>
-<body>
+<template name="DeviceList">
     <div class="container pt-3 title">
         <h1>Device List</h1>
         <div class="d-md-flex justify-content-md-end pe-3 gap-2">
@@ -54,9 +50,15 @@
                         <td>Exam Room 6</td>
                         <td>9:02</td>
                     </tr>
+                    {{#each device in getDevices}}
+                        {{> DeviceRow}}
+                    {{/each}}
                 </tbody>
             </table>
         </div>
     </div>
-</body>
-</html>
+</template>
+
+<template name="DeviceRow">
+    testing
+</template>
