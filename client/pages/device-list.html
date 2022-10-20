@@ -4,7 +4,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Device List</title>
 </head>
-<template name="DeviceList">
+<template name="deviceList">
     <div class="container pt-3 title">
         <h1>Device List</h1>
         <div class="d-md-flex justify-content-md-end pe-3 gap-2">
@@ -14,44 +14,14 @@
         <div class="vstack">
             <table class="table">
                 <thead>
-                    <th scope="col">Device ID</th>
+                    <th scope="col">MAC Address</th>
                     <th scope="col">Name</th> 
                     <th scope="col">Location</th>
                     <th scope="col">Last Updated</th>
                 </thead>
                 <tbody>
-                    <tr>
-                        <td>5F:44:47:D1:71:0F</td>
-                        <td>Elliot Bonner</td>
-                        <td>Waiting Room</td>
-                        <td>9:02</td>
-                    </tr>
-                    <tr>
-                        <td>35:62:30:15:89:9F</td>
-                        <td>Jace O'Ryan</td>
-                        <td>Exam Room 5</td>
-                        <td>9:01</td>
-                    </tr>
-                    <tr>
-                        <td>A8:D6:FC:5D:93:30</td>
-                        <td>Hannah Adamson</td>
-                        <td>MRI</td>
-                        <td>9:02</td>
-                    </tr>
-                    <tr>
-                        <td>8B:D4:9A:49:3E:A3</td>
-                        <td>Kasey White</td>
-                        <td>Exam Room 2</td>
-                        <td>9:02</td>
-                    </tr>
-                    <tr>
-                        <td>79:0D:39:76:AB:F4</td>
-                        <td>Jasmine Salgado</td>
-                        <td>Exam Room 6</td>
-                        <td>9:02</td>
-                    </tr>
-                    {{#each device in getDevices}}
-                        {{> DeviceRow}}
+                    {{#each device in devices}}
+                        {{> deviceRow device=device}}
                     {{/each}}
                 </tbody>
             </table>
@@ -59,6 +29,11 @@
     </div>
 </template>
 
-<template name="DeviceRow">
-    testing
+<template name="deviceRow">
+    <tr>
+        <td>{{device.macAddress}}</td>
+        <td>{{device.patientName}}</td>
+        <td>{{device.location}}</td>
+        <td>{{readableDate}}</td>
+    </tr>
 </template>
