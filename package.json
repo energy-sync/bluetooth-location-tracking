@@ -9,13 +9,14 @@
   },
   "dependencies": {
     "@babel/runtime": "^7.17.9",
-    "meteor-node-stubs": "^1.2.1",
-    "react": "^17.0.2",
-    "react-dom": "^17.0.2"
+    "@popperjs/core": "^2.11.6",
+    "bootstrap": "^5.2.2",
+    "jquery": "^3.6.0",
+    "meteor-node-stubs": "^1.2.1"
   },
   "meteor": {
     "mainModule": {
-      "client": "client/main.jsx",
+      "client": "client/patient.js",
       "server": "server/main.js"
     },
     "testModule": "tests/main.js"
