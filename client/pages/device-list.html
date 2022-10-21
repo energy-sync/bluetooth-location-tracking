@@ -1,0 +1,39 @@
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Device List</title>
+</head>
+<template name="deviceList">
+    <div class="container pt-3 title">
+        <h1>Device List</h1>
+        <div class="d-md-flex justify-content-md-end pe-3 gap-2">
+            <input type="text">
+            <button class="btn btn-primary">Search</button>
+        </div>
+        <div class="vstack">
+            <table class="table">
+                <thead>
+                    <th scope="col">MAC Address</th>
+                    <th scope="col">Name</th> 
+                    <th scope="col">Location</th>
+                    <th scope="col">Last Updated</th>
+                </thead>
+                <tbody>
+                    {{#each device in devices}}
+                        {{> deviceRow device=device}}
+                    {{/each}}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</template>
+
+<template name="deviceRow">
+    <tr>
+        <td>{{device.macAddress}}</td>
+        <td>{{device.patientName}}</td>
+        <td>{{device.location}}</td>
+        <td>{{readableDate}}</td>
+    </tr>
+</template>
