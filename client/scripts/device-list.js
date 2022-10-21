@@ -12,7 +12,6 @@ Template.deviceRow.helpers({
     readableDate() {
         unixTime = patientInformationdb.findOne({_id: this.device._id}).time;
         let date = new Date(unixTime);
-        console.log(date.toLocaleString());
         return date.toLocaleString();
     }
 });
