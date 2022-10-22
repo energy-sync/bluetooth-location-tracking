@@ -14,17 +14,40 @@ Template.insertData.events({
             return "0123456789ABCDEF".charAt(Math.floor(Math.random() * 16))
         });
         var patientName = $('#pName').val();
-        var location = $('#location').val();
-        var time = Date.now();
+        var address = $('#address').val();
+        var patientID = $('#patientID').val();
+        var age = $('#age').val();
+        var DOB = $('#DOB').val();
+        var physicanName = $('#physicanName').val();
+        var bloodPressure=$('#bloodPressure').val();
+        var heartRate=$('#heartRate').val();
+        var labInfo=$('#labInfo').val();
+        var prescriptions=$('#prescriptions').val();
 
         patientInformationdb.insert({
             "macAddress": macAddress,
             "patientName": patientName,
-            "location": location,
-            "time": time
+            "address": address,
+            "patientID":patientID,
+            "age":age,
+            "DOB":DOB,
+            "physicanName":physicanName,
+            "bloodPressure":bloodPressure,
+            "heartRate":heartRate,
+            "labInfo":labInfo,
+            "prescriptions":prescriptions,
+            
         });
         $('#pName').val('');
-        $('#location').val('');
+        $('#address').val('');
+        $('#patientID').val('');
+        $('#age').val('');
+        $('#DOB').val('');
+        $('#physicanName').val('');
+        $('#bloodPressure').val('');
+        $('#heartRate').val('');
+        $('#labInfo').val('');
+        $('#prescriptions').val('');
     },
     'click .js-clear'(event, instance) {
         console.log("click");
