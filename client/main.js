@@ -10,16 +10,29 @@ import "./scripts/device-list";
 //MongoDB
 Template.insertData.events({
     'click .js-save'(event, instance) {
+        var patientID = "XXXXXXX".replace(/X/g, function () {
+            return "0123456789ABCDEF".charAt((Math.random()*16))}) ;
+       
+            var age = "XX".replace(/X/g, function () {
+                return "0123456789".charAt((Math.random()*10))}) ;
+
+               
+               
+              
+                   
+               
+               
+                   
+       
         var macAddress = "XX:XX:XX:XX:XX:XX".replace(/X/g, function () {
             return "0123456789ABCDEF".charAt(Math.floor(Math.random() * 16))
+            
         });
         var patientName = $('#pName').val();
         var address = $('#address').val();
-        var patientID = $('#patientID').val();
-        var age = $('#age').val();
-        var DOB = $('#DOB').val();
+     //   var DOB = $('#DOB').val();
         var physicanName = $('#physicanName').val();
-        var bloodPressure=$('#bloodPressure').val();
+      //  var bloodPressure=$('#bloodPressure').val();
         var heartRate=$('#heartRate').val();
         var labInfo=$('#labInfo').val();
         var prescriptions=$('#prescriptions').val();
@@ -40,11 +53,9 @@ Template.insertData.events({
         });
         $('#pName').val('');
         $('#address').val('');
-        $('#patientID').val('');
-        $('#age').val('');
-        $('#DOB').val('');
+      //  $('#DOB').val('');
         $('#physicanName').val('');
-        $('#bloodPressure').val('');
+       // $('#bloodPressure').val('');
         $('#heartRate').val('');
         $('#labInfo').val('');
         $('#prescriptions').val('');
