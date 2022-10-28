@@ -9,7 +9,7 @@
   },
   "dependencies": {
     "@babel/runtime": "^7.19.4",
-    "caniuse-lite": "^1.0.30001425",
+    "isomorphic-fetch": "^3.0.0",
     "jquery": "^3.6.0",
     "meteor-node-stubs": "^1.2.1"
   },
