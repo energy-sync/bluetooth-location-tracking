@@ -13,12 +13,12 @@ import "isomorphic-fetch";
 const firstNames = ["Michael", "Christopher", "Jessica", "Matthew", "Ashley", "Jennifer", "Joshua", "Amanda", "Daniel", "David", "James", "Robert", "John",
     "Joseph", "Andrew", "Ryan", "Brandon", "Jason", "Justin", "Sarah", "William", "Jonathan", "Stephanie", "Brian", "Nicole", "Nicholas", "Anthony", "Heather",
     "Eric", "Elizabeth", "Adam", "Megan", "Melissa", "Kevin", "Steven", "Thomas", "Timothy", "Christina", "Kyle", "Rachel", "Laura", "Lauren", "Amber", "Brittany",
-    "Danielle", "Richard", "Kimberly", "Jeffrey", "Amy", "Crystal", "Michelle", "Tiffany", "Jeremy", "Benjamin", "Mark", "Emily", "Aaron",];
+    "Danielle", "Richard", "Kimberly", "Jeffrey", "Amy", "Crystal", "Michelle", "Tiffany", "Jeremy", "Benjamin", "Mark", "Emily", "Aaron"];
 
 const lastNames = ["Smith", "Johnson", "Williams", "Brown", "Jones", "Garcia", "Miller", "Davis", "Rodriguez", "Martinez", "Hernandez", "Lopez", "Gonzalez",
     "Wilson", "Anderson", "Thomas", "Taylor", "Moore", "Jackson", "Martin", "Lee", "Perez", "Thompson", "White", "Harris", "Sanchez", "Clark", "Ramirez", "Lewis",
     "Robinson", "Walker", "Young", "Allen", "King", "Wright", "Scott", "Torres", "Nguyen", "Hill", "Flores", "Green", "Adams", "Nelson", "Baker", "Hall", "Rivera",
-    "Campbell", "Mitchell", "Carter", "Roberts",];
+    "Campbell", "Mitchell", "Carter", "Roberts"];
 
 
 //random number
@@ -74,7 +74,7 @@ function generateStreetAddress() {
         "Country Lane", "Laurel Street", "Eagle Road", "Hilltop Road", "Broadway", "Bay Street", "Cedar Court", "Canal Street", "Race Street", "Fairway Drive",
         "Shady Lane", "Hamilton Street", "Mill Street", "Cooper Street", "Lakeview Drive", "Cedar Avenue", "Cleveland Avenue", "3rd Street North", "Orchard Street",
         "Howard Street", "Lilac Lane", "Creek Road", "Eagle Street", "Hillside Drive", "Liberty Street", "Lafayette Avenue", "Lake Street", "Front Street South",
-        "7th Street", "Garfield Avenue", "Sycamore Drive", "New Street", "Clinton Street",]
+        "7th Street", "Garfield Avenue", "Sycamore Drive", "New Street", "Clinton Street"]
 
     //list of fort wayne zip codes
     var zipCodes = ["46774", "46802", "46803", "46804", "46805", "46806", "46807",
@@ -96,7 +96,7 @@ function getPrescriptions() {
     var numOfPrepscriptions = Math.floor(Math.random() * 10);
 
     var prescriptions = ["Hydrocodone", "Metformin", "Losartan", "Antibiotics", "Albuterol",
-        "Antihistamines", "Gabapentin", "Omeprazole", "Levothyroxine", "Atorvastatin",];
+        "Antihistamines", "Gabapentin", "Omeprazole", "Levothyroxine", "Atorvastatin"];
 
     var actualPrescriptions = [];
     //loop to determine what prescription they have if any
