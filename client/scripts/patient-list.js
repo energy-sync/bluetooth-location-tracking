@@ -1,17 +1,17 @@
 import { Template } from "meteor/templating";
 import { patientInformationdb } from "../../lib/database";
-import "../pages/device-list.html";
+import "../pages/patient-list.html";
 
-Template.deviceList.helpers({
+Template.patientList.helpers({
     devices() {
         return patientInformationdb.find();
     }
 });
 
-Template.deviceRow.helpers({
+Template.patientRow.helpers({
     readableDate() {
-        unixTime = patientInformationdb.findOne({_id: this.device._id}).time;
-        let date = new Date(unixTime);
+        //unixTime = patientInformationdb.findOne({_id: this.device._id}).time;
+        let date = new Date();
         return date.toLocaleString();
     }
 });
