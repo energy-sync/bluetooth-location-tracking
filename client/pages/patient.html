@@ -1,0 +1,69 @@
+<head>
+    <title>Patient Head</title>
+</head>
+
+<body>
+    {{> patient}}
+
+    {{> patientInfo1}}
+
+</body>
+
+<template name="patient">
+    <h2>Name: {{patientName}}</h2>
+</template>
+
+<template name="patientInfo1">
+    <table>
+        <tr>
+            <th>Location: {{patientLocation}}</th>
+            <th>Phone Number: {{patientPhone}}</th>
+            <th>Email: {{patientEmail}}</th>
+            <th>Age: {{patientAge}}</th>
+        </tr>
+        <tr>
+            <th>Gender: {{patientGender}}</th>
+            <th>Insurance Carrier: {{patientInsurance}}</th>
+            <th>Policy Number: {{patientPolicy}}</th>
+            <th>Patient Status: {{patientStatus}}</th>
+        </tr>
+        <tr>
+            <th>Device ID: {{patientDevice}}</th>
+            <th>
+                <ul>Family History:
+                    {{#each patientFamilyHistory}}
+                        <li>{{patientFamilyCondition}}</li>
+                    {{/each}}
+                </ul>
+            </th>
+            <th>
+                <ul>Current Medication:
+                    {{#each patientMedication}}
+                        <li>{{currentMed}}</li>
+                    {{/each}}
+                </ul>
+            </th>
+        </tr>
+    </table>
+</template>
+<!--
+<template name="visits">
+    <h2>Patient Visits:</h2>
+    <table>
+        <tr>
+            <th>Date of Visit</th>
+            <th>Reason</th>
+            <th>Weight</th>
+            <th>Temperature</th>
+            <th>Pulse</th>
+            <th>Systolic</th>
+            <th>Diastolic</th>
+            <th>Notes</th>
+        </tr>
+        {{#each patientVisits}}
+            <tr>
+
+            </tr>
+    </table>
+</template>
+-->
