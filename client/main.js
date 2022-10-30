@@ -115,65 +115,7 @@ import "isomorphic-fetch";
 
 //MongoDB
 Template.insertData.events({
-    'click .js-save'(event, instance) {
-        var patientID = "XXXXXXX".replace(/X/g, function () {
-            return "0123456789ABCDEF".charAt((Math.random()*16))}) ;
-       
-            var age = "XX".replace(/X/g, function () {
-                return "0123456789".charAt((Math.random()*10))}) ;
-
-                var DOB = "0X/2X/19XX".replace(/X/g, function () {
-                return "123456789".charAt((Math.random()*9))}) ;
-
-                var bloodPressure = "1XX/XX".replace(/X/g, function () {
-                return "123456789".charAt((Math.random()*9))}) ;
-
-                var heartRate = "XX".replace(/X/g, function () {
-                return "123456789".charAt((Math.random()*9))}) ;
-
-                var RBC = "X.XX M/UL".replace(/X/g, function () {
-                return "123456789".charAt((Math.random()*9))}) ;
-
-                var bloodGlucose = "XXX mg/dl".replace(/X/g, function () {
-                return "123".charAt((Math.random()*3))}) ;
-
-                var hemoglobin = "1X.X g/dl".replace(/X/g, function () {
-                return "0123456789".charAt((Math.random()*10))}) ;
-
-                var hematocrit = "1X.X %".replace(/X/g, function () {
-                return "123456789".charAt((Math.random()*9))}) ;
-
-                var MCV = "XX fL".replace(/X/g, function () {
-                return "789".charAt((Math.random()*3))}) ;
-
-                var plateletCount = "XXX K/dl".replace(/X/g, function () {
-                return "0123456789".charAt((Math.random()*10))}) ;
-
-                var WBC = "XX.X K/uL".replace(/X/g, function () {
-                return "0123456789".charAt((Math.random()*10))}) ;
-
-                var sodium = "1XX mEq/L".replace(/X/g, function () {
-                return "0123456789".charAt((Math.random()*10))}) ;
-
-                var potassium = "X.X mEq/L".replace(/X/g, function () {
-                return "0123456789".charAt((Math.random()*10))}) ;
-                        
-                    
-                
-            
-        
-    
-
-              
-
-
-
-
-                   
-               
-               
-                   
-       
+    'click .js-save'(event, instance) {              
         var patientID = "XXXXXXX".replace(/X/g, function () {
             return "0123456789ABCDEF".charAt((Math.random() * 16))
         });
