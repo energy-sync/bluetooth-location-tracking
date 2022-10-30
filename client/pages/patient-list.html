@@ -2,11 +2,11 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Device List</title>
+    <title>Patient List</title>
 </head>
-<template name="deviceList">
+<template name="patientList">
     <div class="container pt-3 title">
-        <h1>Device List</h1>
+        <h1>Patient List</h1>
         <div class="d-md-flex justify-content-md-end pe-3 gap-2">
             <input type="text">
             <button class="btn btn-primary">Search</button>
@@ -21,7 +21,7 @@
                 </thead>
                 <tbody>
                     {{#each device in devices}}
-                        {{> deviceRow device=device}}
+                        {{> patientRow device=device}}
                     {{/each}}
                 </tbody>
             </table>
@@ -29,10 +29,10 @@
     </div>
 </template>
 
-<template name="deviceRow">
+<template name="patientRow">
     <tr>
         <td>{{device.macAddress}}</td>
-        <td>{{device.patientName}}</td>
+        <td>{{device.patientInformation.patientName}}</td>
         <td>{{device.location}}</td>
         <td>{{readableDate}}</td>
     </tr>
