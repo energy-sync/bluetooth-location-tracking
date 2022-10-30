@@ -1,22 +1,9 @@
+import { Meteor } from 'meteor/meteor'
 import { Template } from 'meteor/templating';
-import { ReactiveVar } from 'meteor/reactive-var';
-
+import { patientInformationdb } from '../lib/database.js';
+import '../lib/routing';
 import './main.html';
-
-Template.hello.onCreated(function helloOnCreated() {
-  // counter starts at 0
-  this.counter = new ReactiveVar(0);
-});
-
-Template.hello.helpers({
-  counter() {
-    return Template.instance().counter.get();
-  },
-});
-
-Template.hello.events({
-  'click button'(event, instance) {
-    // increment the counter when button is clicked
-    instance.counter.set(instance.counter.get() + 1);
-  },
-});
+import './stylesheets/bootstrap.min.css';
+import "./pages/patient-list.html";
+import "./scripts/patient-list.js";
+import "isomorphic-fetch";
