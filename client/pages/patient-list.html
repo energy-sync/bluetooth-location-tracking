@@ -14,9 +14,11 @@
         <div class="vstack">
             <table class="table">
                 <thead>
-                    <th scope="col">MAC Address</th>
-                    <th scope="col">Name</th> 
+                    <th scope="col">Name</th>
+                    <th scope="col">Patient ID</th> 
+                    <th scope="col">Physician Name</th>
                     <th scope="col">Location</th>
+                    <th scope="col">Device MAC</th>
                     <th scope="col">Last Updated</th>
                 </thead>
                 <tbody>
@@ -30,10 +32,12 @@
 </template>
 
 <template name="patientRow">
-    <tr>
-        <td>{{device.macAddress}}</td>
+    <tr class="patientRow">
         <td>{{device.patientInformation.patientName}}</td>
-        <td>{{device.location}}</td>
+        <td>{{device.patientInformation.patientID}}</td>
+        <td>{{device.patientInformation.physicianName}}</td>
+        <td>{{device.patientInformation.location}}</td>
+        <td>{{device.macAddress}}</td>
         <td>{{readableDate}}</td>
     </tr>
 </template>
