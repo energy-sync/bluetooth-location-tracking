@@ -1,116 +1,131 @@
 import { Meteor } from 'meteor/meteor';
 import '../lib/database.js';
 import { patientInformationdb } from "../lib/database"
+import { get } from 'jquery';
 
 Meteor.startup(() => {
   // code to run on server at startup
   patientInformationdb.remove({});
-  for(let i = 0;i<50;i++){
-  var patientID = "XXXXXXX".replace(/X/g, function () {
-    return "0123456789ABCDEF".charAt((Math.random() * 16))
-  }); 
+  for (let i = 0; i < 50; i++) {
+    var patientID = "XXXXXXX".replace(/X/g, function () {
+      return "0123456789ABCDEF".charAt((Math.random() * 16))
+    });
 
-  var DOB = randomDate(new Date(1970, 0, 1), new Date());
+    var DOB = randomDate(new Date(1970, 0, 1), new Date());
 
-  var age = ageCalculator(DOB);
-
-
-  var weight = "1XX lbs".replace(/X/g, function () {
-    return "123456789".charAt((Math.random() * 9))
-  });
-
-  var height = "5ft Xin".replace(/X/g, function () {
-    return "1234567891011".charAt((Math.random() * 9))
-  });
-
-  var bloodPressure = "1XX/XX mmHg".replace(/X/g, function () {
-    return "123456789".charAt((Math.random() * 9))
-  });
-
-  var heartRate = "XX BPM".replace(/X/g, function () {
-    return "123456789".charAt((Math.random() * 9))
-  });
-
-  var RBC = "X.XX M/UL".replace(/X/g, function () {
-    return "123456789".charAt((Math.random() * 9))
-  });
-
-  var bloodGlucose = "XXX mg/dl".replace(/X/g, function () {
-    return "123".charAt((Math.random() * 3))
-  });
-
-  var hemoglobin = "1X.X g/dl".replace(/X/g, function () {
-    return "0123456789".charAt((Math.random() * 10))
-  });
-
-  var hematocrit = "1X.X %".replace(/X/g, function () {
-    return "123456789".charAt((Math.random() * 9))
-  });
-
-  var MCV = "XX fL".replace(/X/g, function () {
-    return "789".charAt((Math.random() * 3))
-  });
-
-  var plateletCount = "XXX K/dl".replace(/X/g, function () {
-    return "0123456789".charAt((Math.random() * 10))
-  });
-
-  var WBC = "XX.X K/uL".replace(/X/g, function () {
-    return "0123456789".charAt((Math.random() * 10))
-  });
-
-  var sodium = "1XX mEq/L".replace(/X/g, function () {
-    return "0123456789".charAt((Math.random() * 10))
-  });
-
-  var potassium = "X.X mEq/L".replace(/X/g, function () {
-    return "0123456789".charAt((Math.random() * 10))
-  });
-
-  var macAddress = "XX:XX:XX:XX:XX:XX".replace(/X/g, function () {
-    return "0123456789ABCDEF".charAt(Math.floor(Math.random() * 16))
-
-  });
-  var patientName = getRandomName(firstNames, lastNames);
-  var address = generateStreetAddress();
-  var physicanName = "Dr. " + getRandomName(firstNames, lastNames);
-  var prescriptions = getPrescriptions();
+    var age = ageCalculator(DOB);
 
 
+    var weight = "1XX lbs".replace(/X/g, function () {
+      return "123456789".charAt((Math.random() * 9))
+    });
+
+    var height = "5ft Xin".replace(/X/g, function () {
+      return "1234567891011".charAt((Math.random() * 9))
+    });
+
+    var bloodPressure = "1XX/XX mmHg".replace(/X/g, function () {
+      return "123456789".charAt((Math.random() * 9))
+    });
+
+    var heartRate = "XX BPM".replace(/X/g, function () {
+      return "123456789".charAt((Math.random() * 9))
+    });
+
+    var RBC = "X.XX M/UL".replace(/X/g, function () {
+      return "123456789".charAt((Math.random() * 9))
+    });
+
+    var bloodGlucose = "XXX mg/dl".replace(/X/g, function () {
+      return "123".charAt((Math.random() * 3))
+    });
+
+    var hemoglobin = "1X.X g/dl".replace(/X/g, function () {
+      return "0123456789".charAt((Math.random() * 10))
+    });
+
+    var hematocrit = "1X.X %".replace(/X/g, function () {
+      return "123456789".charAt((Math.random() * 9))
+    });
+
+    var MCV = "XX fL".replace(/X/g, function () {
+      return "789".charAt((Math.random() * 3))
+    });
+
+    var plateletCount = "XXX K/dl".replace(/X/g, function () {
+      return "0123456789".charAt((Math.random() * 10))
+    });
+
+    var WBC = "XX.X K/uL".replace(/X/g, function () {
+      return "0123456789".charAt((Math.random() * 10))
+    });
+
+    var sodium = "1XX mEq/L".replace(/X/g, function () {
+      return "0123456789".charAt((Math.random() * 10))
+    });
+
+    var potassium = "X.X mEq/L".replace(/X/g, function () {
+      return "0123456789".charAt((Math.random() * 10))
+    });
+
+    var macAddress = "XX:XX:XX:XX:XX:XX".replace(/X/g, function () {
+      return "0123456789ABCDEF".charAt(Math.floor(Math.random() * 16))
+
+    });
+    var patientName = getRandomName(firstNames, lastNames);
+    var address = generateStreetAddress();
+    var physicianName = "Dr. " + getRandomName(firstNames, lastNames);
+    var prescriptions = getPrescriptions();
 
 
-  patientInformationdb.insert({
 
-    "macAddress": macAddress,
-    "patientInformation": {
-      "patientName": patientName,
-      "address": address,
-      "patientID": patientID,
-      "DOB": DOB,
-      "age": age,
-      "physicanName": physicanName
-    },
-    "vitals": {
-      "bloodPressure": bloodPressure,
-      "heartRate": heartRate,
-      "height": height,
-      "weight": weight
-    },
-    "labWork": {
-      "RBC": RBC,
-      "Blood Glucose Level": bloodGlucose,
-      "Hemoglobin": hemoglobin,
-      "Hematocrit": hematocrit,
-      "MCV": MCV,
-      "WBC": WBC,
-      "Sodium": sodium,
-      "Potassium": potassium,
-      "Platelet Count": plateletCount
-    },
-    "prescriptions": prescriptions
 
-  });
-}
+    patientInformationdb.insert({
+
+      "macAddress": macAddress,
+      "patientInformation": {
+        "patientName": patientName,
+        "address": address,
+        "patientID": patientID,
+        "DOB": DOB,
+        "age": age,
+        "physicianName": physicianName
+      },
+      "vitals": {
+        "bloodPressure": bloodPressure,
+        "heartRate": heartRate,
+        "height": height,
+        "weight": weight
+      },
+      "labWork": {
+        "RBC": RBC,
+        "Blood Glucose Level": bloodGlucose,
+        "Hemoglobin": hemoglobin,
+        "Hematocrit": hematocrit,
+        "MCV": MCV,
+        "WBC": WBC,
+        "Sodium": sodium,
+        "Potassium": potassium,
+        "Platelet Count": plateletCount
+      },
+      "prescriptions": prescriptions,
+      "dermatology": {
+        "acne": getBoolean(),
+        "acne scars": getBoolean(),
+        "eczema and dermatitis": getBoolean(),
+        "hair loss": getBoolean(),
+        "nail problems": getBoolean(),
+        "warts": getBoolean(),
+        "fungal infections": getBoolean(),
+        "skin cancer": getBoolean(),
+        "shingles": getBoolean(),
+        "rosacea": getBoolean(),
+        "psoriasis": getBoolean(),
+        "vitiligo": getBoolean()
+       }
+
+    });
+  }
 });
 
 
@@ -219,4 +234,10 @@ function getPrescriptions() {
   }
 
   return actualPrescriptions;
+}
+
+//generate random true false
+function getBoolean() {
+  var random_boolean_value = Math.random() < .5;
+  return random_boolean_value;
 }
