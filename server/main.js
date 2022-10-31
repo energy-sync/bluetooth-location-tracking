@@ -73,7 +73,7 @@ Meteor.startup(() => {
   });
   var patientName = getRandomName(firstNames, lastNames);
   var address = generateStreetAddress();
-  var physicanName = "Dr. " + getRandomName(firstNames, lastNames);
+  var physicianName = "Dr. " + getRandomName(firstNames, lastNames);
   var prescriptions = getPrescriptions();
 
 
@@ -88,7 +88,7 @@ Meteor.startup(() => {
       "patientID": patientID,
       "DOB": DOB,
       "age": age,
-      "physicanName": physicanName
+      "physicianName": physicianName
     },
     "vitals": {
       "bloodPressure": bloodPressure,
