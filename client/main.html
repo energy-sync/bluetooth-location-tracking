@@ -1,16 +1,40 @@
 <head>
   <title>Location Based Bluetooth System</title>
   <link rel="stylesheet" href="/stylesheets/main.css">
+  <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+  <script type="text/javascript">
+    google.charts.load("current", { packages: ["corechart"] });
+    google.charts.setOnLoadCallback(drawChart);
+    function drawChart() {
+      var data = google.visualization.arrayToDataTable([
+        ['', ''],
+        ['Waiting Room', 10],
+        ['Neurology', 2],
+        ['Cancer Center', 2],
+        ['Dermatology', 2],
+        ['Radiology', 7]
+
+      ]);
+
+      var options = {
+        title: 'Overall Stats',
+        pieHole: 0.4,
+      };
+
+      var chart = new google.visualization.PieChart(document.getElementById('donutchart'));
+      chart.draw(data, options);
+    }
+  </script>
 </head>
 
 <body>
-  
+
 </body>
 
 <template name="landingPage">
   <h1>Location Based Bluetooth System</h1>
   <div>
-    <a>
+    <a href="/patient-overview">
       <button class="btn btn-info btn-lg">Overview</button>
     </a>
     <a href="/patient-list">

@@ -1,7 +1,6 @@
 import { Template } from 'meteor/templating';
 import { ReactiveVar } from 'meteor/reactive-var';
 
-import './patient.html';
 
 Template.patient.onCreated(function patientOnCreated(){
     //Placeholder name assignment
