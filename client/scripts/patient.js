@@ -3,10 +3,10 @@ import { ReactiveVar } from 'meteor/reactive-var';
 
 import './patient.html';
 
-Template.patient.onCreated(function patientOnCreated(){
+//Template.patient.onCreated(function patientOnCreated(){
     //Placeholder name assignment
-    this.patientName = new ReactiveVar("John Doe");
-});
+    //this.patientName = new ReactiveVar("John Doe");
+//});
 
 Template.patient.helpers({
     patientName(){
@@ -16,6 +16,20 @@ Template.patient.helpers({
 
 );
 
+Template.patientInformation.onCreated(function patinentInformationCreated(){
+    selectedDepartment = new ReactiveVar("reception")
+});
+
+Template.patientInformation.helpers({
+    infoSelect: function(){
+        return selectedDepartment;
+    }
+});
+
+departments.onchange(function departmentsChanged(){
+    selectedDepartment.set(departments.value);
+});
+/*
 Template.patientInfo1.onCreated(function patientInfo1OnCreated(){
     //Placeholder info assignment
     this.patientLocation = new ReactiveVar("Not Checked In");
@@ -79,4 +93,7 @@ Template.patientInfo1.helpers({
         {currentMed: "none"}
     ]
 
+
+
 })
+*/
