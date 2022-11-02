@@ -5,6 +5,10 @@ body {
   background-color: lightgrey;
 }
 
+.patientRow:hover {
+  background-color: #aaa;
+  cursor: pointer;
+  
 div{
   text-align: center;
   padding: 50px;
