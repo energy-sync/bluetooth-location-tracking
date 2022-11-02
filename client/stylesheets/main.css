@@ -2,3 +2,8 @@ body {
   padding: 10px;
   font-family: sans-serif;
 }
+
+.patientRow:hover {
+  background-color: #aaa;
+  cursor: pointer;
+}
