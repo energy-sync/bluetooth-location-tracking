@@ -123,7 +123,7 @@ Meteor.startup(() => {
         "rosacea": getBoolean(),
         "psoriasis": getBoolean(),
         "vitiligo": getBoolean()
-       }
+      }
 
     });
   }
@@ -235,7 +235,8 @@ function getPrescriptions() {
   }
 
   return actualPrescriptions;
-  
+}
+
 //generate random true false
 function getBoolean() {
   var random_boolean_value = Math.random() < .5;
