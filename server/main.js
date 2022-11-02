@@ -6,6 +6,7 @@ import { get } from 'jquery';
 Meteor.startup(() => {
   // code to run on server at startup
   patientInformationdb.remove({});
+
   for (let i = 0; i < 50; i++) {
     var patientID = "XXXXXXX".replace(/X/g, function () {
       return "0123456789ABCDEF".charAt((Math.random() * 16))
@@ -99,25 +100,25 @@ Meteor.startup(() => {
       },
       "labWork": {
         "RBC": RBC,
-        "Blood Glucose Level": bloodGlucose,
-        "Hemoglobin": hemoglobin,
-        "Hematocrit": hematocrit,
+        "bloodGlucose": bloodGlucose,
+        "hemoglobin": hemoglobin,
+        "hematocrit": hematocrit,
         "MCV": MCV,
         "WBC": WBC,
-        "Sodium": sodium,
-        "Potassium": potassium,
-        "Platelet Count": plateletCount
+        "sodium": sodium,
+        "potassium": potassium,
+        "plateletCount": plateletCount
       },
       "prescriptions": prescriptions,
       "dermatology": {
         "acne": getBoolean(),
-        "acne scars": getBoolean(),
-        "eczema and dermatitis": getBoolean(),
-        "hair loss": getBoolean(),
-        "nail problems": getBoolean(),
+        "acneScars": getBoolean(),
+        "eczemaAndDermatitis": getBoolean(),
+        "hairLoss": getBoolean(),
+        "nailProblems": getBoolean(),
         "warts": getBoolean(),
-        "fungal infections": getBoolean(),
-        "skin cancer": getBoolean(),
+        "fungalInfections": getBoolean(),
+        "skinCancer": getBoolean(),
         "shingles": getBoolean(),
         "rosacea": getBoolean(),
         "psoriasis": getBoolean(),
@@ -234,8 +235,7 @@ function getPrescriptions() {
   }
 
   return actualPrescriptions;
-}
-
+  
 //generate random true false
 function getBoolean() {
   var random_boolean_value = Math.random() < .5;

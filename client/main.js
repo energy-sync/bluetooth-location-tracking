@@ -1,6 +1,5 @@
-import { Meteor } from 'meteor/meteor'
 import { Template } from 'meteor/templating';
-import { patientInformationdb } from '../lib/database.js';
+
 import '../lib/routing';
 import './main.html';
 import './stylesheets/bootstrap.min.css';
@@ -12,3 +11,11 @@ import "./stylesheets/main.css";
 import "./stylesheets/bootstrap.min.css";
 import "./stylesheets/device-list.css";
 import "./pages/patient-overview.html";
+
+//inheritance for accessing patient information between templates
+Template.practitioner.inheritsHelpersFrom("patient");
+Template.lab.inheritsHelpersFrom("patient");
+Template.dermatology.inheritsHelpersFrom("patient");
+Template.vitals.inheritsHelpersFrom("patient");
+Template.labWork.inheritsHelpersFrom("patient");
+Template.prescriptions.inheritsHelpersFrom("patient");
