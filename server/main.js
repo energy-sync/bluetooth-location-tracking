@@ -6,6 +6,7 @@ import { get } from 'jquery';
 Meteor.startup(() => {
   // code to run on server at startup
   patientInformationdb.remove({});
+
   for (let i = 0; i < 50; i++) {
     var patientID = "XXXXXXX".replace(/X/g, function () {
       return "0123456789ABCDEF".charAt((Math.random() * 16))
@@ -234,8 +235,7 @@ function getPrescriptions() {
   }
 
   return actualPrescriptions;
-}
-
+  
 //generate random true false
 function getBoolean() {
   var random_boolean_value = Math.random() < .5;

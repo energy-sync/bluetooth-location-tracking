@@ -1,4 +1,5 @@
 import { Template } from 'meteor/templating';
+
 import '../lib/routing';
 import './main.html';
 import './stylesheets/bootstrap.min.css';
