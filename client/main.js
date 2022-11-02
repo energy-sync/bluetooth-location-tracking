@@ -10,4 +10,10 @@ import "./stylesheets/main.css";
 import "./stylesheets/bootstrap.min.css";
 import "./stylesheets/device-list.css";
 
+//inheritance for accessing patient information between templates
+Template.practitioner.inheritsHelpersFrom("patient");
+Template.lab.inheritsHelpersFrom("patient");
+Template.dermatology.inheritsHelpersFrom("patient");
 Template.vitals.inheritsHelpersFrom("patient");
+Template.labWork.inheritsHelpersFrom("patient");
+Template.prescriptions.inheritsHelpersFrom("patient");

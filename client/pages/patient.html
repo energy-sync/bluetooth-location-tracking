@@ -10,8 +10,6 @@
         <option value="lab">Lab</option>
         <option value="dermatology">Dermatology</option>
     </select>
-
-    <!--{{> template.dynamic template=infoSelect}}-->
 </template>
 
 <template name="patient">
@@ -33,8 +31,16 @@
         </table>
     </div>
 
-    {{#if isShowingVitals}}
-        {{> vitals}}
+    {{#if isInLab}}
+        {{> lab}}
+    {{/if}}
+
+    {{#if isWithPractitioner}}
+        {{> practitioner}}
+    {{/if}}
+
+    {{#if isInDermatology}}
+        {{> dermatology}}
     {{/if}}
 </template>
 
@@ -69,7 +75,7 @@
             <tr>
                 <th>Sodium: {{patient.labWork.sodium}}</th>
                 <th>Potassium: {{patient.labWork.potassium}}</th>
-                <th>Platelet Count: {{patient.labWork.PlateletCount}}</th>
+                <th>Platelet Count: {{patient.labWork.plateletCount}}</th>
             </tr>
         </table>
     </div>
@@ -78,10 +84,36 @@
 <template name="prescriptions">
     <h5>Prescriptions:</h5>
     <list>
-        {{#each prescription in prescriptions}}
+        {{#each prescription in patient.prescriptions}}
             <li>{{prescription}}</li>
         {{/each}}
     </list>
+</template>
+
+<template name="dermatology">
+    <h5>Dermatology:</h5>
+    <div class="vstack">
+        <table class="table">
+            <tr>
+                <th>Acne: {{printBool patient.dermatology.acne}}</th>
+                <th>Acne Scars: {{printBool patient.dermatology.acneScars}}</th>
+                <th>Eczema and Dermatitis: {{printBool patient.dermatology.eczemaAndDermatitis}}</th>
+                <th>Hair Loss: {{printBool patient.dermatology.hairLoss}}</th>
+            </tr>
+            <tr>
+                <th>Nail Problems: {{printBool patient.dermatology.nailProblems}}</th>
+                <th>Warts: {{printBool patient.dermatology.warts}}</th>
+                <th>Fungal Infections: {{printBool patient.dermatology.fungalInfections}}</th>
+                <th>Skin Cancer: {{printBool patient.dermatology.skinCancer}}</th>
+            </tr>
+            <tr>
+                <th>Shingles: {{printBool patient.dermatology.shingles}}</th>
+                <th>Rosacea: {{printBool patient.dermatology.rosacea}}</th>
+                <th>Psoriasis: {{printBool patient.dermatology.psoriasis}}</th>
+                <th>Vitiligo: {{printBool patient.dermatology.vitiligo}}</th>
+            </tr>
+        </table>
+    </div>
 </template>
 
 <template name="reception">
@@ -97,8 +129,4 @@
 <template name="lab">
     {{> vitals}}
     {{> labWork}}
-</template>
-
-<template name="dermatology">
-    {{> vitals}}
 </template>
