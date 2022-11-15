@@ -1,7 +1,7 @@
 import { Meteor } from 'meteor/meteor';
 import '../lib/database.js';
 import { patientInformationdb } from "../lib/database"
-import { get } from 'jquery';
+import { fetch, Headers, Request, Response } from 'meteor/fetch';
 
 Meteor.startup(() => {
   // code to run on server at startup
@@ -133,6 +133,23 @@ Meteor.startup(() => {
 Meteor.methods({
   clearRecords: () => {
     patientInformationdb.remove({});
+  },
+  async putPatientID(url, data) {
+    try {
+      const response = await fetch(url, {
+        method: "POST",
+        mode: "cors",
+        cache: "no-cache",
+        headers: new Headers({
+          "Content-Type": "application/json"
+        }),
+        body: Buffer.from(JSON.stringify(data))
+      });
+      const res = await response.json();
+      return response(null, res);
+    } catch (err) {
+      console.error(err);
+    }
   }
 })
 
