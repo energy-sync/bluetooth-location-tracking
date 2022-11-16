@@ -31,7 +31,7 @@ Meteor.startup(() => {
     }
 
 
-    var deviceID = i;
+    var deviceID = i+1;
 
     var timeStamp = getTimestampInSeconds();
 
@@ -47,27 +47,26 @@ Meteor.startup(() => {
     });
 
   }
-});
-
-WebApp.connectHandlers.use("/", function(req, res, next) {
-  if(req.method === 'PUT'){
-  req.on('data', Meteor.bindEnvironment((data)=>{
-    const body = JSON.parse(data);
-    console.log(body);
-    let patientID = body.patientID
-    let deviceID = body.deviceID;
-    console.log(patientID)
-    console.log(deviceID)
-    /* attempting to insert data from body into db. returns Exception in callback of async function: TypeError: Cannot read property 
-'insert' of undefined*/
-    deviceInformationdb.update({deviceID : deviceID}, {$set:{patientID:patientID}}) 
-    
-  })); 
-  res.on('end', Meteor.bindEnvironment(()=>{
-    res.setHeader('Content-Type', 'application/json')
-    res.writeHead(200)
-    res.end(JSON.stringify({status : 'ok'}))
-  }));
-}
-
+  WebApp.connectHandlers.use("/assign", function(req, res, next) {
+    if(req.method === 'PUT'){
+    req.on('data', Meteor.bindEnvironment((data)=>{
+      const body = JSON.parse(data);
+      console.log(body);
+      let patientID = body.patientID
+      let deviceID = body.deviceID;
+      console.log(patientID)
+      console.log(deviceID)
+      /* attempting to insert data from body into db. returns Exception in callback of async function: TypeError: Cannot read property 
+  'insert' of undefined*/
+      deviceInformationdb.update({deviceID : deviceID}, {$set:{patientID:patientID}}) 
+      
+    })); 
+    res.on('end', Meteor.bindEnvironment(()=>{
+      res.setHeader('Content-Type', 'application/json')
+      res.writeHead(200)
+      res.end(JSON.stringify({status : 'ok'}))
+    }));
+  }
+  
+  });
 });
