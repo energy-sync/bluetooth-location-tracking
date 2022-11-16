@@ -137,43 +137,46 @@ Meteor.methods({
   },
 
   //put patientID into device db
-  putPatientID(url, data){
-    
-    try{
-      const response = fetch(url, {
-        method: 'POST',
-        mode: 'cors',
-        cache: 'no-cache',
-        headers: new Headers( {
-          'Content-Type' : 'application/json'
-        }),
-        body: data
-        });
-        const res =  response.json();
-        return response(null, res)
-      }catch(err){
-        return response(err,null)
-      }
-    },
-
-    //get deviceID from device db
-    getDeviceID(url, data){
-      try{
-      const response = fetch(url, {
-        method: 'GET',
-        mode: 'cors',
-        cache: 'no-cache',
-        headers: new Headers( {
-          'Content-Type' : 'application/json'
+  async putPatientID(url, data) {
+    try {
+      const response =  await fetch(url, {
+        method: "PUT",
+        mode: "cors",
+        cache: "no-cache",
+        headers: new Headers({
+          "Content-Type": "application/json"
         }),
         body: JSON.stringify(data)
-        });
-        const data =  response.json();
-        return response(null, data)
-      }catch(err){
-        return response(err,null)
-      }
-    },
+      })
+      return response.json();
+     
+      
+     // return response(null, res);
+    } catch (err) {
+      console.error(err);
+    }
+  },
+
+  //get device info from db
+  async getDeviceInfo(url, data) {
+    try {
+      const response =  await fetch(url, {
+        method: "GET",
+        mode: "cors",
+        cache: "no-cache",
+        headers: new Headers({
+          "Content-Type": "application/json"
+        }),
+        body: JSON.stringify(data)
+      })
+      return response.json();
+     
+      
+     // return response(null, res);
+    } catch (err) {
+      console.error(err);
+    }
+  }
 })
 
 

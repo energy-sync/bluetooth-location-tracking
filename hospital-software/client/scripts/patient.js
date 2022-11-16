@@ -15,10 +15,10 @@ Template.patient.helpers({
         return patientInformationdb.findOne({"patientInformation.patientID": FlowRouter.getParam("patientID")});
     },
     assignDevice(){
+        console.log("assignDevice");
         const patientID = patientInformationdb.findOne({"patientInformation.patientID": FlowRouter.getParam("patientID")}).patientInformation.patientID;
-        let data = {patientID : patientID,
-                    deviceID : 123456}
-        Meteor.call('putPatientID', "http://localhost:3003", data);
+        let data = {patientID: patientID, deviceID: 3};
+        Meteor.call("putPatientID", "http://localhost:3002", data);
     },
     isWithPractitioner() {
         return Template.instance().department.get() === "practitioner";
