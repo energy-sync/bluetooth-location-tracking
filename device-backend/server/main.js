@@ -1,6 +1,6 @@
 import { Meteor } from 'meteor/meteor';
 import { WebApp } from 'meteor/webapp';
-import {deviceInformationdb} from '../lib/collections';
+import {deviceInformationdb} from '../lib/database.js';
 
 Meteor.startup(() => {
   // code to run on server at startup
