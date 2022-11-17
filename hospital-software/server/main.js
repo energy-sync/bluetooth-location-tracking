@@ -87,6 +87,7 @@ Meteor.startup(() => {
       "macAddress": macAddress,
       "patientInformation": {
         "patientName": patientName,
+        "macAddress": macAddress,
         "address": address,
         "patientID": patientID,
         "DOB": DOB,

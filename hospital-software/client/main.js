@@ -13,6 +13,7 @@ import "./stylesheets/device-list.css";
 import "./pages/patient-overview.html";
 
 //inheritance for accessing patient information between templates
+Template.reception.inheritsHelpersFrom("patient");
 Template.practitioner.inheritsHelpersFrom("patient");
 Template.lab.inheritsHelpersFrom("patient");
 Template.dermatology.inheritsHelpersFrom("patient");

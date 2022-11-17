@@ -13,24 +13,35 @@
 </template>
 
 <template name="patient">
-    {{> patientInformation}}
-    <h2>Name: {{patient.patientInformation.patientName}}</h2>
-    <p>Device MAC: {{patient.macAddress}}</p>
-    <button id = "assignBtn">Assign Device</button>
-    <h5>Basic Information:</h5>
-    <div class="vstack">
+  {{> patientInformation}} 
+<br><br>
+  
+
+   
+        <h5>Basic Information:</h5>
         <table class="table">
             <tr>
-                <th>Date of Birth: {{patient.patientInformation.DOB}}</th>
-                <th>Age: {{patient.patientInformation.age}}</th>
-                <th>Address: {{patient.patientInformation.address}}</th>
-            </tr>
-            <tr>
-                <th>Patient ID: {{patient.patientInformation.patientID}}</th>
-                <th>Assigned Physician: {{patient.patientInformation.physicianName}}</th>
+                <th>Name</th>
+                <th>Age</th>
+                <th>DOB</th>
+                <th>Address</th>
+                <th>Patient ID</th>
+                <th>Assigned Physician</th>
+              </tr>
+              <tr>
+                <th>{{patient.patientInformation.patientName}}</th>
+                <th>{{patient.patientInformation.age}}</th>
+                <th>{{patient.patientInformation.DOB}}</th>
+                <th>{{patient.patientInformation.address}}</th>
+                <th>{{patient.patientInformation.patientID}}</th>
+                <th>{{patient.patientInformation.physicianName}}</th>
             </tr>
         </table>
-    </div>
+    
+
+    {{#if isInReception}}
+    {{> reception}}
+{{/if}}
 
     {{#if isInLab}}
         {{> lab}}
@@ -42,7 +53,7 @@
 
     {{#if isInDermatology}}
         {{> dermatology}}
-    {{/if}}
+    {{/if}} 
 </template>
 
 <template name="vitals">
@@ -84,11 +95,13 @@
 
 <template name="prescriptions">
     <h5>Prescriptions:</h5>
-    <list>
+    <table class="table">
+    <tr>
         {{#each prescription in patient.prescriptions}}
-            <li>{{prescription}}</li>
+            <th>{{prescription}}</th>
         {{/each}}
-    </list>
+    </tr>
+    </table>
 </template>
 
 <template name="dermatology">
@@ -117,8 +130,21 @@
     </div>
 </template>
 
-<template name="reception">
+<template name="reception"> 
+    <br>
+    <h5>Device Information:</h5>
+
+        <table class="table2">
+            
+                <ts> Device MAC:{{patient.macAddress}}</ts>
+                <br>
+            
+
+        </table>
     
+
+   <br><br>
+    <button id = "assignBtn">Assign Device</button> 
 </template>
 
 <template name="practitioner">

@@ -8,6 +8,7 @@ Template.patient.onCreated(function() {
 
 Template.patient.onRendered(function() {
     this.patient = new ReactiveVar(patientInformationdb.findOne({"patientInformation.patientID": FlowRouter.getParam("patientID")}))
+    
 });
 
 Template.patient.helpers({
@@ -28,6 +29,9 @@ Template.patient.helpers({
     },
     isInDermatology() {
         return Template.instance().department.get() === "dermatology";
+    },
+    isInReception() {
+        return Template.instance().department.get() === "reception";
     }
 });
 
