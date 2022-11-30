@@ -1,7 +1,8 @@
 import { Meteor } from 'meteor/meteor';
 import '../lib/database.js';
 import { patientInformationdb } from "../lib/database"
-import { fetch, Headers, Request, Response } from 'meteor/fetch';
+import { get } from 'jquery';
+import {fetch, Headers} from "meteor/fetch";
 
 Meteor.startup(() => {
   // code to run on server at startup
@@ -134,24 +135,53 @@ Meteor.methods({
   clearRecords: () => {
     patientInformationdb.remove({});
   },
+
+  //put patientID into device db
   async putPatientID(url, data) {
     try {
-      const response = await fetch(url, {
-        method: "POST",
+      const response =  await fetch(url, {
+        method: "PUT",
         mode: "cors",
         cache: "no-cache",
         headers: new Headers({
           "Content-Type": "application/json"
         }),
-        body: Buffer.from(JSON.stringify(data))
-      });
-      const res = await response.json();
-      return response(null, res);
+        body: JSON.stringify(data)
+      })
+      return response.json();
+     
+      
+     // return response(null, res);
+    } catch (err) {
+      console.error(err);
+    }
+  },
+
+  //get device info from db
+  async getDeviceInfo(url, data) {
+    try {
+      const response =  await fetch(url, {
+        method: "GET",
+        mode: "cors",
+        cache: "no-cache",
+        headers: new Headers({
+          "Content-Type": "application/json"
+        }),
+        body: JSON.stringify(data)
+      })
+      return response.json();
+     
+      
+     // return response(null, res);
     } catch (err) {
       console.error(err);
     }
   }
 })
+
+
+//functions for randomizing patient db
+
 
 //array for first and last names
 const firstNames = ["Michael", "Christopher", "Jessica", "Matthew", "Ashley", "Jennifer", "Joshua", "Amanda", "Daniel", "David", "James", "Robert", "John",
@@ -259,3 +289,5 @@ function getBoolean() {
   var random_boolean_value = Math.random() < .5;
   return random_boolean_value;
 }
+
+//fetch method to add patientID to device db

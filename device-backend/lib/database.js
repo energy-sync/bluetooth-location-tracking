@@ -1,2 +1,1 @@
-// database
-export const patientInformationdb = new Mongo.Collection('Device Information');
+export const deviceInformationdb = new Mongo.Collection('Device Information');
