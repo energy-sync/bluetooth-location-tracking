@@ -1,0 +1,14 @@
+{
+    "beacons": [
+        {
+            "deviceID": "Bob",
+            "macAddress": "ac:23:3f:ac:96:14"
+        }
+    ],
+    "radios" : [
+        {
+            "location" : "Reception",
+            "ipAddress" : "127.0.0.1"
+        }
+    ]
+}

@@ -2,7 +2,7 @@ import { Meteor } from 'meteor/meteor';
 import '../lib/database.js';
 import { patientInformationdb } from "../lib/database"
 import { get } from 'jquery';
-import {fetch, Headers} from "meteor/fetch";
+import axios from 'axios'
 
 Meteor.startup(() => {
   // code to run on server at startup
@@ -131,51 +131,23 @@ Meteor.startup(() => {
 });
 
 
+
 Meteor.methods({
   clearRecords: () => {
     patientInformationdb.remove({});
   },
-
-  //put patientID into device db
-  async putPatientID(url, data) {
-    try {
-      const response =  await fetch(url, {
-        method: "PUT",
-        mode: "cors",
-        cache: "no-cache",
-        headers: new Headers({
-          "Content-Type": "application/json"
-        }),
-        body: JSON.stringify(data)
-      })
-      return response.json();
-     
-      
-     // return response(null, res);
-    } catch (err) {
-      console.error(err);
-    }
-  },
-
-  //get device info from db
-  async getDeviceInfo(url, data) {
-    try {
-      const response =  await fetch(url, {
-        method: "GET",
-        mode: "cors",
-        cache: "no-cache",
-        headers: new Headers({
-          "Content-Type": "application/json"
-        }),
-        body: JSON.stringify(data)
-      })
-      return response.json();
-     
-      
-     // return response(null, res);
-    } catch (err) {
-      console.error(err);
-    }
+  assignDevices(patientID){
+    axios.get('http://localhost:3002/getBLEs',{headders:{
+      Accept:'application/json',
+      'Accept-Endcoing':'identity'}
+    })
+    .then((response)=>{
+        //patientInformationdb.update({patientID:patientID}, {$set:{macAddress:response.macAddress}})
+        console.log(response.data)
+    })
+    .catch(function (error){
+      console.log(error)
+    })
   }
 })
 
