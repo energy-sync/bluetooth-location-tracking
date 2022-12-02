@@ -136,7 +136,10 @@ Meteor.methods({
   clearRecords: () => {
     patientInformationdb.remove({});
   },
+
+  //a way to assign patients beacons
   assignDevices(patientID){
+    //http get request to device backend to recieve all information on devices
     axios.get('http://localhost:3002/getBLEs',{headders:{
       Accept:'application/json',
       'Accept-Endcoing':'identity'}

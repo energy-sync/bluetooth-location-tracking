@@ -25,7 +25,7 @@ Meteor.startup(() => {
       });
     }
 
- 
+ //handle request from ble-reciever to update db with location of device
   WebApp.connectHandlers.use("/location", function(req, res, next) {
     if(req.method === 'PUT'){
     req.on('data', Meteor.bindEnvironment((data)=>{
@@ -50,6 +50,7 @@ Meteor.startup(() => {
   }
   });
 
+  //handle get request from hospital software to transfer all devices
   WebApp.connectHandlers.use("/getBLEs", async function(req, res, next) {
     res.writeHead(200, {"Content-Type" : "application/json"})
     let arrayOfBeacosns = deviceInformationdb.find().fetch()
@@ -60,6 +61,7 @@ Meteor.startup(() => {
 
 });
 
+//update the location of the beacon to hospital software when the location changes from beacon
 function updateLocation(macAddress){
   let device = deviceInformationdb.find({macAddress:macAddress})
   axios.post('/update', {
