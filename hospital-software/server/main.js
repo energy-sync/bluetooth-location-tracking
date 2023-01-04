@@ -1,8 +1,6 @@
 import { Meteor } from 'meteor/meteor';
 import '../lib/database.js';
 import { patientInformationdb } from "../lib/database"
-import { get } from 'jquery';
-import axios from 'axios'
 import { WebApp } from 'meteor/webapp';
 
 Meteor.startup(() => {
@@ -130,15 +128,19 @@ Meteor.startup(() => {
     });
   }
 
-  let devices;
-  WebApp.connectHandlers.use('/devices', async function (req,res,next){
+  WebApp.connectHandlers.use("/getBLEs", function(req, res, next) {
+    res.writeHead(200, {"Content-Type" : "application/json"})
     req.on('data', Meteor.bindEnvironment((data)=>{
-      devices = JSON.parse(data);
-      
-      console.log(devices)
-    }))
+      const body = JSON.parse(data);
+      console.log(body)
+
+    }));
+    res.on('end', Meteor.bindEnvironment(()=>{
+      res.writeHead(200).end()
+    }));
   })
-  
+
+
 });
 
 
@@ -146,24 +148,6 @@ Meteor.startup(() => {
 Meteor.methods({
   clearRecords: () => {
     patientInformationdb.remove({});
-  },
-
-  //a way to assign patients beacons
-  async assignDevices(patientID){
-    //http get request to device backend to recieve all information on devices
-    axios.get('http://localhost:3002/getBLEs',{headders:{
-      Accept:'application/json'},
-      responseType: 'json'
-    })
-    .then((response)=>{
-        //patientInformationdb.update({patientID:patientID}, {$set:{macAddress:response.macAddress}})
-        console.log(typeof response.data)
-        console.log(response.data)
-    })
-    .catch(function (error){
-      console.log(error)
-    })
-    console.log(patientID)
   }
 })
 

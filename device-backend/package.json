@@ -9,7 +9,7 @@
   },
   "dependencies": {
     "@babel/runtime": "^7.17.9",
-    "axios": "^1.2.0",
+    "axios": "^1.1.0",
     "jquery": "^3.6.1",
     "meteor-node-stubs": "^1.2.1"
   },
