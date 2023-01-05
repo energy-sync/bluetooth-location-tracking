@@ -2,7 +2,7 @@ import { Meteor } from 'meteor/meteor';
 import '../lib/database.js';
 import { patientInformationdb } from "../lib/database"
 import { WebApp } from 'meteor/webapp';
-
+let arrayofdevices=[];
 Meteor.startup(() => {
   // code to run on server at startup
   patientInformationdb.remove({});
@@ -133,6 +133,8 @@ Meteor.startup(() => {
     req.on('data', Meteor.bindEnvironment((data)=>{
       const body = JSON.parse(data);
       console.log(body)
+      arrayofdevices=body;
+      console.log(arrayofdevices);
 
     }));
     res.on('end', Meteor.bindEnvironment(()=>{
@@ -148,7 +150,15 @@ Meteor.startup(() => {
 Meteor.methods({
   clearRecords: () => {
     patientInformationdb.remove({});
-  }
+  },
+getDevices: ()=>{
+ return arrayofdevices;
+},
+assignDevices: (patientID,deviceID) => {
+//patient id parameter and device id parameter
+patientInformationdb.update({patientInformation: {patientID:patientID}} , {$set : {deviceID:deviceID}})
+
+}
 })
 
 
