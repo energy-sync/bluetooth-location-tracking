@@ -8,6 +8,7 @@ Template.patient.onCreated(function() {
 
 Template.patient.onRendered(function() {
     this.patient = new ReactiveVar(patientInformationdb.findOne({"patientInformation.patientID": FlowRouter.getParam("patientID")}))
+    this.device = new ReactiveVar(patientInformationdb.findOne({"patientInformation.deviceID": FlowRouter.getParam("deviceID")}))
 });
 
 Template.patient.helpers({
@@ -17,6 +18,7 @@ Template.patient.helpers({
     assignDevice(){
         console.log("assignDevice");
         const patientID = patientInformationdb.findOne({"patientInformation.patientID": FlowRouter.getParam("patientID")}).patientInformation.patientID;
+        const deviceID = patientInformationdb.findOne({"patientInformation.deviceID": FlowRouter.getParam("deviceID")}).patientInformation.deviceID;
         Meteor.call("assignDevices", patientID, deviceID);
     },
     isWithPractitioner() {
@@ -27,6 +29,9 @@ Template.patient.helpers({
     },
     isInDermatology() {
         return Template.instance().department.get() === "dermatology";
+    },
+    isInDevices() {
+        return Template.instance().department.get() === "devices";
     }
 });
 

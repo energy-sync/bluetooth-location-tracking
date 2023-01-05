@@ -84,6 +84,7 @@ Meteor.startup(() => {
     patientInformationdb.insert({
 
       "macAddress": macAddress,
+      "devices":arrayofdevices,
       "patientInformation": {
         "patientName": patientName,
         "address": address,

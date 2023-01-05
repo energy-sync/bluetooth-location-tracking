@@ -9,6 +9,7 @@
         <option value="practitioner">General Practitioner</option>
         <option value="lab">Lab</option>
         <option value="dermatology">Dermatology</option>
+        <option value="devices">Devices</option>
     </select>
 </template>
 
@@ -21,6 +22,7 @@
     <div class="vstack">
         <table class="table">
             <tr>
+               
                 <th>Date of Birth: {{patient.patientInformation.DOB}}</th>
                 <th>Age: {{patient.patientInformation.age}}</th>
                 <th>Address: {{patient.patientInformation.address}}</th>
@@ -42,6 +44,10 @@
 
     {{#if isInDermatology}}
         {{> dermatology}}
+    {{/if}}
+
+    {{#if isInDevices}}
+        {{> devices}}
     {{/if}}
 </template>
 
@@ -89,6 +95,14 @@
             <li>{{prescription}}</li>
         {{/each}}
     </list>
+</template>
+<template name="devices">
+<table class="table">
+    <tr>
+        <th>Device number: {{printBool patient.dermatology.acne}}</th>
+      
+    </tr>
+</table>
 </template>
 
 <template name="dermatology">
