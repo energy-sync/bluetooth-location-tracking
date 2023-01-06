@@ -133,17 +133,15 @@ Meteor.startup(() => {
     res.writeHead(200, {"Content-Type" : "application/json"})
     req.on('data', Meteor.bindEnvironment((data)=>{
       const body = JSON.parse(data);
-      console.log(body)
-      arrayofdevices=body;
-      console.log(arrayofdevices);
+      //console.log(body)
+      storeInfo(body);
+      
 
     }));
     res.on('end', Meteor.bindEnvironment(()=>{
       res.writeHead(200).end()
     }));
   })
-
-
 });
 
 
@@ -162,7 +160,9 @@ patientInformationdb.update({patientInformation: {patientID:patientID}} , {$set 
 }
 })
 
-
+function printArray(arr){
+  console.log(arr)
+}
 //functions for randomizing patient db
 
 
@@ -273,4 +273,11 @@ function getBoolean() {
   return random_boolean_value;
 }
 
-//fetch method to add patientID to device db
+//function to store body sent from devicedb into arrayofdevices
+function storeInfo(body){
+  for(let i=0;i<body.length;i++){
+  arrayofdevices.push(body[i])
+}
+  //console.log(arrayofdevices)
+  printArray(arrayofdevices)
+}

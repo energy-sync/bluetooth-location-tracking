@@ -117,13 +117,11 @@ function sendData(){
   //grab an array of devices
   let arrayOfDevices = deviceInformationdb.find().fetch()
   console.log(arrayOfDevices)
-  axios.post('http://localhost:3000/getBLEs',{
-    data: arrayOfDevices
-  })
-  .then(function (response){
+  axios.post('http://localhost:3000/getBLEs', arrayOfDevices)
+  .then(function (response){  
     console.log(response)
   })
-  .catch(function(error){
+  .catch(function (error){
     console.log(error)
-  })
+  })  
 }
