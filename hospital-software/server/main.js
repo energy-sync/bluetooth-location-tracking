@@ -3,6 +3,7 @@ import '../lib/database.js';
 import { patientInformationdb } from "../lib/database"
 import { WebApp } from 'meteor/webapp';
 let arrayofdevices=[];
+
 Meteor.startup(() => {
   // code to run on server at startup
   patientInformationdb.remove({});
@@ -77,6 +78,7 @@ Meteor.startup(() => {
     var address = generateStreetAddress();
     var physicianName = "Dr. " + getRandomName(firstNames, lastNames);
     var prescriptions = getPrescriptions();
+    var devices=storeInfo(arrayofdevices);
 
 
 
@@ -84,7 +86,6 @@ Meteor.startup(() => {
     patientInformationdb.insert({
 
       "macAddress": macAddress,
-      "devices":arrayofdevices,
       "patientInformation": {
         "patientName": patientName,
         "address": address,
@@ -111,6 +112,7 @@ Meteor.startup(() => {
         "plateletCount": plateletCount
       },
       "prescriptions": prescriptions,
+      "deviceID":devices,
       "dermatology": {
         "acne": getBoolean(),
         "acneScars": getBoolean(),
@@ -127,6 +129,7 @@ Meteor.startup(() => {
       }
 
     });
+   
   }
 
   WebApp.connectHandlers.use("/getBLEs", function(req, res, next) {
@@ -276,6 +279,7 @@ function getBoolean() {
 //function to store body sent from devicedb into arrayofdevices
 function storeInfo(body){
   for(let i=0;i<body.length;i++){
+  //arrayofdevices.push(body[i])
   arrayofdevices.push(body[i])
 }
   //console.log(arrayofdevices)

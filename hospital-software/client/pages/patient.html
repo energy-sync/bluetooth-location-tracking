@@ -47,7 +47,7 @@
     {{/if}}
 
     {{#if isInDevices}}
-        {{> devices}}
+        {{> devices }}
     {{/if}}
 </template>
 
@@ -97,12 +97,11 @@
     </list>
 </template>
 <template name="devices">
-<table class="table">
-    <tr>
-        <th>Device number: {{printBool patient.dermatology.acne}}</th>
-      
-    </tr>
-</table>
+    <table class="table">
+        <tr>
+            <th>Body: {{patient.deviceID.devices[0]}}</th>
+        </tr>
+    </table>
 </template>
 
 <template name="dermatology">
