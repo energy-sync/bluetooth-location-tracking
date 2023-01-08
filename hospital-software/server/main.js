@@ -78,7 +78,6 @@ Meteor.startup(() => {
     var address = generateStreetAddress();
     var physicianName = "Dr. " + getRandomName(firstNames, lastNames);
     var prescriptions = getPrescriptions();
-    var devices=storeInfo(arrayofdevices);
 
 
 
@@ -112,7 +111,6 @@ Meteor.startup(() => {
         "plateletCount": plateletCount
       },
       "prescriptions": prescriptions,
-      "deviceID":devices,
       "dermatology": {
         "acne": getBoolean(),
         "acneScars": getBoolean(),
@@ -132,22 +130,20 @@ Meteor.startup(() => {
    
   }
 
-  WebApp.connectHandlers.use("/getBLEs", function(req, res, next) {
-    res.writeHead(200, {"Content-Type" : "application/json"})
-    req.on('data', Meteor.bindEnvironment((data)=>{
-      const body = JSON.parse(data);
-      //console.log(body)
-      storeInfo(body);
-      
-
-    }));
-    res.on('end', Meteor.bindEnvironment(()=>{
-      res.writeHead(200).end()
-    }));
-  })
+ 
 });
 
+WebApp.connectHandlers.use("/getBLEs", function(req, res, next) {
+  res.writeHead(200, {"Content-Type" : "application/json"})
+  req.on('data', Meteor.bindEnvironment((data)=>{
+    const body = JSON.parse(data);
+    //console.log(body)
+    storeInfo(body);
+    
 
+  }));
+ res.end(Meteor.release)
+})
 
 Meteor.methods({
   clearRecords: () => {
@@ -283,5 +279,9 @@ function storeInfo(body){
   arrayofdevices.push(body[i])
 }
   //console.log(arrayofdevices)
+  patientInformationdb.insert({
+    'devices': arrayofdevices
+  }
+  )
   printArray(arrayofdevices)
 }

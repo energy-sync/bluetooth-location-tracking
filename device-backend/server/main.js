@@ -68,36 +68,37 @@ Meteor.startup(() => {
       });
   
     }
- //handle request from ble-reciever to update db with location of device
-  WebApp.connectHandlers.use("/location", function(req, res, next) {
-    if(req.method === 'PUT'){
-    req.on('data', Meteor.bindEnvironment((data)=>{
-      const body = JSON.parse(data);
-      console.log(body);
-      let ipAddress = this.connection.remoteAddress
-      console.log(ipAddress)
-      let macAddress= body.macAddress
-      let distance = body.distance;
-      for(device of radios){
-        if(ipAddress === radios.ipAddress){
-          deviceInformationdb.update({macAddress : macAddress}, {$set:{distance : distance, time:getTimestampInSeconds(), location: radios.location}}) 
-          updateLocation(macAddress);
-        }
-        break
-      }
-
-    })); 
-    res.on('end', Meteor.bindEnvironment(()=>{
-      res.writeHead(200).end()
-    }));
-  }
-  });
+ 
 
   //calls function to send data of ble beacons to hospital software
   sendData()
 
 });
 
+//handle request from ble-reciever to update db with location of device
+WebApp.connectHandlers.use("/location", function(req, res, next) {
+  if(req.method === 'PUT'){
+  req.on('data', Meteor.bindEnvironment((data)=>{
+    const body = JSON.parse(data);
+    console.log(body);
+    let ipAddress = this.connection.remoteAddress
+    console.log(ipAddress)
+    let macAddress= body.macAddress
+    let distance = body.distance;
+    for(device of radios){
+      if(ipAddress === radios.ipAddress){
+        deviceInformationdb.update({macAddress : macAddress}, {$set:{distance : distance, time:getTimestampInSeconds(), location: radios.location}}) 
+        updateLocation(macAddress);
+      }
+      break
+    }
+
+  })); 
+  res.on('end', Meteor.bindEnvironment(()=>{
+    res.writeHead(200).end(Meteor.release)
+  }));
+}
+});
 //update the location of the beacon to hospital software when the location changes from beacon
 function updateLocation(macAddress){
   let device = deviceInformationdb.find({devices :{macAddress:macAddress}})
@@ -118,8 +119,7 @@ function sendData(){
   let arrayOfDevices = deviceInformationdb.find().fetch()
   console.log(arrayOfDevices)
   axios.post('http://localhost:3000/getBLEs', arrayOfDevices)
-  .then(function (response){  
-    console.log(response)
+  .then(function (response){
   })
   .catch(function (error){
     console.log(error)
