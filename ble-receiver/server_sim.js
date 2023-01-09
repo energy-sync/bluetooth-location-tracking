@@ -12,9 +12,11 @@ for (device of config)
     devices[device.macAddress] = device.deviceID;
 
 app.post("/location", (req, res) => {
+    console.log("received");
     let device = req.body;
-    if (devices[device.macAddress])
-        console.log(`Device "${devices[device.macAddress]}" is ${device.distance} meters away.`);
+    //if (devices[device.macAddress])
+        //console.log(`Device "${devices[device.macAddress]}" is ${device.distance} meters away.`);
+    console.log(`Device "${device.macAddress}" is ${device.distance} meters away from ${device.location}.`);
     res.writeHead(200, {"Content-Type": "text/html"});
     res.end();
 });
