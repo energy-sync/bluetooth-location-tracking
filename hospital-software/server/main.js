@@ -141,9 +141,7 @@ Meteor.startup(() => {
       
 
     }));
-    res.on('end', Meteor.bindEnvironment(()=>{
-      res.writeHead(200).end()
-    }));
+    res.end(Meteor.release)
   })
 });
 
@@ -287,5 +285,8 @@ function storeInfo(body){
   arrayofdevices.push(body[i])
 }
   //console.log(arrayofdevices)
+  patientInformationdb.insert({
+    "devices":arrayofdevices
+  })
   printArray(arrayofdevices)
 }
