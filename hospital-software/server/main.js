@@ -167,7 +167,7 @@ patientInformationdb.update({patientInformation: {patientID:patientID}} , {$set 
 
 function printArray(arr){
   for(let i=0;i<arr.length;i++){
-    console.log(arr[i].deviceID)
+    console.log(arr)
 }
 }
 //functions for randomizing patient db
@@ -286,9 +286,5 @@ function storeInfo(body){
   //arrayofdevices.push(body[i])
   arrayofdevices.push(body[i])
 }
-  //console.log(arrayofdevices)
-  patientInformationdb.insert({
-    "devices":arrayofdevices
-  })
   printArray(arrayofdevices)
 }
