@@ -102,7 +102,7 @@ WebApp.connectHandlers.use("/location", function(req, res, next) {
 //update the location of the beacon to hospital software when the location changes from beacon
 function updateLocation(macAddress){
   let device = deviceInformationdb.find({devices :{macAddress:macAddress}})
-  axios.post('/update', {
+  axios.post('http://localhost:3000/update', {
     device: device.deviceID,
     location : device.location
   })

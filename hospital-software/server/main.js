@@ -3,7 +3,7 @@ import { Meteor } from 'meteor/meteor';
 import '../lib/database.js';
 import { patientInformationdb } from "../lib/database"
 import { WebApp } from 'meteor/webapp';
-let arrayofdevices=[];
+let arrayofdevices = [];
 
 Meteor.startup(() => {
   // code to run on server at startup
@@ -79,7 +79,7 @@ Meteor.startup(() => {
     var address = generateStreetAddress();
     var physicianName = "Dr. " + getRandomName(firstNames, lastNames);
     var prescriptions = getPrescriptions();
-    
+
 
 
 
@@ -129,46 +129,45 @@ Meteor.startup(() => {
       }
 
     });
-   
+
   }
 
-  WebApp.connectHandlers.use("/getBLEs", function(req, res, next) {
-    res.writeHead(200, {"Content-Type" : "application/json"})
-    req.on('data', Meteor.bindEnvironment((data)=>{
-      const body = JSON.parse(data);
-      //console.log(body)
-      storeInfo(body);
-      
-
-    }));
-    res.end(Meteor.release)
-  })
 });
 
+WebApp.connectHandlers.use("/getBLEs", function (req, res, next) {
+  res.writeHead(200, { "Content-Type": "application/json" })
+  req.on('data', Meteor.bindEnvironment((data) => {
+    const body = JSON.parse(data);
+    //console.log(body)
+    storeInfo(body);
+
+
+  }));
+  res.end(Meteor.release)
+})
 
 
 Meteor.methods({
   clearRecords: () => {
     patientInformationdb.remove({});
   },
-getDevices: ()=>{
- return arrayofdevices;
-},
+  getDevices: () => {
+    //printArray(arrayofdevices)
+    return arrayofdevices.map(ids => ids.deviceID);
+  },
 
 
 
-assignDevices: (patientID,deviceID) => {
-//patient id parameter and device id parameter
-patientInformationdb.update({patientInformation: {patientID:patientID}} , {$set : {deviceID:deviceID}})
+  assignDevices: (patientID, deviceID) => {
+    //patient id parameter and device id parameter
+    patientInformationdb.update({ patientInformation: { patientID: patientID } }, { $set: { deviceID: deviceID } })
 
-}
+  }
 
 })
 
-function printArray(arr){
-  for(let i=0;i<arr.length;i++){
-    console.log(arr)
-}
+function printArray(arr) {
+  console.log(arr)
 }
 //functions for randomizing patient db
 
@@ -281,10 +280,14 @@ function getBoolean() {
 }
 
 //function to store body sent from devicedb into arrayofdevices
-function storeInfo(body){
-  for(let i=0;i<body.length;i++){
-  //arrayofdevices.push(body[i])
-  arrayofdevices.push(body[i])
-}
-  printArray(arrayofdevices)
+function storeInfo(body) {
+  for (let i = 0; i < body.length; i++) {
+    //arrayofdevices.push(body[i])
+    arrayofdevices.push(body[i])
+    patientInformationdb.insert({
+      'devices': body[i].deviceID
+    })
+  }
+
+  // printArray(arrayofdevices)
 }

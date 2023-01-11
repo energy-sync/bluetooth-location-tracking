@@ -17,12 +17,18 @@
     {{> patientInformation}}
     <h2>Name: {{patient.patientInformation.patientName}}</h2>
     <p>Device MAC: {{patient.macAddress}}</p>
-    <button id = "assignBtn">Assign Device</button>
+    <select id="deviceIDs">
+        <option disabled="disabled" selected="selected">Please Choose DeviceID</option>
+        {{#each ids}}
+        <option value="{{this}}">{{this}}</option>
+        {{/each}}
+    </select>
+    <button id="assignBtn">Assign Device</button>
     <h5>Basic Information:</h5>
     <div class="vstack">
         <table class="table">
             <tr>
-               
+
                 <th>Date of Birth: {{patient.patientInformation.DOB}}</th>
                 <th>Age: {{patient.patientInformation.age}}</th>
                 <th>Address: {{patient.patientInformation.address}}</th>
@@ -35,21 +41,21 @@
     </div>
 
     {{#if isInLab}}
-        {{> lab}}
+    {{> lab}}
     {{/if}}
 
     {{#if isWithPractitioner}}
-        {{> practitioner}}
+    {{> practitioner}}
     {{/if}}
 
     {{#if isInDermatology}}
-        {{> dermatology}}
+    {{> dermatology}}
     {{/if}}
 </template>
 
 <template name="vitals">
     <h5>Vitals:</h5>
-    <div class = "vstack">
+    <div class="vstack">
         <table class="table">
             <tr>
                 <th>Blood Pressure: {{patient.vitals.bloodPressure}}</th>
@@ -63,7 +69,7 @@
 
 <template name="labWork">
     <h5>Lab Work:</h5>
-    <div class = "vstack">
+    <div class="vstack">
         <table class="table">
             <tr>
                 <th>RBC: {{patient.labWork.RBC}}</th>
@@ -88,7 +94,7 @@
     <h5>Prescriptions:</h5>
     <list>
         {{#each prescription in patient.prescriptions}}
-            <li>{{prescription}}</li>
+        <li>{{prescription}}</li>
         {{/each}}
     </list>
 </template>
@@ -127,7 +133,7 @@
 </template>
 
 <template name="reception">
-    
+
 </template>
 
 <template name="practitioner">
