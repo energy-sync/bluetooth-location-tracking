@@ -4,6 +4,10 @@ import { FlowRouter } from 'meteor/ostrio:flow-router-extra';
 
 Template.patient.onCreated(function () {
     this.department = new ReactiveVar("reception");
+    this.ids = new ReactiveVar([])
+    Meteor.call('getDevices', (error,result)=>{
+        this.ids.set(result);
+    })
 });
 
 Template.patient.onRendered(function () {
@@ -16,20 +20,7 @@ Template.patient.helpers({
         return patientInformationdb.findOne({ "patientInformation.patientID": FlowRouter.getParam("patientID") });
     },
     ids() {
-        let arr = new Array()
-        Meteor.call('getDevices', function (err, res) {
-            if (err) {
-                console.log(err)
-            } else {
-                for (let i = 0; i < res.length; i++) {
-                    arr.push(res[i])
-                }
-                console.log(arr)
-                return arr
-            }
-        })
-        console.log(arr)
-       return arr
+        return Template.instance().ids.get();
     },
     assignDevice(deviceID) {
         console.log("assignDevice");
