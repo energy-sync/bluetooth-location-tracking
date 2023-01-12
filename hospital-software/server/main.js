@@ -152,7 +152,7 @@ Meteor.methods({
     patientInformationdb.remove({});
   },
   getDevices: () => {
-    //printArray(arrayofdevices)
+    printArray(arrayofdevices)
     return arrayofdevices.map(ids => ids.deviceID);
   },
 
