@@ -154,17 +154,7 @@ Meteor.methods({
   getDevices: () => {
     printArray(arrayofdevices)
     return arrayofdevices.map(ids => ids.deviceID);
-  },
-
-
-
-  assignDevices: (patientID, deviceID) => {
-    //patient id parameter and device id parameter
-    console.log(patientID, deviceID)
-    patientInformationdb.update({ patientInformation: { patientID: patientID } }, { $set: { deviceID: deviceID } })
-
   }
-
 })
 
 function printArray(arr) {
@@ -285,9 +275,6 @@ function storeInfo(body) {
   for (let i = 0; i < body.length; i++) {
     //arrayofdevices.push(body[i])
     arrayofdevices.push(body[i])
-    patientInformationdb.insert({
-      'devices': body[i].deviceID
-    })
   }
 
   // printArray(arrayofdevices)

@@ -27,18 +27,9 @@ Template.patient.helpers({
     assignDevice() {
         console.log("assignDevice");
         console.log(Template.instance().deviceID.curValue)
-        const patientID = patientInformationdb.findOne({ "patientInformation.patientID": FlowRouter.getParam("patientID") }).patientInformation.patientID;
-        Meteor.call('assignDevices', {
-            patientID: patientID,
-            deviceID: Template.instance().deviceID.curValue
-        }, (err, res) => {
-            if (err) {
-                alert(err);
-            } else {
-
-            }
-        });
-        //  Meteor.call("assignDevices", patientID, deviceID);
+        const idOfDocuement = patientInformationdb.findOne({ "patientInformation.patientID": FlowRouter.getParam("patientID") })._id
+        console.log(idOfDocuement)
+        patientInformationdb.update({_id : idOfDocuement}, {$set: { deviceID:Template.instance().deviceID.curValue}})
     },
     isWithPractitioner() {
         return Template.instance().department.get() === "practitioner";
