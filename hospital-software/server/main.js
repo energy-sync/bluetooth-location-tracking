@@ -160,6 +160,7 @@ Meteor.methods({
 
   assignDevices: (patientID, deviceID) => {
     //patient id parameter and device id parameter
+    console.log(patientID, deviceID)
     patientInformationdb.update({ patientInformation: { patientID: patientID } }, { $set: { deviceID: deviceID } })
 
   }

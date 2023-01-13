@@ -8,6 +8,8 @@ Template.patient.onCreated(function () {
     Meteor.call('getDevices', (error,result)=>{
         this.ids.set(result);
     })
+    this.deviceID = new ReactiveVar();
+
 });
 
 Template.patient.onRendered(function () {
@@ -22,20 +24,20 @@ Template.patient.helpers({
     ids() {
         return Template.instance().ids.get();
     },
-    assignDevice(deviceID) {
+    assignDevice() {
         console.log("assignDevice");
+        console.log(Template.instance().deviceID.curValue)
         const patientID = patientInformationdb.findOne({ "patientInformation.patientID": FlowRouter.getParam("patientID") }).patientInformation.patientID;
-        /*const deviceID = document.getElementById('deviceIDs')
         Meteor.call('assignDevices', {
             patientID: patientID,
-            deviceID: deviceID
+            deviceID: Template.instance().deviceID.curValue
         }, (err, res) => {
             if (err) {
                 alert(err);
             } else {
 
             }
-        });*/
+        });
         //  Meteor.call("assignDevices", patientID, deviceID);
     },
     isWithPractitioner() {
@@ -58,14 +60,14 @@ Template.patient.events({
     },
     "click #assignBtn": (event, templateInstance) => {
         Template.patient.__helpers.get("assignDevice")();
+    },
+    "change #deviceIDs": (event,templateInstance) =>{
+        templateInstance.deviceID.set(event.currentTarget.value);
     }
+
 });
 
 //printing yes or no for boolean values with Handlebars
 Handlebars.registerHelper("printBool", function (b) {
     return b ? "Yes" : "No";
 });
-
-function getData(){
-   
-}
