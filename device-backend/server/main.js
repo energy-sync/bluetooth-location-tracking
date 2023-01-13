@@ -22,7 +22,7 @@ Meteor.startup(() => {
 
     for(device of beacons){
       deviceInformationdb.insert({
-        "deviceID": device.deviceID,
+        "beaconID": device.beaconID,
         "macAddress": device.macAddress
       });
     }
@@ -53,14 +53,14 @@ Meteor.startup(() => {
       }
   
   
-      var deviceID = i+1;
+      var beaconID = i+1;
   
       var timeStamp = getTimestampInSeconds();
   
       var location = getRandomLocation(locations);
   
       deviceInformationdb.insert({
-        "deviceID": deviceID,
+        "beaconID": beaconID,
         "macAddress": macAddress,
         "location": location,
         "patientID": patientID,
@@ -103,7 +103,7 @@ WebApp.connectHandlers.use("/location", function(req, res, next) {
 function updateLocation(macAddress){
   let device = deviceInformationdb.find({devices :{macAddress:macAddress}})
   axios.post('http://localhost:3000/update', {
-    device: device.deviceID,
+    device: device.beaconID,
     location : device.location
   })
   .then(function(response){

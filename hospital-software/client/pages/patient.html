@@ -17,8 +17,8 @@
     {{> patientInformation}}
     <h2>Name: {{patient.patientInformation.patientName}}</h2>
     <p>Device MAC: {{patient.macAddress}}</p>
-    <select id="deviceIDs">
-        <option disabled="disabled" selected="selected">Please Choose DeviceID</option>
+    <select id="beaconIDs">
+        <option disabled="disabled" selected="selected">Please Choose BeaconID</option>
         {{#each id in ids}}
         <option value="{{id}}">{{id}}</option>
         {{/each}}
@@ -98,14 +98,6 @@
         {{/each}}
     </list>
 </template>
-<template name="devices">
-    <table class="table">
-        <tr>
-            <th>Body: {{patient.deviceID.devices[0]}}</th>
-        </tr>
-    </table>
-</template>
-
 <template name="dermatology">
     <h5>Dermatology:</h5>
     <div class="vstack">

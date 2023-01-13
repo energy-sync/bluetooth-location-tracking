@@ -8,13 +8,13 @@ Template.patient.onCreated(function () {
     Meteor.call('getDevices', (error,result)=>{
         this.ids.set(result);
     })
-    this.deviceID = new ReactiveVar();
+    this.beaconID = new ReactiveVar();
 
 });
 
 Template.patient.onRendered(function () {
     this.patient = new ReactiveVar(patientInformationdb.findOne({ "patientInformation.patientID": FlowRouter.getParam("patientID") }))
-    this.device = new ReactiveVar(patientInformationdb.findOne({ "patientInformation.deviceID": FlowRouter.getParam("deviceID") }))
+    this.device = new ReactiveVar(patientInformationdb.findOne({ "patientInformation.beaconID": FlowRouter.getParam("beaconID") }))
 });
 
 Template.patient.helpers({
@@ -22,14 +22,16 @@ Template.patient.helpers({
         return patientInformationdb.findOne({ "patientInformation.patientID": FlowRouter.getParam("patientID") });
     },
     ids() {
+        //returns all the beacon ids
         return Template.instance().ids.get();
     },
+    //assign function to assign patients a beacon id
     assignDevice() {
-        console.log("assignDevice");
-        console.log(Template.instance().deviceID.curValue)
+        //get _id of the doucment inside of the the patientInformationDB
+        //cannot access db unless using _id of the document
         const idOfDocuement = patientInformationdb.findOne({ "patientInformation.patientID": FlowRouter.getParam("patientID") })._id
-        console.log(idOfDocuement)
-        patientInformationdb.update({_id : idOfDocuement}, {$set: { deviceID:Template.instance().deviceID.curValue}})
+        //update the patient with beaconID
+        patientInformationdb.update({_id : idOfDocuement}, {$set: { beaconID:Template.instance().beaconID.curValue}})
     },
     isWithPractitioner() {
         return Template.instance().department.get() === "practitioner";
@@ -49,11 +51,13 @@ Template.patient.events({
     "change #departments": (event, templateInstance) => {
         templateInstance.department.set(event.currentTarget.value);
     },
+    //click event to assign patient a beacon
     "click #assignBtn": (event, templateInstance) => {
         Template.patient.__helpers.get("assignDevice")();
     },
-    "change #deviceIDs": (event,templateInstance) =>{
-        templateInstance.deviceID.set(event.currentTarget.value);
+    //grab the value of the dropdown #beaconIDs
+    "change #beaconIDs": (event,templateInstance) =>{
+        templateInstance.beaconID.set(event.currentTarget.value);
     }
 
 });

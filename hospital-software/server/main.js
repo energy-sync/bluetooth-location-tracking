@@ -151,9 +151,10 @@ Meteor.methods({
   clearRecords: () => {
     patientInformationdb.remove({});
   },
+  //return array of the beacon ids
   getDevices: () => {
     printArray(arrayofdevices)
-    return arrayofdevices.map(ids => ids.deviceID);
+    return arrayofdevices.map(ids => ids.beaconID);
   }
 })
 
