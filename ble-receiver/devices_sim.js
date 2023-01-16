@@ -1,17 +1,19 @@
 const axios = require("axios");
 const dotenv = require("dotenv");
+const fs = require("fs");
 
 dotenv.config();
+const config = JSON.parse(fs.readFileSync("config.json", "utf-8"));
 
-const POST_URL = "http://localhost:3000/location";
-const NUM_DEVICES = 5;
+const POST_URL = "http://localhost:3002/location";
 const LOCATIONS = ["receptionist", "practicioner", "lab", "dermatology"];
 
 let devices = [];
-for (let i = 0; i < NUM_DEVICES; i++) {
+for (let i = 0; i < config.length; i++) {
     devices.push({
+        beaconID: config[i].beaconID,
         location: getRandomLocation(),
-        macAddress: randomMacAddress(),
+        macAddress: config[i].macAddress,
         distance: random(10)
     });
 }
@@ -22,7 +24,7 @@ function movePatient() {
     devices[index].location = getRandomLocation();
     devices[index].distance = random(10);
     let device = devices[index];
-    console.log(`${device.macAddress} is now at ${device.location}`);
+    console.log(`${device.beaconID} is now at ${device.location}`);
     axios.post(POST_URL, devices[index])
     .then(response => {
         setTimeout(() => {
@@ -42,11 +44,4 @@ function getRandomLocation() {
 
 function random(max) {
     return Math.floor(Math.random() * max);
-}
-
-function randomMacAddress() {
-    var macAddress = "XX:XX:XX:XX:XX:XX".replace(/X/g, function () {
-        return "0123456789ABCDEF".charAt(Math.floor(Math.random() * 16));
-    });
-    return macAddress;
 }
