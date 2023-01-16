@@ -16,7 +16,7 @@ const POST_URL = process.env.POST_URL;
 
 let devices = {};
 for (device of config)
-    devices[device.macAddress] = device.deviceID;
+    devices[device.macAddress] = device.beaconID;
 let detectedDevices = {};
 let previousDistances = {};
 
