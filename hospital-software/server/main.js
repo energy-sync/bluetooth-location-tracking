@@ -1,8 +1,9 @@
+
 import { Meteor } from 'meteor/meteor';
 import '../lib/database.js';
 import { patientInformationdb } from "../lib/database"
-import { get } from 'jquery';
-import {fetch, Headers} from "meteor/fetch";
+import { WebApp } from 'meteor/webapp';
+let arrayofdevices = [];
 
 Meteor.startup(() => {
   // code to run on server at startup
@@ -82,6 +83,7 @@ Meteor.startup(() => {
 
 
 
+
     patientInformationdb.insert({
 
       "macAddress": macAddress,
@@ -127,59 +129,38 @@ Meteor.startup(() => {
       }
 
     });
+
   }
+
 });
+
+WebApp.connectHandlers.use("/getBLEs", function (req, res, next) {
+  res.writeHead(200, { "Content-Type": "application/json" })
+  req.on('data', Meteor.bindEnvironment((data) => {
+    const body = JSON.parse(data);
+    //console.log(body)
+    storeInfo(body);
+
+
+  }));
+  res.end(Meteor.release)
+})
 
 
 Meteor.methods({
   clearRecords: () => {
     patientInformationdb.remove({});
   },
-
-  //put patientID into device db
-  async putPatientID(url, data) {
-    try {
-      const response =  await fetch(url, {
-        method: "PUT",
-        mode: "cors",
-        cache: "no-cache",
-        headers: new Headers({
-          "Content-Type": "application/json"
-        }),
-        body: JSON.stringify(data)
-      })
-      return response.json();
-     
-      
-     // return response(null, res);
-    } catch (err) {
-      console.error(err);
-    }
-  },
-
-  //get device info from db
-  async getDeviceInfo(url, data) {
-    try {
-      const response =  await fetch(url, {
-        method: "GET",
-        mode: "cors",
-        cache: "no-cache",
-        headers: new Headers({
-          "Content-Type": "application/json"
-        }),
-        body: JSON.stringify(data)
-      })
-      return response.json();
-     
-      
-     // return response(null, res);
-    } catch (err) {
-      console.error(err);
-    }
+  //return array of the beacon ids
+  getDevices: () => {
+    printArray(arrayofdevices)
+    return arrayofdevices.map(ids => ids.beaconID);
   }
 })
 
-
+function printArray(arr) {
+  console.log(arr)
+}
 //functions for randomizing patient db
 
 
@@ -290,4 +271,12 @@ function getBoolean() {
   return random_boolean_value;
 }
 
-//fetch method to add patientID to device db
+//function to store body sent from devicedb into arrayofdevices
+function storeInfo(body) {
+  for (let i = 0; i < body.length; i++) {
+    //arrayofdevices.push(body[i])
+    arrayofdevices.push(body[i])
+  }
+
+  // printArray(arrayofdevices)
+}

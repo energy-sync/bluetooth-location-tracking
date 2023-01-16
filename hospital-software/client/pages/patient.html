@@ -11,6 +11,7 @@
         <option value="practitioner">General Practitioner</option>
         <option value="lab">Lab</option>
         <option value="dermatology">Dermatology</option>
+        <option value="devices">Devices</option>
     </select>
 </div>
 <br>
@@ -20,66 +21,77 @@
     {{> patientInformation}}
     <h2>Name: {{patient.patientInformation.patientName}}</h2>
     <p>Device MAC: {{patient.macAddress}}</p>
-    <button id = "assignBtn">Assign Device</button>
+    <select id="beaconIDs">
+        <option disabled="disabled" selected="selected">Please Choose BeaconID</option>
+        {{#each id in ids}}
+        <option value="{{id}}">{{id}}</option>
+        {{/each}}
+    </select>
+    <button id="assignBtn">Assign Device</button>
     <h5>Basic Information:</h5>
-    <div class="container text-center">
-        <div class="row">
-            <div class="col"><b>Date of Birth:</b> {{patient.patientInformation.DOB}}</div>
-            <div class="col"><b>Age:</b> {{patient.patientInformation.age}}</div>
-            <div class="col"><b>Address:</b> {{patient.patientInformation.address}}</div>
-        </div>    
-        <div class = "row">
-            <div class="col"><b>Patient ID:</b> {{patient.patientInformation.patientID}}</div>
-            <div class="col"><b>Assigned Physician:</b> {{patient.patientInformation.physicianName}}</div>
-            <div class="col"></div>
-        </div>
-        <br>
+    <div class="vstack">
+        <table class="table">
+            <tr>
+
+                <th>Date of Birth: {{patient.patientInformation.DOB}}</th>
+                <th>Age: {{patient.patientInformation.age}}</th>
+                <th>Address: {{patient.patientInformation.address}}</th>
+            </tr>
+            <tr>
+                <th>Patient ID: {{patient.patientInformation.patientID}}</th>
+                <th>Assigned Physician: {{patient.patientInformation.physicianName}}</th>
+            </tr>
+        </table>
     </div>
 
     {{#if isInLab}}
-        {{> lab}}
+    {{> lab}}
     {{/if}}
 
     {{#if isWithPractitioner}}
-        {{> practitioner}}
+    {{> practitioner}}
     {{/if}}
 
     {{#if isInDermatology}}
-        {{> dermatology}}
+    {{> dermatology}}
     {{/if}}
 </template>
 
 <template name="vitals">
     <h5>Vitals:</h5>
-    <div class = "container text-center">
-        <div class="row">
-            <div class="col"><b>Blood Pressure:</b> {{patient.vitals.bloodPressure}}</div>
-            <div class="col"><b>Heart Rate:</b> {{patient.vitals.heartRate}}</div>
-            <div class="col"><b>Height:</b> {{patient.vitals.height}}</div>
-            <div class="col"><b>Weight:</b> {{patient.vitals.weight}}</div>
-        </div>
+    <div class="vstack">
+        <table class="table">
+            <tr>
+                <th>Blood Pressure: {{patient.vitals.bloodPressure}}</th>
+                <th>Heart Rate: {{patient.vitals.heartRate}}</th>
+                <th>Height: {{patient.vitals.height}}</th>
+                <th>Weight: {{patient.vitals.weight}}</th>
+            </tr>
+        </table>
     </div>
     <br>
 </template>
 
 <template name="labWork">
     <h5>Lab Work:</h5>
-    <div class = "container text-center">
-        <div class="row">
-            <div class="col"><b>RBC:</b> {{patient.labWork.RBC}}</div>
-            <div class="col"><b>Blood Glucose Level:</b> {{patient.labWork.bloodGlucose}}</div>
-            <div class="col"><b>Hemoglobin:</b> {{patient.labWork.hemoglobin}}</div>
-        </div>
-        <div class="row">
-            <div class="col"><b>Hematocrit:</b> {{patient.labWork.hematocrit}}</div>
-            <div class="col"><b>MCV:</b> {{patient.labWork.MCV}}</div>
-            <div class="col"><b>WBC:</b> {{patient.labWork.WBC}}</div>
-            </div>
-        <div class="row">
-            <div class="col"><b>Sodium:</b> {{patient.labWork.sodium}}</div>
-            <div class="col"><b>Potassium:</b> {{patient.labWork.potassium}}</div>
-            <div class="col"><b>Platelet Count:</b> {{patient.labWork.plateletCount}}</div>
-            </div>
+    <div class="vstack">
+        <table class="table">
+            <tr>
+                <th>RBC: {{patient.labWork.RBC}}</th>
+                <th>Blood Glucose Level: {{patient.labWork.bloodGlucose}}</th>
+                <th>Hemoglobin: {{patient.labWork.hemoglobin}}</th>
+            </tr>
+            <tr>
+                <th>Hematocrit: {{patient.labWork.hematocrit}}</th>
+                <th>MCV: {{patient.labWork.MCV}}</th>
+                <th>WBC: {{patient.labWork.WBC}}</th>
+            </tr>
+            <tr>
+                <th>Sodium: {{patient.labWork.sodium}}</th>
+                <th>Potassium: {{patient.labWork.potassium}}</th>
+                <th>Platelet Count: {{patient.labWork.plateletCount}}</th>
+            </tr>
+        </table>
     </div>
     <br>
 </template>
@@ -88,11 +100,10 @@
     <h5>Prescriptions:</h5>
     <ul class="list-group">
         {{#each prescription in patient.prescriptions}}
-            <li class="list-group-item">{{prescription}}</li>
+        <li>{{prescription}}</li>
         {{/each}}
     </ul>
 </template>
-
 <template name="dermatology">
     <h5>Dermatology:</h5>
     <div class="container text-center">
@@ -119,7 +130,7 @@
 </template>
 
 <template name="reception">
-    
+
 </template>
 
 <template name="practitioner">

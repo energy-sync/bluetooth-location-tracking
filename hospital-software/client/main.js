@@ -19,3 +19,4 @@ Template.dermatology.inheritsHelpersFrom("patient");
 Template.vitals.inheritsHelpersFrom("patient");
 Template.labWork.inheritsHelpersFrom("patient");
 Template.prescriptions.inheritsHelpersFrom("patient");
+Template.devices.inheritsHelpersFrom("patient");
