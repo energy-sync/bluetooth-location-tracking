@@ -16,10 +16,6 @@ Meteor.startup(() => {
   // code to run on server at startup
   deviceInformationdb.remove({});
 
-    function getTimestampInSeconds() {
-      return Math.floor(Date.now() / 1000)
-    }
-
     for(device of beacons){
       deviceInformationdb.insert({
         "beaconID": device.beaconID,
@@ -48,10 +44,7 @@ Meteor.startup(() => {
       var macAddress = "XX:XX:XX:XX:XX:XX".replace(/X/g, function () {
         return "0123456789ABCDEF".charAt((Math.random() * 16))
       });
-      function getTimestampInSeconds() {
-        return Math.floor(Date.now() / 1000)
-      }
-  
+     
   
       var beaconID = i+1;
   
@@ -77,20 +70,36 @@ Meteor.startup(() => {
 
 //handle request from ble-reciever to update db with location of device
 WebApp.connectHandlers.use("/location", function(req, res, next) {
-  if(req.method === 'PUT'){
+  if(req.method === 'POST'){
   req.on('data', Meteor.bindEnvironment((data)=>{
     const body = JSON.parse(data);
     console.log(body);
-    let ipAddress = this.connection.remoteAddress
-    console.log(ipAddress)
     let macAddress= body.macAddress
     let distance = body.distance;
     for(device of radios){
-      if(ipAddress === radios.ipAddress){
         deviceInformationdb.update({macAddress : macAddress}, {$set:{distance : distance, time:getTimestampInSeconds(), location: radios.location}}) 
         updateLocation(macAddress);
-      }
-      break
+     
+    }
+
+  })); 
+  res.on('end', Meteor.bindEnvironment(()=>{
+    res.writeHead(200).end(Meteor.release)
+  }));
+}
+});
+//testing purposes
+WebApp.connectHandlers.use("/testLocation", function(req, res, next) {
+  if(req.method === 'POST'){
+  req.on('data', Meteor.bindEnvironment((data)=>{
+    const body = JSON.parse(data);
+    console.log(body);
+    let macAddress= body.macAddress
+    let distance = body.distance;
+    for(device of radios){
+        deviceInformationdb.update({macAddress : macAddress}, {$set:{distance : distance, time:getTimestampInSeconds(), location: radios.location}}) 
+        updateLocation(macAddress);
+     
     }
 
   })); 
@@ -124,4 +133,8 @@ function sendData(){
   .catch(function (error){
     console.log(error)
   })  
+}
+
+function getTimestampInSeconds() {
+  return Math.floor(Date.now() / 1000)
 }

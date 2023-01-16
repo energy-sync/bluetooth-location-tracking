@@ -59,7 +59,7 @@ setInterval(() => {
         console.log(`Signal strength: ${avgRssi}\nDistance: ${distance}\nOld distance: ${oldDistance}\n`);
         if (distance && movedEnough) {
             //send update to server
-            axios.put(POST_URL, {
+            axios.post(POST_URL, {
                 macAddress: device,
                 distance: distance
             })
