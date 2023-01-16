@@ -1,4 +1,3 @@
-import { post } from 'jquery';
 import { Meteor } from 'meteor/meteor';
 import { WebApp } from 'meteor/webapp';
 import { deviceInformationdb } from '../lib/database.js';
@@ -48,7 +47,7 @@ Meteor.startup(() => {
   
       var beaconID = i+1;
   
-      var timeStamp = getTimestampInSeconds();
+      var timeStamp = getCurrentTime();
   
       var location = getRandomLocation(locations);
   
@@ -83,9 +82,7 @@ WebApp.connectHandlers.use("/location", function(req, res, next) {
     }
 
   })); 
-  res.on('end', Meteor.bindEnvironment(()=>{
-    res.writeHead(200).end(Meteor.release)
-  }));
+  res.end(Meteor.release)
 }
 });
 //testing purposes
@@ -94,29 +91,30 @@ WebApp.connectHandlers.use("/testLocation", function(req, res, next) {
   req.on('data', Meteor.bindEnvironment((data)=>{
     const body = JSON.parse(data);
     console.log(body);
-    let macAddress= body.macAddress
-    let distance = body.distance;
-    for(device of radios){
-        deviceInformationdb.update({macAddress : macAddress}, {$set:{distance : distance, time:getTimestampInSeconds(), location: radios.location}}) 
-        updateLocation(macAddress);
-     
-    }
-
+    const beaconID = body.beaconID
+    const location = body.location
+    const distance = body.distance
+    console.log(beaconID,location)
+    addLocation(beaconID, location, distance)
+    updateLocation(beaconID)
   })); 
-  res.on('end', Meteor.bindEnvironment(()=>{
-    res.writeHead(200).end(Meteor.release)
-  }));
+  res.end(Meteor.release)
 }
 });
+
+//add location to beacon
+function addLocation(beaconID, location, distance){
+  deviceInformationdb.update({beaconID : beaconID}, {$set:{location:location, time:getCurrentTime(), distance:distance}})
+}
 //update the location of the beacon to hospital software when the location changes from beacon
-function updateLocation(macAddress){
-  let device = deviceInformationdb.find({devices :{macAddress:macAddress}})
+function updateLocation(beaconID){
+  let beaconToUpdate = deviceInformationdb.findOne({beaconID:beaconID})
+  console.log(beaconToUpdate.beaconID ,beaconToUpdate.location)
   axios.post('http://localhost:3000/update', {
-    device: device.beaconID,
-    location : device.location
+    beaconID: beaconToUpdate.beaconID,
+    location : beaconToUpdate.location
   })
   .then(function(response){
-    console.log(response)
   })
   .catch(function(error){
     console.log(error)
@@ -126,7 +124,7 @@ function updateLocation(macAddress){
 function sendData(){
   //grab an array of devices
   let arrayOfDevices = deviceInformationdb.find().fetch()
-  console.log(arrayOfDevices)
+  //console.log(arrayOfDevices)
   axios.post('http://localhost:3000/getBLEs', arrayOfDevices)
   .then(function (response){
   })
@@ -135,6 +133,6 @@ function sendData(){
   })  
 }
 
-function getTimestampInSeconds() {
-  return Math.floor(Date.now() / 1000)
+function getCurrentTime() {
+  return Date(Date.now())
 }

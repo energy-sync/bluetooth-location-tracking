@@ -134,6 +134,7 @@ Meteor.startup(() => {
 
 });
 
+//gets beacons from http request
 WebApp.connectHandlers.use("/getBLEs", function (req, res, next) {
   res.writeHead(200, { "Content-Type": "application/json" })
   req.on('data', Meteor.bindEnvironment((data) => {
@@ -146,6 +147,16 @@ WebApp.connectHandlers.use("/getBLEs", function (req, res, next) {
   res.end(Meteor.release)
 })
 
+//update location from http request
+WebApp.connectHandlers.use("/update", function (req, res, next) {
+  res.writeHead(200, { "Content-Type": "application/json" })
+  req.on('data', Meteor.bindEnvironment((data) => {
+    const body = JSON.parse(data);
+    console.log(body, body.beaconID, body.location)
+    updateLocation(body.beaconID, body.location)
+  }));
+  res.end(Meteor.release)
+})
 
 Meteor.methods({
   clearRecords: () => {
@@ -153,7 +164,7 @@ Meteor.methods({
   },
   //return array of the beacon ids
   getDevices: () => {
-    printArray(arrayofdevices)
+    //printArray(arrayofdevices)
     return arrayofdevices.map(ids => ids.beaconID);
   }
 })
@@ -279,4 +290,9 @@ function storeInfo(body) {
   }
 
   // printArray(arrayofdevices)
+}
+
+//function to update location
+function updateLocation(beaconID,location){
+  patientInformationdb.update({beaconID : beaconID}, {$set:{location:location}})
 }
