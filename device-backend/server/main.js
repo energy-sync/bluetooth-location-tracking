@@ -15,10 +15,10 @@ Meteor.startup(() => {
   // code to run on server at startup
   deviceInformationdb.remove({});
 
-    for(device of beacons){
+    for(beacon of beacons){
       deviceInformationdb.insert({
-        "beaconID": device.beaconID,
-        "macAddress": device.macAddress
+        "beaconID": beacon.beaconID,
+        "macAddress": beacon.macAddress
       });
     }
 
@@ -73,18 +73,23 @@ WebApp.connectHandlers.use("/location", function(req, res, next) {
   req.on('data', Meteor.bindEnvironment((data)=>{
     const body = JSON.parse(data);
     console.log(body);
-    let macAddress= body.macAddress
+    let beaconMacAddress= body.beaconMacAddress;
     let distance = body.distance;
-    for(device of radios){
-        deviceInformationdb.update({macAddress : macAddress}, {$set:{distance : distance, time:getTimestampInSeconds(), location: radios.location}}) 
-        updateLocation(macAddress);
-     
+    let radioMacAddress = body.radioMacAddress;
+    for(radio of radios){
+        if(radioMacAddress === radio.macAddress){
+        deviceInformationdb.update({macAddress : beaconMacAddress}, {$set:{distance : distance, time:getTimestampInSeconds(), location: radio.location}})         
+        updateLocation(beaconMacAddress);
+        }
+        break
     }
 
   })); 
   res.end(Meteor.release)
 }
 });
+
+
 //testing purposes
 WebApp.connectHandlers.use("/testLocation", function(req, res, next) {
   if(req.method === 'POST'){
@@ -96,18 +101,18 @@ WebApp.connectHandlers.use("/testLocation", function(req, res, next) {
     const distance = body.distance
     console.log(beaconID,location)
     addLocation(beaconID, location, distance)
-    updateLocation(beaconID)
+    testUpdateLocation(beaconID)
   })); 
   res.end(Meteor.release)
 }
 });
 
-//add location to beacon
+//add test location to beacon
 function addLocation(beaconID, location, distance){
   deviceInformationdb.update({beaconID : beaconID}, {$set:{location:location, time:getCurrentTime(), distance:distance}})
 }
 //update the location of the beacon to hospital software when the location changes from beacon
-function updateLocation(beaconID){
+function testUpdateLocation(beaconID){
   let beaconToUpdate = deviceInformationdb.findOne({beaconID:beaconID})
   console.log(beaconToUpdate.beaconID ,beaconToUpdate.location)
   axios.post('http://localhost:3000/update', {
@@ -121,6 +126,26 @@ function updateLocation(beaconID){
   })
 }
 
+//end of test code
+
+//update beacon location
+function updateLocation(beaconMacAddress){
+  let beaconToUpdate = deviceInformationdb.findOne({macAddress:beaconMacAddress})
+  console.log(beaconToUpdate.beaconID ,beaconToUpdate.location)
+  axios.post('http://localhost:3000/update', {
+    beaconID: beaconToUpdate.beaconID,
+    location : beaconToUpdate.location
+  })
+  .then(function(response){
+  })
+  .catch(function(error){
+    console.log(error)
+  })
+}
+
+
+
+//send all beacons to EHR
 function sendData(){
   //grab an array of devices
   let arrayOfDevices = deviceInformationdb.find().fetch()
