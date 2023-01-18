@@ -1,18 +1,26 @@
-[
-    {
-        "beaconID": "Bob",
-        "macAddress": "ac:23:3f:ac:96:14"
-    },
-    {
-        "beaconID": "Larry",
-        "macAddress": "ac:23:3f:ac:96:1a"
-    },
-    {
-        "beaconID": "Laura",
-        "macAddress": "ac:23:3f:ac:95:fd"
-    },
-    {
-        "beaconID": "Lunt",
-        "macAddress": "ac:23:3f:ac:95:fe"
-    }
-]
+{
+    "beacons": [
+        {
+            "beaconID": "Bob",
+            "macAddress": "ac:23:3f:ac:96:14"
+        },
+        {
+            "beaconID": "Larry",
+            "macAddress": "ac:23:3f:ac:96:1a"
+        },
+        {
+            "beaconID": "Laura",
+            "macAddress": "ac:23:3f:ac:95:fd"
+        },
+        {
+            "beaconID": "Lunt",
+            "macAddress": "ac:23:3f:ac:95:fe"
+        }
+    ],
+    "radios": [
+        {
+            "location": "Waiting Room",
+            "macAddress": "b8:27:eb:ac:13:68"
+        }
+    ]
+}

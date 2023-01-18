@@ -2,8 +2,7 @@ const fs = require("fs");
 const BeaconScanner = require('node-beacon-scanner');
 const axios = require("axios");
 const dotenv = require("dotenv");
-const getMAC = require("getmac");
-console.log(getMAC());
+const getMAC = require("getmac").default;
 
 const scanner = new BeaconScanner();
 const config = JSON.parse(fs.readFileSync("config.json", "utf-8"));
@@ -17,7 +16,7 @@ const DISTANCE_TO_TRANSMIT = process.env.DISTANCE_TO_TRANSMIT;
 const POST_URL = process.env.POST_URL;
 
 let devices = {};
-for (device of config)
+for (device of config.beacons)
     devices[device.macAddress] = device.beaconID;
 let detectedDevices = {};
 let previousDistances = {};
