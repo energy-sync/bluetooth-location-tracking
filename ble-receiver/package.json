@@ -705,6 +705,7 @@
     "dotenv": "^16.0.3",
     "express": "^4.18.2",
     "fs": "0.0.1-security",
+    "getmac": "^5.20.0",
     "node-beacon-scanner": "^0.2.2"
   },
   "main": "detect_devices.js",

@@ -2,6 +2,8 @@ const fs = require("fs");
 const BeaconScanner = require('node-beacon-scanner');
 const axios = require("axios");
 const dotenv = require("dotenv");
+const getMAC = require("getmac");
+console.log(getMAC());
 
 const scanner = new BeaconScanner();
 const config = JSON.parse(fs.readFileSync("config.json", "utf-8"));
@@ -60,7 +62,8 @@ setInterval(() => {
         if (distance && movedEnough) {
             //send update to server
             axios.post(POST_URL, {
-                macAddress: device,
+                beaconMacAddress: device,
+                radioMacAddress: getMAC(),
                 distance: distance
             })
             .catch(error => {
