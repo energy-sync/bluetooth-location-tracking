@@ -293,6 +293,6 @@ function storeInfo(body) {
 }
 
 //function to update location
-function updateLocation(beaconID,location){
-  patientInformationdb.update({beaconID : beaconID}, {$set:{location:location}})
+function updateLocation(beaconID, location) {
+  patientInformationdb.update({ beaconID: beaconID }, { $set: { location: location } })
 }
