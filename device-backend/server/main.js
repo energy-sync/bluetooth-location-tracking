@@ -76,12 +76,14 @@ WebApp.connectHandlers.use("/location", function (req, res, next) {
       const beaconMacAddress = body.beaconMacAddress;
       const distance = body.distance;
       const radioMacAddress = body.radioMacAddress;
+      console.log(beaconMacAddress)
       for (radio of radios) {
+        console.log(radioMacAddress === radio.macAddress)
         if (radioMacAddress === radio.macAddress) {
           console.log('success checking radio')
           addLocation(beaconMacAddress, radio.location, distance)
           updateLocation(beaconMacAddress);
-        }
+        } 
         break
       }
 

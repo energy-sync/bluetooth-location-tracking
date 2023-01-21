@@ -40,34 +40,34 @@ scanner.startScan().then(() => {
 setInterval(() => {
     console.log("DETECTED DEVICES:\n=================\n");
     for (device in detectedDevices) {
-        if (devices[device])
+        if (devices[device]) {
             console.log(`Detected device: ${devices[device]}`);
-        else console.log(`Detected unknown device: ${device}`);
 
-        //get average signal strength from up to last 10 ticks
-        let rssiSum = 0;
-        for (rssi of detectedDevices[device])
-            rssiSum += rssi;
-        let avgRssi = rssiSum / detectedDevices[device].length;
+            //get average signal strength from up to last 10 ticks
+            let rssiSum = 0;
+            for (rssi of detectedDevices[device])
+                rssiSum += rssi;
+            let avgRssi = rssiSum / detectedDevices[device].length;
 
-        //get distance and check if the beacon moved enough to send an update to the server
-        let distance = Math.round(Math.pow(10, (MEASURED_POWER - avgRssi) / (10 * ENVIRONMENTAL_FACTOR)));
-        let oldDistance = previousDistances[device] ? previousDistances[device] : -DISTANCE_TO_TRANSMIT;
-        let movedEnough = Math.abs(distance - oldDistance) >= DISTANCE_TO_TRANSMIT
-        if (movedEnough)
-            previousDistances[device] = distance;
+            //get distance and check if the beacon moved enough to send an update to the server
+            let distance = Math.round(Math.pow(10, (MEASURED_POWER - avgRssi) / (10 * ENVIRONMENTAL_FACTOR)));
+            let oldDistance = previousDistances[device] ? previousDistances[device] : -DISTANCE_TO_TRANSMIT;
+            let movedEnough = Math.abs(distance - oldDistance) >= DISTANCE_TO_TRANSMIT
+            if (movedEnough)
+                previousDistances[device] = distance;
 
-        console.log(`Signal strength: ${avgRssi}\nDistance: ${distance}\nOld distance: ${oldDistance}\n`);
-        if (distance && movedEnough) {
-            //send update to server
-            axios.post(POST_URL, {
-                beaconMacAddress: device,
-                radioMacAddress: getMAC(),
-                distance: distance
-            })
-            .catch(error => {
-                console.error(error);
-            });
+            console.log(`Signal strength: ${avgRssi}\nDistance: ${distance}\nOld distance: ${oldDistance}\n`);
+            if (distance && movedEnough) {
+                //send update to server
+                axios.post(POST_URL, {
+                    beaconMacAddress: device,
+                    radioMacAddress: getMAC(),
+                    distance: distance
+                })
+                .catch(error => {
+                    console.error(error);
+                });
+            }
         }
     }
 }, 1000 * REFRESH_TIME);
