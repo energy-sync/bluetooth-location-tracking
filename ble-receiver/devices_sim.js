@@ -20,7 +20,7 @@ for (device of config.beacons) {
 console.log(devices);
 
 function movePatient() {
-    let index = random(devices.length - 1);
+    let index = random(devices.length);
     console.log(devices[index].location);
     devices[index].location = getRandomLocation();
     devices[index].distance = random(10);
