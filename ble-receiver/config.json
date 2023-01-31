@@ -1,4 +1,9 @@
 {
+    "refreshTime": 1,
+    "measuredPower": -59,
+    "environmentalFactor": 3,
+    "distanceChangeToTransmit": 3,
+    "controllerUrl": "http://10.71.4.52:3002",
     "beacons": [
         {
             "beaconID": "Bob",
@@ -18,6 +23,18 @@
         }
     ],
     "radios": [
+        {
+            "location": "Libre Computer 1",
+            "macAddress": "18:66:c7:e8:e6:db"
+        },
+        {
+            "location": "Libre Computer 2",
+            "macAddress": "18:66:c7:9e:2b:4e"
+        },
+        {
+            "location": "Libre Computer 3",
+            "macAddress": "18:66:c7:fe:82:cf"
+        },
         {
             "location": "Libre Computer 4",
             "macAddress": "18:66:c7:b4:73:7d"

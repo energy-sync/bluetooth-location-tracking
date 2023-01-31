@@ -5,9 +5,10 @@ const dotenv = require("dotenv");
 const getMAC = require("getmac").default;
 
 const scanner = new BeaconScanner();
+let config;
 
-if (!fs.statSync("config.json")) {
-    fs.writeFileSync("config.json", JSON.stringify({
+if (!fs.existsSync("config.json")) {
+    config = {
         refreshTime: 1,
         measuredPower: -59,
         environmentalFactor: 3,
@@ -15,17 +16,11 @@ if (!fs.statSync("config.json")) {
         controllerUrl: "http://localhost:3002",
         beacons: [],
         radios: []
-    }));
+    };
+    saveConfig();
 }
-const config = JSON.parse(fs.readFileSync("config.json", "utf-8"));
+else config = JSON.parse(fs.readFileSync("config.json", "utf-8"));
 dotenv.config();
-
-//environment variables
-const REFRESH_TIME = config.refreshTime;
-const MEASURED_POWER = config.measuredPower;
-const ENVIRONMENTAL_FACTOR = config.environmentalFactor;
-const DISTANCE_TO_TRANSMIT = config.distanceChangeToTransmit;
-const CONTROLLER_URL = config.controllerUrl;
 
 let devices = {};
 for (device of config.beacons)
@@ -50,7 +45,7 @@ scanner.startScan().then(() => {
 });
 
 //scanning for BLE beacons and sending updates to controller server
-setInterval(() => {
+let scanTimeout = function() {
     console.log("DETECTED DEVICES:\n=================\n");
     for (device in detectedDevices) {
         if (devices[device]) {
@@ -63,16 +58,16 @@ setInterval(() => {
             let avgRssi = rssiSum / detectedDevices[device].length;
 
             //get distance and check if the beacon moved enough to send an update to the server
-            let distance = Math.round(Math.pow(10, (MEASURED_POWER - avgRssi) / (10 * ENVIRONMENTAL_FACTOR)));
-            let oldDistance = previousDistances[device] ? previousDistances[device] : -DISTANCE_TO_TRANSMIT;
-            let movedEnough = Math.abs(distance - oldDistance) >= DISTANCE_TO_TRANSMIT
+            let distance = Math.round(Math.pow(10, (config.measuredPower - avgRssi) / (10 * config.environmentalFactor)));
+            let oldDistance = previousDistances[device] ? previousDistances[device] : -config.distanceChangeToTransmit;
+            let movedEnough = Math.abs(distance - oldDistance) >= config.distanceChangeToTransmit
             if (movedEnough)
                 previousDistances[device] = distance;
 
             console.log(`Signal strength: ${avgRssi}\nDistance: ${distance}\nOld distance: ${oldDistance}\n`);
             if (distance && movedEnough) {
                 //send update to server
-                axios.post(`${CONTROLLER_URL}/location`, {
+                axios.post(`${config.controllerUrl}/location`, {
                     beaconMacAddress: device,
                     radioMacAddress: getMAC(),
                     distance: distance
@@ -83,19 +78,24 @@ setInterval(() => {
             }
         }
     }
-}, 1000 * REFRESH_TIME);
+    setTimeout(scanTimeout, 1000 * config.refreshTime);
+}
+setTimeout(scanTimeout, 1000 * config.refreshTime);
 
 //fetching config.json from controller server and updating local copy if changed
 setInterval(() => {
     console.log("Checking for config update");
-    axios.get(`${CONTROLLER_URL}/config`)
+    axios.get(`${config.controllerUrl}/config`)
     .then(response => {
-        console.log(response);
-        let configChanged = (config, response)=>{
-            keys1 = Object.keys(config);
-            keys2 = Object.keys(response);
-            return keys1.length === keys2.length && Object.keys(obj1).every(key=>obj1[key]==obj2[key]);
+        if (JSON.stringify(config) !== JSON.stringify(response.data)) {
+            config = response.data;
+            saveConfig();
+            console.log("Config updated");
         }
-        console.log(`Config changed: ${configChanged}`);
     });
 }, 5000);
+
+function saveConfig() {
+    fs.writeFileSync("config.json", JSON.stringify(config, null, 4));
+    fs.chmodSync("config.json", "0777");
+}
