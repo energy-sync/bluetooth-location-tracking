@@ -5,15 +5,27 @@ const dotenv = require("dotenv");
 const getMAC = require("getmac").default;
 
 const scanner = new BeaconScanner();
+
+if (!fs.statSync("config.json")) {
+    fs.writeFileSync("config.json", JSON.stringify({
+        refreshTime: 1,
+        measuredPower: -59,
+        environmentalFactor: 3,
+        distanceChangeToTransmit: 3,
+        controllerUrl: "http://localhost:3002",
+        beacons: [],
+        radios: []
+    }));
+}
 const config = JSON.parse(fs.readFileSync("config.json", "utf-8"));
 dotenv.config();
 
 //environment variables
-const REFRESH_TIME = process.env.REFRESH_TIME;
-const MEASURED_POWER = process.env.MEASURED_POWER;
-const ENVIRONMENTAL_FACTOR = process.env.ENVIRONMENTAL_FACTOR;
-const DISTANCE_TO_TRANSMIT = process.env.DISTANCE_TO_TRANSMIT;
-const POST_URL = process.env.POST_URL;
+const REFRESH_TIME = config.refreshTime;
+const MEASURED_POWER = config.measuredPower;
+const ENVIRONMENTAL_FACTOR = config.environmentalFactor;
+const DISTANCE_TO_TRANSMIT = config.distanceChangeToTransmit;
+const CONTROLLER_URL = config.controllerUrl;
 
 let devices = {};
 for (device of config.beacons)
@@ -37,6 +49,7 @@ scanner.startScan().then(() => {
 	console.error(error);
 });
 
+//scanning for BLE beacons and sending updates to controller server
 setInterval(() => {
     console.log("DETECTED DEVICES:\n=================\n");
     for (device in detectedDevices) {
@@ -59,7 +72,7 @@ setInterval(() => {
             console.log(`Signal strength: ${avgRssi}\nDistance: ${distance}\nOld distance: ${oldDistance}\n`);
             if (distance && movedEnough) {
                 //send update to server
-                axios.post(POST_URL, {
+                axios.post(`${CONTROLLER_URL}/location`, {
                     beaconMacAddress: device,
                     radioMacAddress: getMAC(),
                     distance: distance
@@ -71,3 +84,18 @@ setInterval(() => {
         }
     }
 }, 1000 * REFRESH_TIME);
+
+//fetching config.json from controller server and updating local copy if changed
+setInterval(() => {
+    console.log("Checking for config update");
+    axios.get(`${CONTROLLER_URL}/config`)
+    .then(response => {
+        console.log(response);
+        let configChanged = (config, response)=>{
+            keys1 = Object.keys(config);
+            keys2 = Object.keys(response);
+            return keys1.length === keys2.length && Object.keys(obj1).every(key=>obj1[key]==obj2[key]);
+        }
+        console.log(`Config changed: ${configChanged}`);
+    });
+}, 5000);

@@ -5,9 +5,9 @@ import { deviceInformationdb } from '../lib/database.js';
 import axios from 'axios';
 const fs = Npm.require('fs')
 
-const config1 = JSON.parse(fs.readFileSync(process.cwd().split('.meteor')[0] + "deviceConfig.json", "utf-8"));
-const beacons = config1.beacons
-const radios = config1.radios
+const config = JSON.parse(fs.readFileSync(process.cwd().split('.meteor')[0] + "config.json", "utf-8"));
+const beacons = config.beacons
+const radios = config.radios
 
 
 
@@ -92,6 +92,12 @@ WebApp.connectHandlers.use("/location", function (req, res, next) {
   }
 });
 
+//handle request from ble-receiver to respond with the config file
+WebApp.connectHandlers.use("/config", (req, res, next) => {
+  if (req.method === 'GET') {
+    res.writeHead(200).end(config);
+  }
+});
 
 //testing purposes
 WebApp.connectHandlers.use("/testLocation", function (req, res, next) {
