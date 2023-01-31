@@ -5,7 +5,23 @@ import { deviceInformationdb } from '../lib/database.js';
 import axios from 'axios';
 const fs = Npm.require('fs')
 
-const config = JSON.parse(fs.readFileSync(process.cwd().split('.meteor')[0] + "config.json", "utf-8"));
+let configPath = process.cwd().split('.meteor')[0] + "config.json";
+let config;
+
+if (!fs.existsSync(configPath)) {
+    config = {
+        refreshTime: 1,
+        measuredPower: -59,
+        environmentalFactor: 3,
+        distanceChangeToTransmit: 3,
+        controllerUrl: "http://localhost:3002",
+        beacons: [],
+        radios: []
+    };
+    saveConfig();
+}
+else config = JSON.parse(fs.readFileSync(configPath, "utf-8"));
+
 const beacons = config.beacons
 const radios = config.radios
 
@@ -95,7 +111,7 @@ WebApp.connectHandlers.use("/location", function (req, res, next) {
 //handle request from ble-receiver to respond with the config file
 WebApp.connectHandlers.use("/config", (req, res, next) => {
   if (req.method === 'GET') {
-    res.writeHead(200).end(config);
+    res.writeHead(200).end(JSON.stringify(config));
   }
 });
 
@@ -173,4 +189,18 @@ function sendData() {
 
 function getCurrentTime() {
   return Date(Date.now())
+}
+
+//scan for updates to config.json
+setInterval(() => {
+  let newConfig = JSON.parse(fs.readFileSync(configPath, "utf-8"));
+  if (JSON.stringify(config) !== JSON.stringify(newConfig)) {
+    console.log("Config updated");
+    config = newConfig;
+  }
+}, 5000);
+
+function saveConfig() {
+  fs.writeFileSync(configPath, JSON.stringify(config, null, 4));
+  fs.chmodSync(configPath, "0777");
 }
