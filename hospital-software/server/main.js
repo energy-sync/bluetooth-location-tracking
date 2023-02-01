@@ -294,5 +294,10 @@ function storeInfo(body) {
 
 //function to update location
 function updateLocation(beaconID, location) {
-  patientInformationdb.update({ beaconID: beaconID }, { $set: { location: location } })
+  patientInformationdb.update({ beaconID: beaconID }, { $set: { location: location, timeOfUpdate: getCurrentTime() } })
+}
+
+//function to get current time
+function getCurrentTime() {
+  return Date(Date.now())
 }
