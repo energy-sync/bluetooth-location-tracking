@@ -126,7 +126,8 @@ Meteor.startup(() => {
         "rosacea": getBoolean(),
         "psoriasis": getBoolean(),
         "vitiligo": getBoolean()
-      }
+      },
+      "location": 'Receptionist'
 
     });
 
@@ -299,5 +300,5 @@ function updateLocation(beaconID, location) {
 
 //function to get current time
 function getCurrentTime() {
-  return Date(Date.now())
+  return Date(Date.now().toLocaleString)
 }
