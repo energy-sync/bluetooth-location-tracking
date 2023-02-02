@@ -60,10 +60,12 @@ Template.patient.events({
     },
     //click event to assign patient a beacon
     "click #assignBtn": (event, templateInstance) => {
-        Template.patient.__helpers.get("assignDevice")();
+        Template.patient.__helpers.get("assignDevice")()
+        alert('Patient was assigned device '+templateInstance.beaconID.get(event.currentTarget.value)+'!');
     },
     "click #unassignBtn": (event, templateInstance) => {
-        Template.patient.__helpers.get("unassignDevice")();
+        Template.patient.__helpers.get("unassignDevice")()
+        alert('Patient returned device '+templateInstance.beaconID.get(event.currentTarget.value)+ '!');
     },
     //grab the value of the dropdown #beaconIDs
     "change #beaconIDs": (event,templateInstance) =>{
