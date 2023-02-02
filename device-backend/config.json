@@ -1,9 +1,9 @@
 {
     "refreshTime": 1,
     "measuredPower": -59,
-    "environmentalFactor": 3,
+    "environmentalFactor": 4,
     "distanceChangeToTransmit": 3,
-    "controllerUrl": "http://10.71.4.52:3002",
+    "controllerUrl": "http://10.13.10.92:3002",
     "beacons": [
         {
             "beaconID": "Bob",

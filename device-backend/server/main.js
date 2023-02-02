@@ -95,18 +95,19 @@ WebApp.connectHandlers.use("/location", function (req, res, next) {
       const beaconMacAddress = body.beaconMacAddress;
       const distance = body.distance;
       const radioMacAddress = body.radioMacAddress;
-      console.log(beaconMacAddress)
       //if statement checking how far away the beacon is from the radio sending the transmission
       if(distance <= distanceToUpdate){
       for (radio of radios) {
+        console.log(radioMacAddress);
+        console.log(radio.macAddress);
         console.log(radioMacAddress === radio.macAddress)
         if (radioMacAddress === radio.macAddress) {
           console.log('success checking radio')
           //calling functions to add location to deviceDB and then send updated information to patientDB
           addLocation(beaconMacAddress, radio.location, distance)
           updateLocation(beaconMacAddress);
-        } 
-        break
+          break; 
+        }
       }
     }
     }));
