@@ -33,13 +33,6 @@ Template.patient.helpers({
         //update the patient with beaconID
         patientInformationdb.update({_id : idOfDocuement}, {$set: { beaconID:Template.instance().beaconID.curValue}})
     },
-    unassignDevice() {
-        //get _id of the doucment inside of the the patientInformationDB
-        //cannot access db unless using _id of the document
-        const idOfDocuement = patientInformationdb.findOne({ "patientInformation.patientID": FlowRouter.getParam("patientID") })._id
-        //update the patient with beaconID
-        patientInformationdb.update({_id : idOfDocuement}, {$set: { beaconID:null}})
-    },
     isWithPractitioner() {
         return Template.instance().department.get() === "practitioner";
     },
@@ -61,15 +54,20 @@ Template.patient.events({
     //click event to assign patient a beacon
     "click #assignBtn": (event, templateInstance) => {
         Template.patient.__helpers.get("assignDevice")()
-        alert('Patient was assigned device '+templateInstance.beaconID.get(event.currentTarget.value)+'!');
-    },
-    "click #unassignBtn": (event, templateInstance) => {
-        Template.patient.__helpers.get("unassignDevice")()
-        alert('Patient returned device '+templateInstance.beaconID.get(event.currentTarget.value)+ '!');
+        var selectedBeacon=$('#beaconIDs').val()
+        if (!selectedBeacon)
+        {
+        alert('Patient device was unassigned');
+        }
+         else 
+         {
+         alert('Patient was assigned device '+templateInstance.beaconID.get(event.currentTarget.value)+'!');
+         }
     },
     //grab the value of the dropdown #beaconIDs
     "change #beaconIDs": (event,templateInstance) =>{
         templateInstance.beaconID.set(event.currentTarget.value);
+        
     }
 
 });

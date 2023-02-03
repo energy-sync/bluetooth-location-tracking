@@ -22,13 +22,12 @@
     <h2>Name: {{patient.patientInformation.patientName}}</h2>
     <p>Device MAC: {{patient.macAddress}}</p>
     <select id="beaconIDs">
-        <option disabled="disabled" selected="selected">Please Choose BeaconID</option>
         {{#each id in ids}}
         <option value="{{id}}">{{id}}</option>
         {{/each}}
+        <option value="">Un-Assign Device</option>
     </select>
     <button id="assignBtn">Assign Device</button>
-    <button id="unassignBtn">Un-Assign Device</button>
     <h5>Basic Information:</h5>
     <div class="vstack">
         <table class="table">
