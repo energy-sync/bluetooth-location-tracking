@@ -300,5 +300,5 @@ function updateLocation(beaconID, location) {
 
 //function to get current time
 function getCurrentTime() {
-  return Date(Date.now().toLocaleString)
+  return Date(Date.now().toLocaleString())
 }
