@@ -1,9 +1,51 @@
 {
     "refreshTime": 1,
     "measuredPower": -59,
-    "environmentalFactor": 3,
+    "environmentalFactor": 4,
     "distanceChangeToTransmit": 3,
-    "controllerUrl": "http://10.71.4.52:3002",
-    "beacons": [],
-    "radios": []
+    "controllerUrl": "http://10.13.10.92:3002",
+    "beacons": [
+        {
+            "beaconID": "Bob",
+            "macAddress": "ac:23:3f:ac:96:14"
+        },
+        {
+            "beaconID": "Larry",
+            "macAddress": "ac:23:3f:ac:96:1a"
+        },
+        {
+            "beaconID": "Laura",
+            "macAddress": "ac:23:3f:ac:95:fd"
+        },
+        {
+            "beaconID": "Lunt",
+            "macAddress": "ac:23:3f:ac:95:fe"
+        },
+        {
+            "beaconID": "Testing",
+            "macAddress": "ac:23:3f:ac:96:1d"
+        }
+    ],
+    "radios": [
+        {
+            "location": "Libre Computer 1",
+            "macAddress": "18:66:c7:e8:e6:db"
+        },
+        {
+            "location": "Libre Computer 2",
+            "macAddress": "18:66:c7:9e:2b:4e"
+        },
+        {
+            "location": "Libre Computer 3",
+            "macAddress": "18:66:c7:fe:82:cf"
+        },
+        {
+            "location": "Libre Computer 4",
+            "macAddress": "18:66:c7:b4:73:7d"
+        },
+        {
+            "location": "Libre Computer 5",
+            "macAddress": "18:66:c7:ba:38:6e"
+        }
+    ]
 }
