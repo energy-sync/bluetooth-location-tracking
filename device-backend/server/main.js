@@ -85,7 +85,7 @@ Meteor.startup(() => {
 
 //the farest away in meters the beacon can be from the radio before it will not update location
 
-const distanceToUpdate = 3;
+const distanceToUpdate = 2; 
 //handle request from ble-reciever to update db with location of device
 WebApp.connectHandlers.use("/location", function (req, res, next) {
   if (req.method === 'POST') {

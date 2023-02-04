@@ -1,7 +1,7 @@
 {
     "refreshTime": 1,
     "measuredPower": -59,
-    "environmentalFactor": 2.5,
+    "environmentalFactor": 4,
     "distanceChangeToTransmit": 1,
     "controllerUrl": "http://10.13.10.92:3002",
     "beacons": [
@@ -32,7 +32,7 @@
     ],
     "radios": [
         {
-            "location": "Libre Computer 1 (lab)",
+            "location": "Libre Computer 1",
             "macAddress": "18:66:c7:e8:e6:db"
         },
         {
@@ -48,7 +48,7 @@
             "macAddress": "18:66:c7:b4:73:7d"
         },
         {
-            "location": "Libre Computer 5 (reception)",
+            "location": "Libre Computer 5",
             "macAddress": "18:66:c7:ba:38:6e"
         }
     ]
