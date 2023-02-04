@@ -8,131 +8,8 @@ let arrayofdevices = [];
 Meteor.startup(() => {
   // code to run on server at startup
   patientInformationdb.remove({});
-
-  for (let i = 0; i < 50; i++) {
-    var patientID = "XXXXXXX".replace(/X/g, function () {
-      return "0123456789ABCDEF".charAt((Math.random() * 16))
-    });
-
-    var DOB = randomDate(new Date(1970, 0, 1), new Date());
-
-    var age = ageCalculator(DOB);
-
-
-    var weight = "1XX lbs".replace(/X/g, function () {
-      return "123456789".charAt((Math.random() * 9))
-    });
-
-    var height = "5ft Xin".replace(/X/g, function () {
-      return "1234567891011".charAt((Math.random() * 9))
-    });
-
-    var bloodPressure = "1XX/XX mmHg".replace(/X/g, function () {
-      return "123456789".charAt((Math.random() * 9))
-    });
-
-    var heartRate = "XX BPM".replace(/X/g, function () {
-      return "123456789".charAt((Math.random() * 9))
-    });
-
-    var RBC = "X.XX M/UL".replace(/X/g, function () {
-      return "123456789".charAt((Math.random() * 9))
-    });
-
-    var bloodGlucose = "XXX mg/dl".replace(/X/g, function () {
-      return "123".charAt((Math.random() * 3))
-    });
-
-    var hemoglobin = "1X.X g/dl".replace(/X/g, function () {
-      return "0123456789".charAt((Math.random() * 10))
-    });
-
-    var hematocrit = "1X.X %".replace(/X/g, function () {
-      return "123456789".charAt((Math.random() * 9))
-    });
-
-    var MCV = "XX fL".replace(/X/g, function () {
-      return "789".charAt((Math.random() * 3))
-    });
-
-    var plateletCount = "XXX K/dl".replace(/X/g, function () {
-      return "0123456789".charAt((Math.random() * 10))
-    });
-
-    var WBC = "XX.X K/uL".replace(/X/g, function () {
-      return "0123456789".charAt((Math.random() * 10))
-    });
-
-    var sodium = "1XX mEq/L".replace(/X/g, function () {
-      return "0123456789".charAt((Math.random() * 10))
-    });
-
-    var potassium = "X.X mEq/L".replace(/X/g, function () {
-      return "0123456789".charAt((Math.random() * 10))
-    });
-
-    var macAddress = "XX:XX:XX:XX:XX:XX".replace(/X/g, function () {
-      return "0123456789ABCDEF".charAt(Math.floor(Math.random() * 16))
-
-    });
-    var patientName = getRandomName(firstNames, lastNames);
-    var address = generateStreetAddress();
-    var physicianName = "Dr. " + getRandomName(firstNames, lastNames);
-    var prescriptions = getPrescriptions();
-
-
-
-
-
-    patientInformationdb.insert({
-
-      "macAddress": macAddress,
-      "patientInformation": {
-        "patientName": patientName,
-        "address": address,
-        "patientID": patientID,
-        "DOB": DOB,
-        "age": age,
-        "physicianName": physicianName
-      },
-      "vitals": {
-        "bloodPressure": bloodPressure,
-        "heartRate": heartRate,
-        "height": height,
-        "weight": weight
-      },
-      "labWork": {
-        "RBC": RBC,
-        "bloodGlucose": bloodGlucose,
-        "hemoglobin": hemoglobin,
-        "hematocrit": hematocrit,
-        "MCV": MCV,
-        "WBC": WBC,
-        "sodium": sodium,
-        "potassium": potassium,
-        "plateletCount": plateletCount
-      },
-      "prescriptions": prescriptions,
-      "dermatology": {
-        "acne": getBoolean(),
-        "acneScars": getBoolean(),
-        "eczemaAndDermatitis": getBoolean(),
-        "hairLoss": getBoolean(),
-        "nailProblems": getBoolean(),
-        "warts": getBoolean(),
-        "fungalInfections": getBoolean(),
-        "skinCancer": getBoolean(),
-        "shingles": getBoolean(),
-        "rosacea": getBoolean(),
-        "psoriasis": getBoolean(),
-        "vitiligo": getBoolean()
-      },
-      "location": 'Receptionist'
-
-    });
-
-  }
-
+  generateRealPatients(6)
+  generateDummyPatients(50);
 });
 
 //gets beacons from http request
@@ -301,4 +178,270 @@ function updateLocation(beaconID, location) {
 //function to get current time
 function getCurrentTime() {
   return Date(Date.now().toLocaleString())
+}
+
+//generate random locations for dummy data
+function generateRandomLocation(){
+  let locationArray = ['Receptionist', 'General Practitioner', 'Lab', 'Dermatology']
+  let location = locationArray[getRandomNumber(locationArray.length)]
+  return location;
+}
+
+function generateDummyPatients(numberToGenerate){
+  for (let i = 0; i < numberToGenerate; i++) {
+    var patientID = "XXXXXXX".replace(/X/g, function () {
+      return "0123456789ABCDEF".charAt((Math.random() * 16))
+    });
+
+    let beaconID = "XXXXXXX".replace(/X/g, function () {
+      return "0123456789ABCDEF".charAt((Math.random() * 16))
+    });
+
+    var DOB = randomDate(new Date(1970, 0, 1), new Date());
+
+    var age = ageCalculator(DOB);
+
+
+    var weight = "1XX lbs".replace(/X/g, function () {
+      return "123456789".charAt((Math.random() * 9))
+    });
+
+    var height = "5ft Xin".replace(/X/g, function () {
+      return "1234567891011".charAt((Math.random() * 9))
+    });
+
+    var bloodPressure = "1XX/XX mmHg".replace(/X/g, function () {
+      return "123456789".charAt((Math.random() * 9))
+    });
+
+    var heartRate = "XX BPM".replace(/X/g, function () {
+      return "123456789".charAt((Math.random() * 9))
+    });
+
+    var RBC = "X.XX M/UL".replace(/X/g, function () {
+      return "123456789".charAt((Math.random() * 9))
+    });
+
+    var bloodGlucose = "XXX mg/dl".replace(/X/g, function () {
+      return "123".charAt((Math.random() * 3))
+    });
+
+    var hemoglobin = "1X.X g/dl".replace(/X/g, function () {
+      return "0123456789".charAt((Math.random() * 10))
+    });
+
+    var hematocrit = "1X.X %".replace(/X/g, function () {
+      return "123456789".charAt((Math.random() * 9))
+    });
+
+    var MCV = "XX fL".replace(/X/g, function () {
+      return "789".charAt((Math.random() * 3))
+    });
+
+    var plateletCount = "XXX K/dl".replace(/X/g, function () {
+      return "0123456789".charAt((Math.random() * 10))
+    });
+
+    var WBC = "XX.X K/uL".replace(/X/g, function () {
+      return "0123456789".charAt((Math.random() * 10))
+    });
+
+    var sodium = "1XX mEq/L".replace(/X/g, function () {
+      return "0123456789".charAt((Math.random() * 10))
+    });
+
+    var potassium = "X.X mEq/L".replace(/X/g, function () {
+      return "0123456789".charAt((Math.random() * 10))
+    });
+
+    var macAddress = "XX:XX:XX:XX:XX:XX".replace(/X/g, function () {
+      return "0123456789ABCDEF".charAt(Math.floor(Math.random() * 16))
+
+    });
+    var patientName = getRandomName(firstNames, lastNames);
+    var address = generateStreetAddress();
+    var physicianName = "Dr. " + getRandomName(firstNames, lastNames);
+    var prescriptions = getPrescriptions();
+
+
+    patientInformationdb.insert({
+
+      "macAddress": macAddress,
+      "patientInformation": {
+        "patientName": patientName,
+        "address": address,
+        "patientID": patientID,
+        "DOB": DOB,
+        "age": age,
+        "physicianName": physicianName
+      },
+      "vitals": {
+        "bloodPressure": bloodPressure,
+        "heartRate": heartRate,
+        "height": height,
+        "weight": weight
+      },
+      "labWork": {
+        "RBC": RBC,
+        "bloodGlucose": bloodGlucose,
+        "hemoglobin": hemoglobin,
+        "hematocrit": hematocrit,
+        "MCV": MCV,
+        "WBC": WBC,
+        "sodium": sodium,
+        "potassium": potassium,
+        "plateletCount": plateletCount
+      },
+      "prescriptions": prescriptions,
+      "dermatology": {
+        "acne": getBoolean(),
+        "acneScars": getBoolean(),
+        "eczemaAndDermatitis": getBoolean(),
+        "hairLoss": getBoolean(),
+        "nailProblems": getBoolean(),
+        "warts": getBoolean(),
+        "fungalInfections": getBoolean(),
+        "skinCancer": getBoolean(),
+        "shingles": getBoolean(),
+        "rosacea": getBoolean(),
+        "psoriasis": getBoolean(),
+        "vitiligo": getBoolean()
+      },
+      "location": generateRandomLocation(),
+      'beaconID': beaconID,
+      'waitTime' : generateWaitTime() + ' minute(s)'
+
+    });
+
+  }
+}
+function generateRealPatients(numberToGenerate){
+  for (let i = 0; i < numberToGenerate; i++) {
+    var patientID = "XXXXXXX".replace(/X/g, function () {
+      return "0123456789ABCDEF".charAt((Math.random() * 16))
+    });
+
+    var DOB = randomDate(new Date(1970, 0, 1), new Date());
+
+    var age = ageCalculator(DOB);
+
+
+    var weight = "1XX lbs".replace(/X/g, function () {
+      return "123456789".charAt((Math.random() * 9))
+    });
+
+    var height = "5ft Xin".replace(/X/g, function () {
+      return "1234567891011".charAt((Math.random() * 9))
+    });
+
+    var bloodPressure = "1XX/XX mmHg".replace(/X/g, function () {
+      return "123456789".charAt((Math.random() * 9))
+    });
+
+    var heartRate = "XX BPM".replace(/X/g, function () {
+      return "123456789".charAt((Math.random() * 9))
+    });
+
+    var RBC = "X.XX M/UL".replace(/X/g, function () {
+      return "123456789".charAt((Math.random() * 9))
+    });
+
+    var bloodGlucose = "XXX mg/dl".replace(/X/g, function () {
+      return "123".charAt((Math.random() * 3))
+    });
+
+    var hemoglobin = "1X.X g/dl".replace(/X/g, function () {
+      return "0123456789".charAt((Math.random() * 10))
+    });
+
+    var hematocrit = "1X.X %".replace(/X/g, function () {
+      return "123456789".charAt((Math.random() * 9))
+    });
+
+    var MCV = "XX fL".replace(/X/g, function () {
+      return "789".charAt((Math.random() * 3))
+    });
+
+    var plateletCount = "XXX K/dl".replace(/X/g, function () {
+      return "0123456789".charAt((Math.random() * 10))
+    });
+
+    var WBC = "XX.X K/uL".replace(/X/g, function () {
+      return "0123456789".charAt((Math.random() * 10))
+    });
+
+    var sodium = "1XX mEq/L".replace(/X/g, function () {
+      return "0123456789".charAt((Math.random() * 10))
+    });
+
+    var potassium = "X.X mEq/L".replace(/X/g, function () {
+      return "0123456789".charAt((Math.random() * 10))
+    });
+
+    var macAddress = "XX:XX:XX:XX:XX:XX".replace(/X/g, function () {
+      return "0123456789ABCDEF".charAt(Math.floor(Math.random() * 16))
+
+    });
+    var patientName = getRandomName(firstNames, lastNames);
+    var address = generateStreetAddress();
+    var physicianName = "Dr. " + getRandomName(firstNames, lastNames);
+    var prescriptions = getPrescriptions();
+
+
+    patientInformationdb.insert({
+
+      "macAddress": macAddress,
+      "patientInformation": {
+        "patientName": patientName,
+        "address": address,
+        "patientID": patientID,
+        "DOB": DOB,
+        "age": age,
+        "physicianName": physicianName
+      },
+      "vitals": {
+        "bloodPressure": bloodPressure,
+        "heartRate": heartRate,
+        "height": height,
+        "weight": weight
+      },
+      "labWork": {
+        "RBC": RBC,
+        "bloodGlucose": bloodGlucose,
+        "hemoglobin": hemoglobin,
+        "hematocrit": hematocrit,
+        "MCV": MCV,
+        "WBC": WBC,
+        "sodium": sodium,
+        "potassium": potassium,
+        "plateletCount": plateletCount
+      },
+      "prescriptions": prescriptions,
+      "dermatology": {
+        "acne": getBoolean(),
+        "acneScars": getBoolean(),
+        "eczemaAndDermatitis": getBoolean(),
+        "hairLoss": getBoolean(),
+        "nailProblems": getBoolean(),
+        "warts": getBoolean(),
+        "fungalInfections": getBoolean(),
+        "skinCancer": getBoolean(),
+        "shingles": getBoolean(),
+        "rosacea": getBoolean(),
+        "psoriasis": getBoolean(),
+        "vitiligo": getBoolean()
+      },
+      "location": 'Receptionist'
+
+    });
+
+  }
+}
+
+function generateWaitTime(){
+  let waitTime = getRandomNumber(20);
+  if(waitTime === 0){
+    waitTime++;
+  }
+  return waitTime;
 }

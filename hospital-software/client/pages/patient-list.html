@@ -19,7 +19,7 @@
                     <th scope="col">Physician Name</th>
                     <th scope="col">Location</th>
                     <th scope="col">Beacon ID</th>
-                    <th scope="col">Last Updated</th>
+                    <th scope="col">Wait Time</th>
                 </thead>
                 <tbody>
                     {{#each patient in patients}}
@@ -40,6 +40,6 @@
         <td>{{patient.patientInformation.physicianName}}</td>
         <td class="namecase">{{patient.location}}</td>
         <td>{{patient.beaconID}}</td>
-        <td>{{patient.timeOfUpdate}}</td>
+        <td>{{patient.waitTime}}</td>
     </tr>
 </template>
