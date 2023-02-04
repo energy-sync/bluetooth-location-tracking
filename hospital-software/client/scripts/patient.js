@@ -15,6 +15,9 @@ Template.patient.onCreated(function () {
 Template.patient.onRendered(function () {
     this.patient = new ReactiveVar(patientInformationdb.findOne({ "patientInformation.patientID": FlowRouter.getParam("patientID") }))
     this.device = new ReactiveVar(patientInformationdb.findOne({ "patientInformation.beaconID": FlowRouter.getParam("beaconID") }))
+    const select = this.$("#beaconIDs");
+    select.val("").trigger("change");
+  
 });
 
 Template.patient.helpers({
