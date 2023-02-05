@@ -1,0 +1,12 @@
+ <template name="Patient Locator">
+    <div class="Locator">
+      <h1>Patient Locator</h1>
+      <p>Current location: {{currentLocation}}</p>
+      <p>Locations in area:</p>
+      <ul>
+        {{#each locations}}
+          <li>{{this}}</li>
+        {{/each}}
+      </ul>
+    </div>
+  </template>

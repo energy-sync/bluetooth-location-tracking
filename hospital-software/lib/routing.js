@@ -31,3 +31,10 @@ FlowRouter.route("/patient-overview", {
         this.render("patientOverview");
     }
 });
+
+FlowRouter.route("/tacker", {
+    name: "tracker",
+    action() {
+        this.render("tracker");
+    }
+});
