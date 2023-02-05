@@ -179,7 +179,7 @@ function updateLocation(beaconMacAddress) {
 }
 
 //add location to beacon
-function addLocation(beaconMacAddress, location, distance) {
+function addLocation(beaconMacAddress, location, distance) { 
   deviceInformationdb.update({ macAddress: beaconMacAddress }, { $set: { location: location, time: getCurrentTime(), distance: distance } })
 }
 

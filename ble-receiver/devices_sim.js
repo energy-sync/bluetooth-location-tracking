@@ -6,7 +6,7 @@ const fs = require("fs");
 const config = JSON.parse(fs.readFileSync("config.json", "utf-8"));
 dotenv.config();
 const POST_URL = "http://localhost:3002/testLocation";
-const LOCATIONS = ["receptionist", "practicioner", "lab", "dermatology"];
+const LOCATIONS = ["Receptionist", "Practicioner", "Lab", "Dermatology"];
 
 let devices = [];
 for (device of config.beacons) {
@@ -30,7 +30,7 @@ function movePatient() {
         .then(response => {
             setTimeout(() => {
                 movePatient();
-            }, random(60000)); //0 to 60 seconds
+            }, random(30000)); //0 to 60 seconds
         })
         .catch(error => {
             console.error(error);

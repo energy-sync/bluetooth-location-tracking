@@ -3,8 +3,9 @@ import { patientInformationdb } from '../../lib/database.js';
 import { FlowRouter } from 'meteor/ostrio:flow-router-extra';
 
 Template.patient.onCreated(function () {
-    this.department = new ReactiveVar("reception");
+    this.department = new ReactiveVar();
     this.ids = new ReactiveVar([])
+    this.location = new ReactiveVar();
     Meteor.call('getDevices', (error,result)=>{
         this.ids.set(result);
     })
@@ -36,18 +37,37 @@ Template.patient.helpers({
         //update the patient with beaconID
         patientInformationdb.update({_id : idOfDocuement}, {$set: { beaconID:Template.instance().beaconID.curValue}})
     },
-    isWithPractitioner() {
-        return Template.instance().department.get() === "practitioner";
+    inLab(){
+        console.log("inLab")
+        let patient = patientInformationdb.findOne({ "patientInformation.patientID": FlowRouter.getParam("patientID") });
+        console.log(patient.location === 'Lab')
+        if(patient.location == 'Lab'){
+            return true;
+        }
+    },inDerma(){
+        console.log("inDerma")
+        let patient = patientInformationdb.findOne({ "patientInformation.patientID": FlowRouter.getParam("patientID") });
+        console.log(patient.location === 'Dermatology')
+        if(patient.location == 'Dermatology'){
+            return true;
+        }
     },
-    isInLab() {
-        return Template.instance().department.get() === "lab";
+    inReception(){
+        console.log("inReception")
+        let patient = patientInformationdb.findOne({ "patientInformation.patientID": FlowRouter.getParam("patientID") });
+        console.log(patient.location === 'Receptionist')
+        if(patient.location == 'Receptionist'){
+            return true;
+        }
     },
-    isInDermatology() {
-        return Template.instance().department.get() === "dermatology";
+    inPractitioner(){
+        console.log("inPractitioner")
+        let patient = patientInformationdb.findOne({ "patientInformation.patientID": FlowRouter.getParam("patientID") });
+        console.log(patient.location === 'General Practitioner')
+        if(patient.location == 'General Practitioner'){
+            return true;
+        }
     },
-    isInDevices() {
-        return Template.instance().department.get() === "devices";
-    }
 });
 
 Template.patient.events({
