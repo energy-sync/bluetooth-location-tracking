@@ -6,7 +6,7 @@ const fs = require("fs");
 const config = JSON.parse(fs.readFileSync("config.json", "utf-8"));
 dotenv.config();
 const POST_URL = "http://localhost:3002/testLocation";
-const LOCATIONS = ["Receptionist", "Practicioner", "Lab", "Dermatology"];
+const LOCATIONS = ["Receptionist", "General Practitioner", "Lab", "Dermatology"];
 
 let devices = [];
 for (device of config.beacons) {
