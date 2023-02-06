@@ -9,16 +9,16 @@ let configPath = process.cwd().split('.meteor')[0] + "config.json";
 let config;
 
 if (!fs.existsSync(configPath)) {
-    config = {
-        refreshTime: 1,
-        measuredPower: -59,
-        environmentalFactor: 3,
-        distanceChangeToTransmit: 3,
-        controllerUrl: "http://localhost:3002",
-        beacons: [],
-        radios: []
-    };
-    saveConfig();
+  config = {
+    refreshTime: 1,
+    measuredPower: -59,
+    environmentalFactor: 3,
+    distanceChangeToTransmit: 3,
+    controllerUrl: "http://localhost:3002",
+    beacons: [],
+    radios: []
+  };
+  saveConfig();
 }
 else config = JSON.parse(fs.readFileSync(configPath, "utf-8"));
 
@@ -38,46 +38,6 @@ Meteor.startup(() => {
     });
   }
 
-  //dummy Data for patient overview page
-  const locations = ["Reception", "Dermatology", "General Practitioner", "Lab"];
-
-  //random number
-  const getRandomNumber = (max) => Math.floor(Math.random() * max);
-
-
-  //getting random names
-  function getRandomLocation(arr1) {
-    let location = arr1[getRandomNumber(arr1.length)];
-    return location;
-  }
-
-
-  for (let i = 0; i < 6; i++) {
-    var patientID = "XXXXXXX".replace(/X/g, function () {
-      return "0123456789ABCDEF".charAt((Math.random() * 16))
-    });
-    var macAddress = "XX:XX:XX:XX:XX:XX".replace(/X/g, function () {
-      return "0123456789ABCDEF".charAt((Math.random() * 16))
-    });
-
-
-    var beaconID = i + 1;
-
-    var timeStamp = getCurrentTime();
-
-    var location = getRandomLocation(locations);
-
-    deviceInformationdb.insert({
-      "beaconID": beaconID,
-      "macAddress": macAddress,
-      "location": location,
-      "patientID": patientID,
-      "timeStamp": timeStamp
-    });
-
-  }
-
-
   //calls function to send data of ble beacons to hospital software
   sendData()
 
@@ -85,7 +45,7 @@ Meteor.startup(() => {
 
 //the farest away in meters the beacon can be from the radio before it will not update location
 
-const distanceToUpdate = 2; 
+const distanceToUpdate = 2;
 //handle request from ble-reciever to update db with location of device
 WebApp.connectHandlers.use("/location", function (req, res, next) {
   if (req.method === 'POST') {
@@ -96,20 +56,20 @@ WebApp.connectHandlers.use("/location", function (req, res, next) {
       const distance = body.distance;
       const radioMacAddress = body.radioMacAddress;
       //if statement checking how far away the beacon is from the radio sending the transmission
-      if(distance <= distanceToUpdate){
-      for (radio of radios) {
-        console.log(radioMacAddress);
-        console.log(radio.macAddress);
-        console.log(radioMacAddress === radio.macAddress)
-        if (radioMacAddress === radio.macAddress) {
-          console.log('success checking radio')
-          //calling functions to add location to deviceDB and then send updated information to patientDB
-          addLocation(beaconMacAddress, radio.location, distance)
-          updateLocation(beaconMacAddress);
-          break; 
+      if (distance <= distanceToUpdate) {
+        for (radio of radios) {
+          console.log(radioMacAddress);
+          console.log(radio.macAddress);
+          console.log(radioMacAddress === radio.macAddress)
+          if (radioMacAddress === radio.macAddress) {
+            console.log('success checking radio')
+            //calling functions to add location to deviceDB and then send updated information to patientDB
+            addLocation(beaconMacAddress, radio.location, distance)
+            updateLocation(beaconMacAddress);
+            break;
+          }
         }
       }
-    }
     }));
     res.end(Meteor.release)
   }
@@ -133,9 +93,9 @@ WebApp.connectHandlers.use("/testLocation", function (req, res, next) {
       const distance = body.distance
       const beaconMacAddress = body.macAddress
       console.log(beaconID, location)
-      if(distance <= distanceToUpdate){
-      addLocation(beaconMacAddress, location, distance)
-      updateLocation(beaconMacAddress)
+      if (distance <= distanceToUpdate) {
+        addLocation(beaconMacAddress, location, distance)
+        updateLocation(beaconMacAddress)
       }
     }));
     res.end(Meteor.release)
@@ -179,7 +139,7 @@ function updateLocation(beaconMacAddress) {
 }
 
 //add location to beacon
-function addLocation(beaconMacAddress, location, distance) { 
+function addLocation(beaconMacAddress, location, distance) {
   deviceInformationdb.update({ macAddress: beaconMacAddress }, { $set: { location: location, time: getCurrentTime(), distance: distance } })
 }
 

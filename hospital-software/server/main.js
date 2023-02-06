@@ -162,6 +162,8 @@ function getBoolean() {
 
 //function to store body sent from devicedb into arrayofdevices
 function storeInfo(body) {
+  //reset array to stop duplicate beaconIDs being stored
+  arrayofdevices.length = 0;
   for (let i = 0; i < body.length; i++) {
     //arrayofdevices.push(body[i])
     arrayofdevices.push(body[i])
@@ -181,13 +183,13 @@ function getCurrentTime() {
 }
 
 //generate random locations for dummy data
-function generateRandomLocation(){
+function generateRandomLocation() {
   let locationArray = ['Receptionist', 'General Practitioner', 'Lab', 'Dermatology']
   let location = locationArray[getRandomNumber(locationArray.length)]
   return location;
 }
 
-function generateDummyPatients(numberToGenerate){
+function generateDummyPatients(numberToGenerate) {
   for (let i = 0; i < numberToGenerate; i++) {
     var patientID = "XXXXXXX".replace(/X/g, function () {
       return "0123456789ABCDEF".charAt((Math.random() * 16))
@@ -309,13 +311,13 @@ function generateDummyPatients(numberToGenerate){
       },
       "location": generateRandomLocation(),
       'beaconID': beaconID,
-      'waitTime' : generateWaitTime() + ' minute(s)'
+      'waitTime': generateWaitTime() + ' minute(s)'
 
     });
 
   }
 }
-function generateRealPatients(numberToGenerate){
+function generateRealPatients(numberToGenerate) {
   for (let i = 0; i < numberToGenerate; i++) {
     var patientID = "XXXXXXX".replace(/X/g, function () {
       return "0123456789ABCDEF".charAt((Math.random() * 16))
@@ -438,9 +440,9 @@ function generateRealPatients(numberToGenerate){
   }
 }
 
-function generateWaitTime(){
+function generateWaitTime() {
   let waitTime = getRandomNumber(20);
-  if(waitTime === 0){
+  if (waitTime === 0) {
     waitTime++;
   }
   return waitTime;
