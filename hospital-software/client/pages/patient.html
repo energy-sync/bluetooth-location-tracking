@@ -6,28 +6,28 @@
 <template name="patientInformation">
     <p>Select Department:</p>
     <div class="container-fluid w-50">
-    <select class="form-select" name="departments" id="departments">
-        <option value="reception">Reception</option>
-        <option value="practitioner">General Practitioner</option>
-        <option value="lab">Lab</option>
-        <option value="dermatology">Dermatology</option>
-        <option value="devices">Devices</option>
-    </select>
-</div>
-<br>
+        <select class="form-select" name="departments" id="departments">
+            <option value="reception">Reception</option>
+            <option value="practitioner">General Practitioner</option>
+            <option value="lab">Lab</option>
+            <option value="dermatology">Dermatology</option>
+        </select>
+    </div>
+    <br>
 </template>
 
 <template name="patient">
-    {{> patientInformation}}
-    <h2>Name: {{patient.patientInformation.patientName}}</h2>
-    <p>Device MAC: {{patient.macAddress}}</p>
+   <!-- {{> patientInformation}}-->
+    <h1>Name: {{patient.patientInformation.patientName}}</h1>
+    <h2><b>Location:</b> {{patient.location}}</h2>
+    <h3><b>Assigned Beacon:</b> {{patient.beaconID}}</h3>
     <select id="beaconIDs">
-        <option disabled="disabled" selected="selected">Please Choose BeaconID</option>
         {{#each id in ids}}
         <option value="{{id}}">{{id}}</option>
         {{/each}}
+        <option value="" selected>Un-Assign Beacon</option>
     </select>
-    <button id="assignBtn">Assign Device</button>
+    <button id="assignBtn">Assign Beacon</button>
     <h5>Basic Information:</h5>
     <div class="vstack">
         <table class="table">
@@ -43,17 +43,17 @@
             </tr>
         </table>
     </div>
-
-    {{#if isInLab}}
-    {{> lab}}
+    {{#if inLab}}
+    {{>lab}}
     {{/if}}
-
-    {{#if isWithPractitioner}}
-    {{> practitioner}}
+    {{#if inDerma}}
+    {{>dermatology}}
     {{/if}}
-
-    {{#if isInDermatology}}
-    {{> dermatology}}
+    {{#if inReception}}
+    {{>receptionist}}
+    {{/if}}
+    {{#if inPractitioner}}
+    {{>practitioner}}
     {{/if}}
 </template>
 
@@ -112,7 +112,7 @@
             <div class="col"><b>Acne Scars:</b> {{printBool patient.dermatology.acneScars}}</div>
             <div class="col"><b>Eczema and Dermatitis:</b> {{printBool patient.dermatology.eczemaAndDermatitis}}</div>
             <div class="col"><b>Hair Loss:</b> {{printBool patient.dermatology.hairLoss}}</div>
-            </div>
+        </div>
         <div class="row">
             <div class="col"><b>Nail Problems:</b> {{printBool patient.dermatology.nailProblems}}</div>
             <div class="col"><b>Warts:</b> {{printBool patient.dermatology.warts}}</div>
@@ -129,7 +129,7 @@
     <br>
 </template>
 
-<template name="reception">
+<template name="receptionist">
 
 </template>
 

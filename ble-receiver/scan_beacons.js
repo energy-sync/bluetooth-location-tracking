@@ -2,21 +2,29 @@ const fs = require("fs");
 const BeaconScanner = require('node-beacon-scanner');
 const axios = require("axios");
 const dotenv = require("dotenv");
+const getMAC = require("getmac").default;
 
 const scanner = new BeaconScanner();
-const config = JSON.parse(fs.readFileSync("config.json", "utf-8"));
+let config;
+
+if (!fs.existsSync("config.json")) {
+    config = {
+        refreshTime: 1,
+        measuredPower: -59,
+        environmentalFactor: 3,
+        distanceChangeToTransmit: 3,
+        controllerUrl: "http://localhost:3002",
+        beacons: [],
+        radios: []
+    };
+    saveConfig();
+}
+else config = JSON.parse(fs.readFileSync("config.json", "utf-8"));
 dotenv.config();
 
-//environment variables
-const REFRESH_TIME = process.env.REFRESH_TIME;
-const MEASURED_POWER = process.env.MEASURED_POWER;
-const ENVIRONMENTAL_FACTOR = process.env.ENVIRONMENTAL_FACTOR;
-const DISTANCE_TO_TRANSMIT = process.env.DISTANCE_TO_TRANSMIT;
-const POST_URL = process.env.POST_URL;
-
 let devices = {};
-for (device of config)
-    devices[device.macAddress] = device.deviceID;
+for (device of config.beacons)
+    devices[device.macAddress] = device.beaconID;
 let detectedDevices = {};
 let previousDistances = {};
 
@@ -36,36 +44,58 @@ scanner.startScan().then(() => {
 	console.error(error);
 });
 
-setInterval(() => {
+//scanning for BLE beacons and sending updates to controller server
+let scanTimeout = function() {
     console.log("DETECTED DEVICES:\n=================\n");
     for (device in detectedDevices) {
-        if (devices[device])
+        if (devices[device]) {
             console.log(`Detected device: ${devices[device]}`);
-        else console.log(`Detected unknown device: ${device}`);
 
-        //get average signal strength from up to last 10 ticks
-        let rssiSum = 0;
-        for (rssi of detectedDevices[device])
-            rssiSum += rssi;
-        let avgRssi = rssiSum / detectedDevices[device].length;
+            //get average signal strength from up to last 10 ticks
+            let rssiSum = 0;
+            for (rssi of detectedDevices[device])
+                rssiSum += rssi;
+            let avgRssi = rssiSum / detectedDevices[device].length;
 
-        //get distance and check if the beacon moved enough to send an update to the server
-        let distance = Math.round(Math.pow(10, (MEASURED_POWER - avgRssi) / (10 * ENVIRONMENTAL_FACTOR)));
-        let oldDistance = previousDistances[device] ? previousDistances[device] : -DISTANCE_TO_TRANSMIT;
-        let movedEnough = Math.abs(distance - oldDistance) >= DISTANCE_TO_TRANSMIT
-        if (movedEnough)
-            previousDistances[device] = distance;
+            //get distance and check if the beacon moved enough to send an update to the server
+            let distance = Math.round(Math.pow(10, (config.measuredPower - avgRssi) / (10 * config.environmentalFactor)));
+            let oldDistance = previousDistances[device] ? previousDistances[device] : -config.distanceChangeToTransmit;
+            let movedEnough = Math.abs(distance - oldDistance) >= config.distanceChangeToTransmit
+            if (movedEnough)
+                previousDistances[device] = distance;
 
-        console.log(`Signal strength: ${avgRssi}\nDistance: ${distance}\nOld distance: ${oldDistance}\n`);
-        if (distance && movedEnough) {
-            //send update to server
-            axios.put(POST_URL, {
-                macAddress: device,
-                distance: distance
-            })
-            .catch(error => {
-                console.error(error);
-            });
+            console.log(`Signal strength: ${avgRssi}\nDistance: ${distance}\nOld distance: ${oldDistance}\n`);
+            if (distance && movedEnough) {
+                //send update to server
+                axios.post(`${config.controllerUrl}/location`, {
+                    beaconMacAddress: device,
+                    radioMacAddress: getMAC(),
+                    distance: distance
+                })
+                .catch(error => {
+                    console.error(error);
+                });
+            }
         }
     }
-}, 1000 * REFRESH_TIME);
+    setTimeout(scanTimeout, 1000 * config.refreshTime);
+}
+setTimeout(scanTimeout, 1000 * config.refreshTime);
+
+//fetching config.json from controller server and updating local copy if changed
+setInterval(() => {
+    console.log("Checking for config update");
+    axios.get(`${config.controllerUrl}/config`)
+    .then(response => {
+        if (JSON.stringify(config) !== JSON.stringify(response.data)) {
+            config = response.data;
+            saveConfig();
+            console.log("Config updated");
+        }
+    });
+}, 5000);
+
+function saveConfig() {
+    fs.writeFileSync("config.json", JSON.stringify(config, null, 4));
+    fs.chmodSync("config.json", "0777");
+}
