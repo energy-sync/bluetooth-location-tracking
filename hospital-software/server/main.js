@@ -2,14 +2,17 @@
 import { Meteor } from 'meteor/meteor';
 import '../lib/database.js';
 import { patientInformationdb } from "../lib/database"
+import { dummyBeaconDB } from '../lib/database';
 import { WebApp } from 'meteor/webapp';
 let arrayofdevices = [];
 
 Meteor.startup(() => {
   // code to run on server at startup
   patientInformationdb.remove({});
-  generateRealPatients(6)
+  dummyBeaconDB.remove({});
+  generateRealPatients(6);
   generateDummyPatients(50);
+  generateRandomBeaconData(100);
 });
 
 //gets beacons from http request
@@ -446,4 +449,42 @@ function generateWaitTime() {
     waitTime++;
   }
   return waitTime;
+}
+
+function generateRandomBeaconData(numberToGenerate){
+  for(let i=0;i<numberToGenerate;i++){
+    dummyBeaconDB.insert({
+      'beaconNumber': i,
+      'department': getDummyDepartment(),
+      'time': getRandomHourMin(),
+      'day': getRandomDayOfWeek()
+    })
+
+  }
+}
+
+function getDummyDepartment() {
+  let departmentArray = ["Surgery","Gynaecology","Paediatrics","Eye", "ENT","Dental","Orthopaedics","Neurology","Cardiology",
+  "Psychiatry", "Skin", "Plastic Surgery","Rehabilitation", "Pharmacy", "Radiology"];
+  let department = departmentArray[(getRandomNumber(departmentArray.length))];
+  return department;
+}
+
+function getRandomHourMin(){
+  let hour = getRandomNumber(24);
+  let minute = getRandomNumber(59);
+
+  if(minute < 10){
+    minute = '0' + minute;
+  }
+  let timeString = hour + ':' + minute;
+  return timeString;
+}
+
+function getRandomDayOfWeek(){
+  let dayArray = ["Sunday","Monday", "Tuesday",
+  "Wednesday","Thursday", "Friday","Saturday"]
+  let day = dayArray[getRandomNumber(dayArray.length)]
+
+  return day;
 }
