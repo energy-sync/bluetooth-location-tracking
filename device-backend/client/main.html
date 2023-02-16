@@ -1,0 +1,30 @@
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Patient List</title>
+  </head>
+  <template name="main">
+    <div class="container pt-3 title">
+        <h1>Device Information</h1>
+        
+            <table class="table">
+                <thead>
+                    <th scope="col">Name</th>
+                    <th scope="col">Current Location</th> 
+                    <th scope="col">Previous Location</th>
+                    
+                </thead>
+                <tbody>
+                    {{#each patient in patients}}
+                    <tr>
+                  <td>{{patient.beaconID}}</td>
+                  <td>{{patient.location}}</td>
+                  </tr>    
+                    {{/each}}
+                </tbody>
+            </table>
+        </div>
+  </template>
+  
+  
