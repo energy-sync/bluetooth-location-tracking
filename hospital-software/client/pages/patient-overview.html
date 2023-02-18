@@ -16,11 +16,9 @@
                 <th scope="col">Day of Week</th>
             </thead>
             <tbody>
-              <tr>
                 {{#each beacon in beacons}}
-                  {{>beaconRow}}
+                  {{> beaconRow beacon=beacon}}
                 {{/each}}
-                </tr>
             </tbody>
         </table>
     </div>
