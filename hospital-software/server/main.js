@@ -47,7 +47,19 @@ Meteor.methods({
   getDevices: () => {
     //printArray(arrayofdevices)
     return arrayofdevices.map(ids => ids.beaconID);
-  }
+  },
+  getPatientNum: (department) => {
+    let departmentArray = ["Surgery","Gynaecology","Paediatrics","Eye", "ENT","Dental","Orthopaedics","Neurology","Cardiology",
+    "Psychiatry", "Skin", "Plastic Surgery","Rehabilitation", "Pharmacy", "Radiology"];
+    for(let i=0; i<departmentArray.length; i++)
+    {
+      departmentArray[i]
+      let arrayofpatients=dummyBeaconDB.find({department : department}).fetch()
+      
+      let total=arrayofpatients.length;
+      return total;
+    }}
+
 })
 
 function printArray(arr) {

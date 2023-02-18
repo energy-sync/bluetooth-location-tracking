@@ -6,22 +6,64 @@
 </head>
 
 <template name="landing">
-  {{> departments}}
+  <h1>Select View</h1>
+  <div class="container-fluid w-50">
+      <select class="form-select" id="selectedDepartment">
+          <option value="General Info">General Information</option>
+          {{#each department in departments}}
+          <option value="{{department}}">{{department}}</option>
+          {{/each}}
+      </select>
+  </div>
+  {{#if generalInfo}}
   {{> patientOverview}}
+  {{/if}}
+  {{#if surgery}}
+  {{> surgeryTemplate}}
+  {{/if}}
+  {{#if gyno}}
+  {{> gynoTemplate}}
+  {{/if}}
+  {{#if paeds}}
+  {{> paedsTemplate}}
+  {{/if}}
+  {{#if eye}}
+  {{> eyeTemplate}}
+  {{/if}}
+  {{#if ent}}
+  {{> entTemplate}}
+  {{/if}}
+  {{#if dental}}
+  {{> dentalTemplate}}
+  {{/if}}
+  {{#if ortho}}
+  {{> orthoTemplate}}
+  {{/if}}
+  {{#if neuro}}
+  {{> neuroTemplate}}
+  {{/if}}
+  {{#if carido}}
+  {{> cardioTemplate}}
+  {{/if}}
+  {{#if psych}}
+  {{> psychTemplate}}
+  {{/if}}
+  {{#if skin}}
+  {{> skin}}
+  {{/if}}
+  {{#if plasticSurgery}}
+  {{> plasticSurgeryTemplate}}
+  {{/if}}
+  {{#if rehab}}
+  {{> rehabTemplate}}
+  {{/if}}
+  {{#if pharma}}
+  {{> pharmaTemplate}}
+  {{/if}}
+  {{#if radio}}
+  {{> radioTemplate}}
+  {{/if}}
 </template>
-
-<template name="departments">
-  <p>Select Department to view in more details:</p>
-    <div class="container-fluid w-50">
-        <select class="form-select" id="selectedDepartment">
-            <option value="General Info">General Information</option>
-            {{#each department in departments}}
-            <option value="{{department}}">{{department}}</option>
-            {{/each}}
-        </select>
-    </div>
-</template>
-
 
 <template name="patientOverview">
   <div class="container pt-3 title">
@@ -53,9 +95,257 @@
   </tr>
 </template>
 
-<template name="surgery">
+<template name="surgeryTemplate">
   <div class="container pt-3 title">
     <h1>Surgery Information</h1>
+    <div class="vstack">
+        <table class="table">
+            <thead>
+                <th scope="col">Number of Patients</th>
+                <th scope="col">Busiest Time</th>
+                <th scope="col">Busiest Day</th>
+            </thead>
+            <tbody>
+              <tr class="surgeryRow">
+                <td>{{landing.patientNumSurgery}}</td>
+              </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+</template>
+
+<template name="gynoTemplate">
+  <div class="container pt-3 title">
+    <h1>Gynaecology Information</h1>
+    <div class="vstack">
+        <table class="table">
+            <thead>
+                <th scope="col">Number of Patients</th>
+                <th scope="col">Busiest Time</th>
+                <th scope="col">Busiest Day</th>
+            </thead>
+            <tbody>
+              <tr class="gynoRow">
+                <td>{{beacon.beaconNumber}}</td>
+                <td>{{beacon.department}}</td>
+                <td>{{beacon.time}}</td>
+                <td>{{beacon.day}}</td>
+              </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+</template>
+<template name="paedsTemplate">
+  <div class="container pt-3 title">
+    <h1>Paediatrics Information</h1>
+    <div class="vstack">
+        <table class="table">
+            <thead>
+                <th scope="col">Number of Patients</th>
+                <th scope="col">Busiest Time</th>
+                <th scope="col">Busiest Day</th>
+            </thead>
+            <tbody>
+                
+            </tbody>
+        </table>
+    </div>
+</div>
+</template>
+<template name="eyeTemplate">
+  <div class="container pt-3 title">
+    <h1>Eye Information</h1>
+    <div class="vstack">
+        <table class="table">
+            <thead>
+                <th scope="col">Number of Patients</th>
+                <th scope="col">Busiest Time</th>
+                <th scope="col">Busiest Day</th>
+            </thead>
+            <tbody>
+                
+            </tbody>
+        </table>
+    </div>
+</div>
+</template>
+<template name="entTemplate">
+  <div class="container pt-3 title">
+    <h1>ENT Information</h1>
+    <div class="vstack">
+        <table class="table">
+            <thead>
+                <th scope="col">Number of Patients</th>
+                <th scope="col">Busiest Time</th>
+                <th scope="col">Busiest Day</th>
+            </thead>
+            <tbody>
+                
+            </tbody>
+        </table>
+    </div>
+</div>
+</template>
+<template name="dentalTemplate">
+  <div class="container pt-3 title">
+    <h1>Dental Information</h1>
+    <div class="vstack">
+        <table class="table">
+            <thead>
+                <th scope="col">Number of Patients</th>
+                <th scope="col">Busiest Time</th>
+                <th scope="col">Busiest Day</th>
+            </thead>
+            <tbody>
+                
+            </tbody>
+        </table>
+    </div>
+</div>
+</template>
+<template name="orthoTemplate">
+  <div class="container pt-3 title">
+    <h1>Orthopaedics Information</h1>
+    <div class="vstack">
+        <table class="table">
+            <thead>
+                <th scope="col">Number of Patients</th>
+                <th scope="col">Busiest Time</th>
+                <th scope="col">Busiest Day</th>
+            </thead>
+            <tbody>
+                
+            </tbody>
+        </table>
+    </div>
+</div>
+</template>
+
+<template name="neuroTemplate">
+  <div class="container pt-3 title">
+    <h1>Neurology Information</h1>
+    <div class="vstack">
+        <table class="table">
+            <thead>
+                <th scope="col">Number of Patients</th>
+                <th scope="col">Busiest Time</th>
+                <th scope="col">Busiest Day</th>
+            </thead>
+            <tbody>
+                
+            </tbody>
+        </table>
+    </div>
+</div>
+</template>
+<template name="cardioTemplate">
+  <div class="container pt-3 title">
+    <h1>Cardiology Information</h1>
+    <div class="vstack">
+        <table class="table">
+            <thead>
+                <th scope="col">Number of Patients</th>
+                <th scope="col">Busiest Time</th>
+                <th scope="col">Busiest Day</th>
+            </thead>
+            <tbody>
+                
+            </tbody>
+        </table>
+    </div>
+</div>
+</template>
+<template name="psychTemplate">
+  <div class="container pt-3 title">
+    <h1>Psychiatry Information</h1>
+    <div class="vstack">
+        <table class="table">
+            <thead>
+                <th scope="col">Number of Patients</th>
+                <th scope="col">Busiest Time</th>
+                <th scope="col">Busiest Day</th>
+            </thead>
+            <tbody>
+                
+            </tbody>
+        </table>
+    </div>
+</div>
+</template>
+<template name="skinTemplate">
+  <div class="container pt-3 title">
+    <h1>Skin Information</h1>
+    <div class="vstack">
+        <table class="table">
+            <thead>
+                <th scope="col">Number of Patients</th>
+                <th scope="col">Busiest Time</th>
+                <th scope="col">Busiest Day</th>
+            </thead>
+            <tbody>
+                
+            </tbody>
+        </table>
+    </div>
+</div>
+</template>
+
+<template name="plasticSurgeryTemplate">
+  <div class="container pt-3 title">
+    <h1>Plastic Surgery Information</h1>
+    <div class="vstack">
+        <table class="table">
+            <thead>
+                <th scope="col">Number of Patients</th>
+                <th scope="col">Busiest Time</th>
+                <th scope="col">Busiest Day</th>
+            </thead>
+            <tbody>
+                
+            </tbody>
+        </table>
+    </div>
+</div>
+</template>
+<template name="rehabTemplate">
+  <div class="container pt-3 title">
+    <h1>Rehabilitation Information</h1>
+    <div class="vstack">
+        <table class="table">
+            <thead>
+                <th scope="col">Number of Patients</th>
+                <th scope="col">Busiest Time</th>
+                <th scope="col">Busiest Day</th>
+            </thead>
+            <tbody>
+                
+            </tbody>
+        </table>
+    </div>
+</div>
+</template>
+<template name="pharmaTemplate">
+  <div class="container pt-3 title">
+    <h1>Pharmacy Information</h1>
+    <div class="vstack">
+        <table class="table">
+            <thead>
+                <th scope="col">Number of Patients</th>
+                <th scope="col">Busiest Time</th>
+                <th scope="col">Busiest Day</th>
+            </thead>
+            <tbody>
+                
+            </tbody>
+        </table>
+    </div>
+</div>
+</template>
+<template name="radioTemplate">
+  <div class="container pt-3 title">
+    <h1>Radiology Information</h1>
     <div class="vstack">
         <table class="table">
             <thead>
