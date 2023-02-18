@@ -34,7 +34,9 @@ Meteor.startup(() => {
   for (beacon of beacons) {
     deviceInformationdb.insert({
       "beaconID": beacon.beaconID,
-      "macAddress": beacon.macAddress
+      "macAddress": beacon.macAddress,
+      "location": null,
+      "previousLocation": null
     });
   }
 
@@ -45,7 +47,7 @@ Meteor.startup(() => {
 
 //the farest away in meters the beacon can be from the radio before it will not update location
 
-const distanceToUpdate = 2;
+const distanceToUpdate = 20;
 //handle request from ble-reciever to update db with location of device
 WebApp.connectHandlers.use("/location", function (req, res, next) {
   if (req.method === 'POST') {
@@ -140,7 +142,19 @@ function updateLocation(beaconMacAddress) {
 
 //add location to beacon
 function addLocation(beaconMacAddress, location, distance) {
-  deviceInformationdb.update({ macAddress: beaconMacAddress }, { $set: { location: location, time: getCurrentTime(), distance: distance } })
+  let locArray=[]
+  let prevArray=[]
+  
+  let beaconToUpdate = deviceInformationdb.findOne({macAddress:beaconMacAddress});
+  
+  prevArray.push(beaconToUpdate.arr)
+  for(let i=0;i<prevArray.length;i++){
+    locArray.push(prevArray[i])
+  }
+
+  deviceInformationdb.update({ macAddress: beaconMacAddress }, { $set: { location: location, time: getCurrentTime(), distance: distance, previousLocation: beaconToUpdate.location, arr:locArray } })
+  
+  
 }
 
 //send all beacons to EHR
