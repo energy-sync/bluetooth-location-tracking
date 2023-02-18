@@ -1,26 +1,38 @@
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Data Overview</title>
+</head>
 <template name="patientOverview">
-  <table class="table">
-    <!--Table  -->
-    <thead>
-      <th scope="col">Department</th>
-      <th scope="col">Time</th>
-      <th scope="col">Day</th>
-      <th scope="col">Current No. of Patients</th>
-      <th scope="col">Busiest Time</th>
-    </thead>
-
-    <tbody>
-      {{#each beacon in beacons}}
-      {{#if isInSearch beacon}}
-      {{> beaconRow beacon=beacon}}
-      {{/if}}
-      {{/each}}
-    </tbody>
-  </table>
+  <div class="container pt-3 title">
+    <h1>General Information Of Patient Locations</h1>
+    <div class="vstack">
+        <table class="table">
+            <thead>
+                <th scope="col">BeaconID</th>
+                <th scope="col">Department</th>
+                <th scope="col">Time of Day</th> 
+                <th scope="col">Day of Week</th>
+            </thead>
+            <tbody>
+              <tr>
+                {{#each beacon in beacons}}
+                  <td val="{{beacon}}">{{beacon.beaconID}}</td>
+                  <td val="{{beacon}}">{{beacon.department}}</td>
+                  <td val="{{beacon}}">{{beacon.time}}</td>
+                  <td val="{{beacon}}">{{beacon.day}}</td>
+                {{/each}}
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
 </template>
 
 <template name="beaconRow">
   <tr class="beaconRow">
+    <td>{{beacon.beaconID}}</td>
     <td>{{beacon.department}}</td>
     <td>{{beacon.time}}</td>
     <td>{{beacon.day}}</td>
