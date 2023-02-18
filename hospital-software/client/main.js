@@ -11,6 +11,7 @@ import "./stylesheets/main.css";
 import "./stylesheets/bootstrap.min.css";
 import "./stylesheets/device-list.css";
 import "./pages/patient-overview.html"; 
+import "./scripts/patient-overview.js";
 
 //inheritance for accessing patient information between templates
 Template.practitioner.inheritsHelpersFrom("patient");

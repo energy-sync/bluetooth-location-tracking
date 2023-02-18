@@ -10,7 +10,7 @@
     <div class="vstack">
         <table class="table">
             <thead>
-                <th scope="col">BeaconID</th>
+                <th scope="col">Beacon Number</th>
                 <th scope="col">Department</th>
                 <th scope="col">Time of Day</th> 
                 <th scope="col">Day of Week</th>
@@ -18,10 +18,7 @@
             <tbody>
               <tr>
                 {{#each beacon in beacons}}
-                  <td val="{{beacon}}">{{beacon.beaconID}}</td>
-                  <td val="{{beacon}}">{{beacon.department}}</td>
-                  <td val="{{beacon}}">{{beacon.time}}</td>
-                  <td val="{{beacon}}">{{beacon.day}}</td>
+                  {{>beaconRow}}
                 {{/each}}
                 </tr>
             </tbody>
@@ -32,7 +29,7 @@
 
 <template name="beaconRow">
   <tr class="beaconRow">
-    <td>{{beacon.beaconID}}</td>
+    <td>{{beacon.beaconNumber}}</td>
     <td>{{beacon.department}}</td>
     <td>{{beacon.time}}</td>
     <td>{{beacon.day}}</td>
