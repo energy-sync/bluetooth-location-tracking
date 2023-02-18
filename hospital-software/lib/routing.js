@@ -28,6 +28,6 @@ FlowRouter.route("/patient/:patientID", {
 FlowRouter.route("/patient-overview", {
     name: "patient-overview",
     action() {
-        this.render("patientOverview");
+        this.render("landing");
     }
 });

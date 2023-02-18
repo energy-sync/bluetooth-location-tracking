@@ -4,6 +4,25 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Data Overview</title>
 </head>
+
+<template name="landing">
+  {{> departments}}
+  {{> patientOverview}}
+</template>
+
+<template name="departments">
+  <p>Select Department to view in more details:</p>
+    <div class="container-fluid w-50">
+        <select class="form-select" id="selectedDepartment">
+            <option value="General Info">General Information</option>
+            {{#each department in departments}}
+            <option value="{{department}}">{{department}}</option>
+            {{/each}}
+        </select>
+    </div>
+</template>
+
+
 <template name="patientOverview">
   <div class="container pt-3 title">
     <h1>General Information Of Patient Locations</h1>
@@ -32,4 +51,22 @@
     <td>{{beacon.time}}</td>
     <td>{{beacon.day}}</td>
   </tr>
+</template>
+
+<template name="surgery">
+  <div class="container pt-3 title">
+    <h1>Surgery Information</h1>
+    <div class="vstack">
+        <table class="table">
+            <thead>
+                <th scope="col">Number of Patients</th>
+                <th scope="col">Busiest Time</th>
+                <th scope="col">Busiest Day</th>
+            </thead>
+            <tbody>
+                
+            </tbody>
+        </table>
+    </div>
+</div>
 </template>
