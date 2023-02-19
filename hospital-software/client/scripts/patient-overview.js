@@ -2,9 +2,18 @@ import { Template } from "meteor/templating";
 import { FlowRouter } from 'meteor/ostrio:flow-router-extra';
 import { dummyBeaconDB } from "../../lib/database";
 
+
+Template.surgeryTemplate.onCreated(function(){
+    this.patientNumSurgery = new ReactiveVar([]);
+
+    Meteor.call('getPatientNum', 'Surgery', (err,res) =>{
+        console.log(res)
+        this.patientNumSurgery.set(res);
+        console.log(this.patientNumSurgery)
+    })
+})
 Template.landing.onCreated(function () {
     this.department = new ReactiveVar('General Info');
-    this.patientNumSurgery = new ReactiveVar();
     this.patientNumGynacology = new ReactiveVar();
     this.patientNumPaediatrics = new ReactiveVar();
     this.patientNumEye = new ReactiveVar();
@@ -20,10 +29,7 @@ Template.landing.onCreated(function () {
     this.patientNumPharmacy = new ReactiveVar();
     this.patientNumRadiology = new ReactiveVar();
 
-    const arrayOfDeparments = ["Surgery", "Gynaecology", "Paediatrics", "Eye", "ENT", "Dental", "Orthopaedics", "Neurology", "Cardiology",
-    "Psychiatry", "Skin", "Plastic Surgery", "Rehabilitation", "Pharmacy", "Radiology"]
-    for (let i = 0; i < arrayOfDeparments.length; i++) {
-        Meteor.call('getPatientNum', arrayOfDeparments[i], (err, res) => {
+        /*Meteor.call('getPatientNum', arrayOfDeparments[i], (err, res) => {
             switch (arrayOfDeparments[i]) {
                 case 'Surgery':
                     console.log('here')
@@ -74,12 +80,12 @@ Template.landing.onCreated(function () {
                     this.patientNumRadiology.set(res);
                     break;
             }
-        })
-    }
+        })*/
 
 })
 
 Template.landing.helpers({
+    
     departments() {
         let departmentArray = ["Surgery", "Gynaecology", "Paediatrics", "Eye", "ENT", "Dental", "Orthopaedics", "Neurology", "Cardiology",
             "Psychiatry", "Skin", "Plastic Surgery", "Rehabilitation", "Pharmacy", "Radiology"];

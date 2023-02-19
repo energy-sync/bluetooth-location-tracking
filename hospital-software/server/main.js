@@ -49,17 +49,51 @@ Meteor.methods({
     return arrayofdevices.map(ids => ids.beaconID);
   },
   getPatientNum: (department) => {
-    let departmentArray = ["Surgery","Gynaecology","Paediatrics","Eye", "ENT","Dental","Orthopaedics","Neurology","Cardiology",
-    "Psychiatry", "Skin", "Plastic Surgery","Rehabilitation", "Pharmacy", "Radiology"];
-    for(let i=0; i<departmentArray.length; i++)
-    {
-      departmentArray[i]
-      let arrayofpatients=dummyBeaconDB.find({department : department}).fetch()
-      
-      let total=arrayofpatients.length;
-      return total;
-    }}
+    let totalNumOfPatients = dummyBeaconDB.find({ department: department }).count()
+    return totalNumOfPatients;
+  },
+  getBusyTime: (department) => {
+    let timeOfDayArray = ["0:00","1:00","2:00","3:00","4:00","5:00","6:00","7:00","8:00","9:00","10:00",
+    "11:00","12:00","13:00","14:00","15:00","16:00","17:00","18:00","19:00","20:00","21:00","22:00","23:00"]
+    let departmentArray = dummyBeaconDB.find({department:department}).fetch()
+    let timesArray = departmentArray.map(times => times.time)
+    for(let i =0; i < timesOfDayArray.length; i++){
+        if(departmentArray[i] > timeOfDayArray[i] && departmentArray[i] < timeOfDayArray[i+1]){
 
+        }
+      }
+  },
+  getBusiestDay: (department)=>{
+      let onSunday = 0;
+      let onMonday = 0;
+      let onTuesday = 0;
+      let onWednesday = 0;
+      let onThursday = 0;
+      let onFriday = 0;
+      let onSaturday = 0;
+      let getBusiestDay;
+      let dayArray = ["Sunday", "Monday", "Tuesday",
+      "Wednesday", "Thursday", "Friday", "Saturday"]
+      let daysWithPatients = []
+      for(let i=0;i<dayArray.length;i++){
+          if(dayArray[i] === 'Sunday'){
+            onSunday = dummyBeaconDB.find({department:department, day:dayArray[i]}).count()
+
+          }else if(dayArray[i] === 'Monday'){
+            onMonday = dummyBeaconDB.find({department:department, day:dayArray[i]}).count()
+          }else if(dayArray[i] === 'Tuesday'){
+            onTuesday = dummyBeaconDB.find({department:department, day:dayArray[i]}).count()
+          }else if(dayArray[i] === 'Wednesday'){
+            onWednesday = dummyBeaconDB.find({department:department, day:dayArray[i]}).count()
+          }else if(dayArray[i] === 'Thursday'){
+            onThursday = dummyBeaconDB.find({department:department, day:dayArray[i]}).count()
+          }else if(dayArray[i] === 'Friday'){
+            onFriday = dummyBeaconDB.find({department:department, day:dayArray[i]}).count()
+          }else if(dayArray[i] === 'Saturday'){
+            onSaturday = dummyBeaconDB.find({department:department, day:dayArray[i]}).count()
+          }
+      }
+  }
 })
 
 function printArray(arr) {
@@ -463,8 +497,8 @@ function generateWaitTime() {
   return waitTime;
 }
 
-function generateRandomBeaconData(numberToGenerate){
-  for(let i=0;i<numberToGenerate;i++){
+function generateRandomBeaconData(numberToGenerate) {
+  for (let i = 0; i < numberToGenerate; i++) {
     dummyBeaconDB.insert({
       'beaconNumber': i,
       'department': getDummyDepartment(),
@@ -476,26 +510,26 @@ function generateRandomBeaconData(numberToGenerate){
 }
 
 function getDummyDepartment() {
-  let departmentArray = ["Surgery","Gynaecology","Paediatrics","Eye", "ENT","Dental","Orthopaedics","Neurology","Cardiology",
-  "Psychiatry", "Skin", "Plastic Surgery","Rehabilitation", "Pharmacy", "Radiology"];
+  let departmentArray = ["Surgery", "Gynaecology", "Paediatrics", "Eye", "ENT", "Dental", "Orthopaedics", "Neurology", "Cardiology",
+    "Psychiatry", "Skin", "Plastic Surgery", "Rehabilitation", "Pharmacy", "Radiology"];
   let department = departmentArray[(getRandomNumber(departmentArray.length))];
   return department;
 }
 
-function getRandomHourMin(){
+function getRandomHourMin() {
   let hour = getRandomNumber(24);
   let minute = getRandomNumber(59);
 
-  if(minute < 10){
+  if (minute < 10) {
     minute = '0' + minute;
   }
   let timeString = hour + ':' + minute;
   return timeString;
 }
 
-function getRandomDayOfWeek(){
-  let dayArray = ["Sunday","Monday", "Tuesday",
-  "Wednesday","Thursday", "Friday","Saturday"]
+function getRandomDayOfWeek() {
+  let dayArray = ["Sunday", "Monday", "Tuesday",
+    "Wednesday", "Thursday", "Friday", "Saturday"]
   let day = dayArray[getRandomNumber(dayArray.length)]
 
   return day;
