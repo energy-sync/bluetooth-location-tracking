@@ -58,7 +58,7 @@ Meteor.methods({
     let departmentArray = dummyBeaconDB.find({department:department}).fetch()
     let timesArray = departmentArray.map(times => times.time)
     for(let i =0; i < timesOfDayArray.length; i++){
-        if(departmentArray[i] > timeOfDayArray[i] && departmentArray[i] < timeOfDayArray[i+1]){
+        if(timesArray[i] > timeOfDayArray[i] && timesArray[i] < timeOfDayArray[i+1]){
 
         }
       }

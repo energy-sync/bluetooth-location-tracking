@@ -42,14 +42,14 @@
   {{#if neuro}}
   {{> neuroTemplate}}
   {{/if}}
-  {{#if carido}}
+  {{#if cardio}}
   {{> cardioTemplate}}
   {{/if}}
   {{#if psych}}
   {{> psychTemplate}}
   {{/if}}
   {{#if skin}}
-  {{> skin}}
+  {{> skinTemplate}}
   {{/if}}
   {{#if plasticSurgery}}
   {{> plasticSurgeryTemplate}}
@@ -106,9 +106,10 @@
                 <th scope="col">Busiest Day</th>
             </thead>
             <tbody>
+                {{patientNum}}
               <tr class="surgeryRow">
                 <td>{{patientNumSurgery}}</td>
-              </tr>
+            </tr>
             </tbody>
         </table>
     </div>
@@ -126,12 +127,10 @@
                 <th scope="col">Busiest Day</th>
             </thead>
             <tbody>
+                {{patientNum}}
               <tr class="gynoRow">
-                <td>{{beacon.beaconNumber}}</td>
-                <td>{{beacon.department}}</td>
-                <td>{{beacon.time}}</td>
-                <td>{{beacon.day}}</td>
-              </tr>
+                <td>{{patientNumGynacology}}</td>
+            </tr>
             </tbody>
         </table>
     </div>
@@ -148,7 +147,10 @@
                 <th scope="col">Busiest Day</th>
             </thead>
             <tbody>
-                
+                {{patientNum}}
+              <tr class="paedsRow">
+                <td>{{patientNumPaediatrics}}</td>
+            </tr>
             </tbody>
         </table>
     </div>
@@ -165,7 +167,10 @@
                 <th scope="col">Busiest Day</th>
             </thead>
             <tbody>
-                
+                {{patientNum}}
+                <tr class="eyeRow">
+                  <td>{{patientNumEye}}</td>
+              </tr>
             </tbody>
         </table>
     </div>
@@ -182,7 +187,10 @@
                 <th scope="col">Busiest Day</th>
             </thead>
             <tbody>
-                
+                {{patientNum}}
+                <tr class="entRow">
+                  <td>{{patientNumENT}}</td>
+              </tr>
             </tbody>
         </table>
     </div>
@@ -199,7 +207,10 @@
                 <th scope="col">Busiest Day</th>
             </thead>
             <tbody>
-                
+                {{patientNum}}
+                <tr class="dentalRow">
+                  <td>{{patientNumDental}}</td>
+              </tr>
             </tbody>
         </table>
     </div>
@@ -216,7 +227,10 @@
                 <th scope="col">Busiest Day</th>
             </thead>
             <tbody>
-                
+                {{patientNum}}
+                <tr class="orthoRow">
+                  <td>{{patientNumOrthopaedics}}</td>
+              </tr>
             </tbody>
         </table>
     </div>
@@ -234,7 +248,10 @@
                 <th scope="col">Busiest Day</th>
             </thead>
             <tbody>
-                
+                {{patientNum}}
+                <tr class="neruoRow">
+                  <td>{{patientNumNeurology}}</td>
+              </tr>
             </tbody>
         </table>
     </div>
@@ -251,7 +268,10 @@
                 <th scope="col">Busiest Day</th>
             </thead>
             <tbody>
-                
+                {{patientNum}}
+                <tr class="cardioRow">
+                  <td>{{patientNumCardiology}}</td>
+              </tr>
             </tbody>
         </table>
     </div>
@@ -268,7 +288,10 @@
                 <th scope="col">Busiest Day</th>
             </thead>
             <tbody>
-                
+                {{patientNum}}
+                <tr class="psychRow">
+                  <td>{{patientNumPsychiatry}}</td>
+              </tr>
             </tbody>
         </table>
     </div>
@@ -285,7 +308,10 @@
                 <th scope="col">Busiest Day</th>
             </thead>
             <tbody>
-                
+                {{patientNum}}
+                <tr class="skinRow">
+                  <td>{{patientNumSkin}}</td>
+              </tr>
             </tbody>
         </table>
     </div>
@@ -303,7 +329,10 @@
                 <th scope="col">Busiest Day</th>
             </thead>
             <tbody>
-                
+                {{patientNum}}
+                <tr class="plasticSurgeryRow">
+                  <td>{{patientNumPlasticSurgery}}</td>
+              </tr>
             </tbody>
         </table>
     </div>
@@ -320,7 +349,10 @@
                 <th scope="col">Busiest Day</th>
             </thead>
             <tbody>
-                
+                {{patientNum}}
+                <tr class="rehabRow">
+                  <td>{{patientNumRehaby}}</td>
+              </tr>
             </tbody>
         </table>
     </div>
@@ -337,7 +369,10 @@
                 <th scope="col">Busiest Day</th>
             </thead>
             <tbody>
-                
+                {{patientNum}}
+                <tr class="pharmaRow">
+                  <td>{{patientNumPharmacy}}</td>
+              </tr>
             </tbody>
         </table>
     </div>
@@ -354,7 +389,10 @@
                 <th scope="col">Busiest Day</th>
             </thead>
             <tbody>
-                
+                {{patientNum}}
+                <tr class="radioRow">
+                  <td>{{patientNumRadiolog}}</td>
+              </tr>
             </tbody>
         </table>
     </div>

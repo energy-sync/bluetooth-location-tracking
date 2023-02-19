@@ -20,20 +20,3 @@ Template.dermatology.inheritsHelpersFrom("patient");
 Template.vitals.inheritsHelpersFrom("patient");
 Template.labWork.inheritsHelpersFrom("patient");
 Template.prescriptions.inheritsHelpersFrom("patient");
-
-//inheritance for accessing information from db on data anaylsis page
-Template.surgeryTemplate.inheritsHelpersFrom('landing');
-Template.gynoTemplate.inheritsHelpersFrom('landing');
-Template.paedsTemplate.inheritsHelpersFrom('landing');
-Template.eyeTemplate.inheritsHelpersFrom('landing');
-Template.entTemplate.inheritsHelpersFrom('landing');
-Template.dentalTemplate.inheritsHelpersFrom('landing');
-Template.orthoTemplate.inheritsHelpersFrom('landing');
-Template.neuroTemplate.inheritsHelpersFrom('landing');
-Template.cardioTemplate.inheritsHelpersFrom('landing');
-Template.psychTemplate.inheritsHelpersFrom('landing');
-Template.skinTemplate.inheritsHelpersFrom('landing');
-Template.plasticSurgeryTemplate.inheritsHelpersFrom('landing');
-Template.rehabTemplate.inheritsHelpersFrom('landing');
-Template.pharmaTemplate.inheritsHelpersFrom('landing');
-Template.radioTemplate.inheritsHelpersFrom('landing');
