@@ -4,6 +4,7 @@ import '../lib/database.js';
 import { patientInformationdb } from "../lib/database"
 import { dummyBeaconDB } from '../lib/database';
 import { WebApp } from 'meteor/webapp';
+
 let arrayofdevices = [];
 
 Meteor.startup(() => {
@@ -48,10 +49,14 @@ Meteor.methods({
     //printArray(arrayofdevices)
     return arrayofdevices.map(ids => ids.beaconID);
   },
+
+  //get number of patients in department
   getPatientNum: (department) => {
     let totalNumOfPatients = dummyBeaconDB.find({ department: department }).count()
     return totalNumOfPatients;
   },
+
+  //get busy time of day in department
   getBusyTime: (department) => {
     let timeOfDayArray = ["0:00","1:00","2:00","3:00","4:00","5:00","6:00","7:00","8:00","9:00","10:00",
     "11:00","12:00","13:00","14:00","15:00","16:00","17:00","18:00","19:00","20:00","21:00","22:00","23:00"]
@@ -63,36 +68,63 @@ Meteor.methods({
         }
       }
   },
+
+  //get the busiest day of each department
   getBusiestDay: (department)=>{
-      let onSunday = 0;
-      let onMonday = 0;
-      let onTuesday = 0;
-      let onWednesday = 0;
-      let onThursday = 0;
-      let onFriday = 0;
-      let onSaturday = 0;
-      let getBusiestDay;
+      let sunday = 0;
+      let monday = 0;
+      let tuesday = 0;
+      let wednesday = 0;
+      let thursday = 0;
+      let friday = 0;
+      let saturday = 0;
+      let busiestDay;
       let dayArray = ["Sunday", "Monday", "Tuesday",
       "Wednesday", "Thursday", "Friday", "Saturday"]
       let daysWithPatients = []
       for(let i=0;i<dayArray.length;i++){
           if(dayArray[i] === 'Sunday'){
-            onSunday = dummyBeaconDB.find({department:department, day:dayArray[i]}).count()
-
+            sunday = dummyBeaconDB.find({department:department, day:dayArray[i]}).count()
+            daysWithPatients.push(sunday)
           }else if(dayArray[i] === 'Monday'){
-            onMonday = dummyBeaconDB.find({department:department, day:dayArray[i]}).count()
+            monday = dummyBeaconDB.find({department:department, day:dayArray[i]}).count()
+            daysWithPatients.push(monday)
           }else if(dayArray[i] === 'Tuesday'){
-            onTuesday = dummyBeaconDB.find({department:department, day:dayArray[i]}).count()
+            tuesday = dummyBeaconDB.find({department:department, day:dayArray[i]}).count()
+            daysWithPatients.push(tuesday)
           }else if(dayArray[i] === 'Wednesday'){
-            onWednesday = dummyBeaconDB.find({department:department, day:dayArray[i]}).count()
+            wednesday = dummyBeaconDB.find({department:department, day:dayArray[i]}).count()
+            daysWithPatients.push(wednesday)
           }else if(dayArray[i] === 'Thursday'){
-            onThursday = dummyBeaconDB.find({department:department, day:dayArray[i]}).count()
+            thursday = dummyBeaconDB.find({department:department, day:dayArray[i]}).count()
+            daysWithPatients.push(thursday)
           }else if(dayArray[i] === 'Friday'){
-            onFriday = dummyBeaconDB.find({department:department, day:dayArray[i]}).count()
+            friday = dummyBeaconDB.find({department:department, day:dayArray[i]}).count()
+            daysWithPatients.push(friday)
           }else if(dayArray[i] === 'Saturday'){
-            onSaturday = dummyBeaconDB.find({department:department, day:dayArray[i]}).count()
+            saturday = dummyBeaconDB.find({department:department, day:dayArray[i]}).count()
+            daysWithPatients.push(saturday)
           }
       }
+      let largest = Math.max.apply(Math, daysWithPatients);
+      
+      if(largest === sunday){
+        busiestDay = 'Sunday'
+      }else if(largest === monday){
+        busiestDay = 'Monday'
+      }else if(largest === tuesday){
+        busiestDay = 'Tuesday'
+      }else if(largest === wednesday){
+        busiestDay = 'Wednesday'
+      }else if(largest === thursday){
+        busiestDay = 'Thursday'
+      }else if(largest === friday){
+        busiestDay = 'Friday'
+      }else if(largest === saturday){
+        busiestDay = 'Saturday'
+      }
+
+      return busiestDay;
   }
 })
 
@@ -223,7 +255,7 @@ function storeInfo(body) {
 
 //function to update location
 function updateLocation(beaconID, location) {
-  patientInformationdb.update({ beaconID: beaconID }, { $set: { location: location, timeOfUpdate: getCurrentTime() } })
+  patientInformationdb.update({ beaconID: beaconID }, { $set: { location: location, timeOfUpdate: getCurrentTime(), waitTime: waitTime() } })
 }
 
 //function to get current time
@@ -533,4 +565,28 @@ function getRandomDayOfWeek() {
   let day = dayArray[getRandomNumber(dayArray.length)]
 
   return day;
+}
+
+function waitTime(){
+  let time = moment.updateLocale('en',{
+    relativeTime: {
+      future: "in %s",
+      past: "%s ",
+      s: 'a second',
+      ss: '%d seconds',
+      m: "a minute",
+      mm: "%d minutes",
+      h: "an hour",
+      hh: "%d hours",
+      d: "a day",
+      dd: "%d days",
+      M: "a month",
+      MM: "%d months",
+      y: "a year",
+      yy: "%d years"
+  }
+  })
+  let waitTime = moment().fromNow();
+  console.log(waitTime)
+  return waitTime
 }
