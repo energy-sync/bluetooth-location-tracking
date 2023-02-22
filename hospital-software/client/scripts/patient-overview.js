@@ -2,12 +2,18 @@ import { Template } from "meteor/templating";
 import { FlowRouter } from 'meteor/ostrio:flow-router-extra';
 import { dummyBeaconDB } from "../../lib/database";
 
+const daysArray = ["Sunday", "Monday", "Tuesday",
+"Wednesday", "Thursday", "Friday", "Saturday"]
 
 Template.surgeryTemplate.onCreated(function () {
     this.patientNumSurgery = new ReactiveVar([]);
     this.busiestDaySurgery = new ReactiveVar([]);
     this.busiestTimeSurgery = new ReactiveVar([]);
+    this.data = new ReactiveVar([]);
 
+    Meteor.call('getNumberOfPeoplePerDay', 'Surgery', (err,res)=>{
+        this.data.set(res)
+    })
     Meteor.call('getPatientNum', 'Surgery', (err, res) => {
         this.patientNumSurgery.set(res);
     })

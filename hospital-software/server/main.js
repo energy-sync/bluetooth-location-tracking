@@ -226,6 +226,19 @@ Meteor.methods({
       return busiestTime;
   },
 
+  getNumberOfPeoplePerDay : (department)=>{
+    let dayArray = ["Sunday", "Monday", "Tuesday",
+    "Wednesday", "Thursday", "Friday", "Saturday"]
+    let dataArray = []
+
+    for(let i =0;i<dayArray.length;i++){
+      data = dummyBeaconDB.find({department:department, day:dayArray[i]}).count()
+      dataArray.push(data)
+    }
+
+    return dataArray;
+  },
+
   //get the busiest day of each department
   getBusiestDay: (department)=>{
       let sunday = 0;
