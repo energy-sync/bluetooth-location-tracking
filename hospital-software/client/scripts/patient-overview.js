@@ -126,7 +126,7 @@ Template.psychTemplate.onCreated(function(){
 })
 Template.skinTemplate.onCreated(function(){
     this.patientNumSkin = new ReactiveVar([]);
-    this.busiestDaySurgery = new ReactiveVar([]);
+    this.busiestDaySkin = new ReactiveVar([]);
 
     Meteor.call('getPatientNum', 'Skin', (err,res) =>{
         this.patientNumSkin.set(res);
