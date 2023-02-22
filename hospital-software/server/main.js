@@ -13,7 +13,7 @@ Meteor.startup(() => {
   dummyBeaconDB.remove({});
   generateRealPatients(6);
   generateDummyPatients(50);
-  generateRandomBeaconData(100);
+  generateRandomBeaconData(500);
 });
 
 //gets beacons from http request
@@ -233,9 +233,8 @@ Meteor.methods({
 
     for(let i =0;i<dayArray.length;i++){
       data = dummyBeaconDB.find({department:department, day:dayArray[i]}).count()
-      dataArray.push(data)
+      dataArray.push([dayArray[i],data])
     }
-
     return dataArray;
   },
 
