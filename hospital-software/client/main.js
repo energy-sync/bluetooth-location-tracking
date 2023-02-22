@@ -11,19 +11,9 @@ import "./stylesheets/main.css";
 import "./stylesheets/bootstrap.min.css";
 import "./stylesheets/device-list.css";
 import "./pages/patient-overview.html";
-import "./scripts/tracker.html";
+import "./pages/Visual.html";
 
 
-Session.setDefault('currentLocation', 'Unknown');
-Session.setDefault('locations', []);
-
-Template.body.onCreated(function bodyOnCreated() {
-  // updates on the current location and locations
-  setInterval(() => {
-    Session.set('currentLocation', 'Floor A, Floor 1, Room 143');
-    Session.set('locations', ['Floor A, Floor 2, Room 115', 'Building B, Floor 3, Room 106']);
-  }, 5000);
-});
 
 //inheritance for accessing patient information between templates
 Template.practitioner.inheritsHelpersFrom("patient");
