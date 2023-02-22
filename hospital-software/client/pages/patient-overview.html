@@ -90,7 +90,7 @@
     <tr class="beaconRow">
         <td>{{beacon.beaconNumber}}</td>
         <td>{{beacon.department}}</td>
-        <td>{{beacon.time}}</td>
+        <td>{{beacon.hour}}:{{beacon.minute}}</td>
         <td>{{beacon.day}}</td>
     </tr>
 </template>
@@ -107,10 +107,9 @@
                 </thead>
                 <tbody>
                     <tr class="surgeryRow">
-                        {{patientNum}}
-                        <td>{{patientNumSurgery}}</td>
-                        {{busiestDay}}
-                        <td>{{busiestDaySurgery}}</td>
+                        <td>{{patientNum}}</td>
+                        <td>{{busiestTime}} </td>
+                        <td>{{busiestDay}}</td>
                     </tr>
                 </tbody>
             </table>
@@ -130,10 +129,9 @@
                 </thead>
                 <tbody>
                     <tr class="gynoRow">
-                        {{patientNum}}
-                        <td>{{patientNumGynacology}}</td>
-                        {{busiestDay}}
-                        <td>{{busiestDayGynaecology}}</td>
+                        <td>{{patientNum}}</td>
+                        <td>{{busiestTime}} </td>
+                        <td>{{busiestDay}}</td>
                     </tr>
                 </tbody>
             </table>
@@ -152,10 +150,9 @@
                 </thead>
                 <tbody>
                     <tr class="paedsRow">
-                        {{patientNum}}
-                        <td>{{patientNumPediatrics}}</td>
-                        {{busiestDay}}
-                        <td>{{busiestDayPediatrics}}</td>
+                        <td>{{patientNum}}</td>
+                        <td>{{busiestTime}} </td>
+                        <td>{{busiestDay}}</td>
                     </tr>
                 </tbody>
             </table>
@@ -174,10 +171,9 @@
                 </thead>
                 <tbody>
                     <tr class="eyeRow">
-                        {{patientNum}}
-                        <td>{{patientNumEye}}</td>
-                        {{busiestDay}}
-                        <td>{{busiestDayEye}}</td>
+                        <td>{{patientNum}}</td>
+                        <td>{{busiestTime}} </td>
+                        <td>{{busiestDay}}</td>
                     </tr>
                 </tbody>
             </table>
@@ -196,10 +192,9 @@
                 </thead>
                 <tbody>
                     <tr class="entRow">
-                        {{patientNum}}
-                        <td>{{patientNumENT}}</td>
-                        {{busiestDay}}
-                        <td>{{busiestDayENT}}</td>
+                        <td>{{patientNum}}</td>
+                        <td>{{busiestTime}} </td>
+                        <td>{{busiestDay}}</td>
                     </tr>
                 </tbody>
             </table>
@@ -219,10 +214,9 @@
                 <tbody>
 
                     <tr class="dentalRow">
-                        {{patientNum}}
-                        <td>{{patientNumDental}}</td>
-                        {{busiestDay}}
-                        <td>{{busiestDayDental}}</td>
+                        <td>{{patientNum}}</td>
+                        <td>{{busiestTime}} </td>
+                        <td>{{busiestDay}}</td>
                     </tr>
                 </tbody>
             </table>
@@ -242,10 +236,9 @@
                 <tbody>
 
                     <tr class="orthoRow">
-                        {{patientNum}}
-                        <td>{{patientNumOrthopaedics}}</td>
-                        {{busiestDay}}
-                        <td>{{busiestDayOrthopaedics}}</td>
+                        <td>{{patientNum}}</td>
+                        <td>{{busiestTime}} </td>
+                        <td>{{busiestDay}}</td>
                     </tr>
                 </tbody>
             </table>
@@ -266,10 +259,9 @@
                 <tbody>
 
                     <tr class="neruoRow">
-                        {{patientNum}}
-                        <td>{{patientNumNeurology}}</td>
-                        {{busiestDay}}
-                        <td>{{busiestDayNeurology}}</td>
+                        <td>{{patientNum}}</td>
+                        <td>{{busiestTime}} </td>
+                        <td>{{busiestDay}}</td>
                     </tr>
                 </tbody>
             </table>
@@ -289,10 +281,9 @@
                 <tbody>
 
                     <tr class="cardioRow">
-                        {{patientNum}}
-                        <td>{{patientNumCardiology}}</td>
-                        {{busiestDay}}
-                        <td>{{busiestDayCardiology}}</td>
+                        <td>{{patientNum}}</td>
+                        <td>{{busiestTime}} </td>
+                        <td>{{busiestDay}}</td>
                     </tr>
                 </tbody>
             </table>
@@ -312,10 +303,9 @@
                 <tbody>
 
                     <tr class="psychRow">
-                        {{patientNum}}
-                        <td>{{patientNumPsychiatry}}</td>
-                        {{busiestDay}}
-                        <td>{{busiestDayPsychiatry}}</td>
+                        <td>{{patientNum}}</td>
+                        <td>{{busiestTime}} </td>
+                        <td>{{busiestDay}}</td>
                     </tr>
                 </tbody>
             </table>
@@ -335,10 +325,9 @@
                 <tbody>
 
                     <tr class="skinRow">
-                        {{patientNum}}
-                        <td>{{patientNumSkin}}</td>
-                        {{busiestDay}}
-                        <td>{{busiestDaySkin}}</td>
+                        <td>{{patientNum}}</td>
+                        <td>{{busiestTime}} </td>
+                        <td>{{busiestDay}}</td>
                     </tr>
                 </tbody>
             </table>
@@ -359,10 +348,9 @@
                 <tbody>
 
                     <tr class="plasticSurgeryRow">
-                        {{patientNum}}
-                        <td>{{patientNumPlasticSurgery}}</td>
-                        {{busiestDay}}
-                        <td>{{busiestDayPlasticSurgery}}</td>
+                        <td>{{patientNum}}</td>
+                        <td>{{busiestTime}} </td>
+                        <td>{{busiestDay}}</td>
                     </tr>
                 </tbody>
             </table>
@@ -382,10 +370,9 @@
                 <tbody>
 
                     <tr class="rehabRow">
-                        {{patientNum}}
-                        <td>{{patientNumRehab}}</td>
-                        {{busiestDay}}
-                        <td>{{busiestDayRehab}}</td>
+                        <td>{{patientNum}}</td>
+                        <td>{{busiestTime}} </td>
+                        <td>{{busiestDay}}</td>
                     </tr>
                 </tbody>
             </table>
@@ -405,10 +392,9 @@
                 <tbody>
 
                     <tr class="pharmaRow">
-                        {{patientNum}}
-                        <td>{{patientNumPharmacy}}</td>
-                        {{busiestDay}}
-                        <td>{{busiestDayPharmacy}}</td>
+                        <td>{{patientNum}}</td>
+                        <td>{{busiestTime}} </td>
+                        <td>{{busiestDay}}</td>
                     </tr>
                 </tbody>
             </table>
@@ -428,10 +414,9 @@
                 <tbody>
 
                     <tr class="radioRow">
-                        {{patientNum}}
-                        <td>{{patientNumRadiology}}</td>
-                        {{busiestDay}}
-                        <td>{{busiestDayRadiology}}</td>
+                        <td>{{patientNum}}</td>
+                        <td>{{busiestTime}} </td>
+                        <td>{{busiestDay}}</td>
                     </tr>
                 </tbody>
             </table>

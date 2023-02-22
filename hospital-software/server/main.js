@@ -55,24 +55,175 @@ Meteor.methods({
     let totalNumOfPatients = dummyBeaconDB.find({ department: department }).count()
     return totalNumOfPatients;
   },
+  getTimes: (department)=>{
+    let info = dummyBeaconDB.find({department:department}).fetch()
+    return info.map(times => times.time)
+  },
+  getDays: (department)=>{
+    let info = dummyBeaconDB.find({department:department}).fetch()
+    return info.map(days => days.day)
+  },
 
   //get busy time of day in department
   getBusyTime: (department) => {
-    let timeOfDayArray = ["0:00","1:00","2:00","3:00","4:00","5:00","6:00","7:00","8:00","9:00","10:00",
-    "11:00","12:00","13:00","14:00","15:00","16:00","17:00","18:00","19:00","20:00","21:00","22:00","23:00"]
-    let departmentArray = dummyBeaconDB.find({department:department}).fetch()
-    let timesArray = departmentArray.map(times => times.time)
-    for(let i =0; i < timesOfDayArray.length; i++){
-        let target = moment(timesArray[i], 'h:mm')
-        let startTime = moment(timeOfDayArray[i], 'h:mm')
-        let endTime = moment(timeOfDayArray[i+1], 'h:mm')
-        if(endTime === null){
-          endTime = moment(timeOfDayArray[0], 'h:mm')
-        }
-        if(target.isBefore(endTime) && target){
+    let timeOfDayArray = [0,1,2,3,4,5,6,7,8,9,10,
+    11,12,13,14,15,16,17,18,19,20,21,22,23]
+    let hourWithPatients = [];
+    let hour0 = 0;
+    let hour1 = 0;
+    let hour2 = 0;
+    let hour3 = 0;
+    let hour4 = 0;
+    let hour5 = 0;
+    let hour6 = 0;
+    let hour7 = 0;
+    let hour8 = 0;
+    let hour9 = 0;
+    let hour10 = 0;
+    let hour11 = 0;
+    let hour12 = 0;
+    let hour13 = 0;
+    let hour14 = 0;
+    let hour15 = 0;
+    let hour16 = 0;
+    let hour17 = 0;
+    let hour18 = 0;
+    let hour19 = 0;
+    let hour20 = 0;
+    let hour21 = 0;
+    let hour22 = 0;
+    let hour23 = 0;
+    let busiestTime;
 
+    for(let i =0; i < timeOfDayArray.length; i++){
+        if(timeOfDayArray[i] === 0){
+          hour0 = dummyBeaconDB.find({department:department, hour:timeOfDayArray[i]}).count()
+          hourWithPatients.push(hour0)
+        }else if(timeOfDayArray[i] === 1){
+          hour1 = dummyBeaconDB.find({department:department, hour:timeOfDayArray[i]}).count() 
+          hourWithPatients.push(hour1)
+        }else if(timeOfDayArray[i] === 2){
+          hour2 = dummyBeaconDB.find({department:department, hour:timeOfDayArray[i]}).count()
+          hourWithPatients.push(hour2)
+        }else if(timeOfDayArray[i] === 3){
+          hour3 = dummyBeaconDB.find({department:department, hour:timeOfDayArray[i]}).count()
+          hourWithPatients.push(hour3)
+        }else if(timeOfDayArray[i] === 4){
+          hour4 = dummyBeaconDB.find({department:department, hour:timeOfDayArray[i]}).count()
+          hourWithPatients.push(hour4)
+        }else if(timeOfDayArray[i] === 5){
+          hour5 = dummyBeaconDB.find({department:department, hour:timeOfDayArray[i]}).count()
+          hourWithPatients.push(hour5)
+        }else if(timeOfDayArray[i] === 6){
+          hour6 = dummyBeaconDB.find({department:department, hour:timeOfDayArray[i]}).count()
+          hourWithPatients.push(hour6)
+        }else if(timeOfDayArray[i] === 7){
+          hour7 = dummyBeaconDB.find({department:department, hour:timeOfDayArray[i]}).count()
+          hourWithPatients.push(hour7)
+        }else if(timeOfDayArray[i] === 8){
+          hour8 = dummyBeaconDB.find({department:department, hour:timeOfDayArray[i]}).count()
+          hourWithPatients.push(hour8)
+        }else if(timeOfDayArray[i] === 9){
+          hour9 = dummyBeaconDB.find({department:department, hour:timeOfDayArray[i]}).count()
+          hourWithPatients.push(hour9)
+        }else if(timeOfDayArray[i] === 10){
+          hour10 = dummyBeaconDB.find({department:department, hour:timeOfDayArray[i]}).count()
+          hourWithPatients.push(hour10)
+        }else if(timeOfDayArray[i] === 11){
+          hour11 = dummyBeaconDB.find({department:department, hour:timeOfDayArray[i]}).count()
+          hourWithPatients.push(hour11)
+        }else if(timeOfDayArray[i] === 12){
+          hour12 = dummyBeaconDB.find({department:department, hour:timeOfDayArray[i]}).count()
+          hourWithPatients.push(hour12)
+        }else if(timeOfDayArray[i] === 13){
+          hour13 = dummyBeaconDB.find({department:department, hour:timeOfDayArray[i]}).count()
+          hourWithPatients.push(hour13)
+        }else if(timeOfDayArray[i] === 14){
+          hour14 = dummyBeaconDB.find({department:department, hour:timeOfDayArray[i]}).count()
+          hourWithPatients.push(hour14)
+        }else if(timeOfDayArray[i] === 15){
+          hour15 = dummyBeaconDB.find({department:department, hour:timeOfDayArray[i]}).count()
+          hourWithPatients.push(hour15)
+        }else if(timeOfDayArray[i] === 16){
+          hour16 = dummyBeaconDB.find({department:department, hour:timeOfDayArray[i]}).count()
+          hourWithPatients.push(hour16)
+        }else if(timeOfDayArray[i] === 17){
+          hour17 = dummyBeaconDB.find({department:department, hour:timeOfDayArray[i]}).count()
+          hourWithPatients.push(hour17)
+        }else if(timeOfDayArray[i] === 18){
+          hour18 = dummyBeaconDB.find({department:department, hour:timeOfDayArray[i]}).count()
+          hourWithPatients.push(hour18)
+        }else if(timeOfDayArray[i] === 19){
+          hour19 = dummyBeaconDB.find({department:department, hour:timeOfDayArray[i]}).count()
+          hourWithPatients.push(hour19)
+        }else if(timeOfDayArray[i] === 20){
+          hour20 = dummyBeaconDB.find({department:department, hour:timeOfDayArray[i]}).count()
+          hourWithPatients.push(hour20)
+        }else if(timeOfDayArray[i] === 21){
+          hour21 = dummyBeaconDB.find({department:department, hour:timeOfDayArray[i]}).count()
+          hourWithPatients.push(hour21)
+        }else if(timeOfDayArray[i] === 22){
+          hour22 = dummyBeaconDB.find({department:department, hour:timeOfDayArray[i]}).count()
+          hourWithPatients.push(hour22)
+        }else if(timeOfDayArray[i] === 23){
+          hour23 = dummyBeaconDB.find({department:department, hour:timeOfDayArray[i]}).count()
+          hourWithPatients.push(hour23)
         }
       }
+
+      let largest = Math.max.apply(Math, hourWithPatients);
+
+      if(largest === hour0){
+        busiestTime = '0:00'
+      }else if(largest === hour1){
+        busiestTime = '1:00'
+      }else if(largest === hour2){
+        busiestTime = '2:00'
+      }else if(largest === hour3){
+        busiestTime = '3:00'
+      }else if(largest === hour4){
+        busiestTime = '4:00'
+      }else if(largest === hour5){
+        busiestTime = '5:00'
+      }else if(largest === hour6){
+        busiestTime = '6:00'
+      }else if(largest === hour7){
+        busiestTime = '7:00'
+      }else if(largest === hour8){
+        busiestTime = '8:00'
+      }else if(largest === hour9){
+        busiestTime = '9:00'
+      }else if(largest === hour10){
+        busiestTime = '10:00'
+      }else if(largest === hour11){
+        busiestTime = '11:00'
+      }else if(largest === hour12){
+        busiestTime = '12:00'
+      }else if(largest === hour13){
+        busiestTime = '13:00'
+      }else if(largest === hour14){
+        busiestTime = '14:00'
+      }else if(largest === hour15){
+        busiestTime = '15:00'
+      }else if(largest === hour16){
+        busiestTime = '16:00'
+      }else if(largest === hour17){
+        busiestTime = '17:00'
+      }else if(largest === hour18){
+        busiestTime = '18:00'
+      }else if(largest === hour19){
+        busiestTime = '19:00'
+      }else if(largest === hour20){
+        busiestTime = '20:00'
+      }else if(largest === hour21){
+        busiestTime = '21:00'
+      }else if(largest === hour22){
+        busiestTime = '22:00'
+      }else if(largest === hour23){
+        busiestTime = '23:00'
+      }
+      
+      return busiestTime;
   },
 
   //get the busiest day of each department
@@ -540,7 +691,8 @@ function generateRandomBeaconData(numberToGenerate) {
     dummyBeaconDB.insert({
       'beaconNumber': i,
       'department': getDummyDepartment(),
-      'time': getRandomHourMin(),
+      'hour': getRandomHour(),
+      'minute': getRandomMinute(),
       'day': getRandomDayOfWeek()
     })
 
@@ -554,15 +706,18 @@ function getDummyDepartment() {
   return department;
 }
 
-function getRandomHourMin() {
+function getRandomHour() {
   let hour = getRandomNumber(24);
+  return hour;
+}
+
+function getRandomMinute(){
   let minute = getRandomNumber(59);
 
   if (minute < 10) {
     minute = '0' + minute;
   }
-  let timeString = hour + ':' + minute;
-  return timeString;
+  return minute;
 }
 
 function getRandomDayOfWeek() {
