@@ -29,15 +29,15 @@ Template.gynoTemplate.onCreated(function(){
     })
 })
 Template.paedsTemplate.onCreated(function(){
-    this.patientNumPaediatrics = new ReactiveVar([]);
-    this.busiestDayPaediatrics = new ReactiveVar([]);
+    this.patientNumPediatrics = new ReactiveVar([]);
+    this.busiestDayPediatrics = new ReactiveVar([]);
 
-    Meteor.call('getPatientNum', 'Paediatrics', (err,res) =>{
-        this.patientNumPaediatrics.set(res);
+    Meteor.call('getPatientNum', 'Pediatrics', (err,res) =>{
+        this.patientNumPediatrics.set(res);
     })
 
-    Meteor.call('getBusiestDay', 'Paediatrics', (err,res)=>{
-        this.busiestDayPaediatrics.set(res);
+    Meteor.call('getBusiestDay', 'Pediatrics', (err,res)=>{
+        this.busiestDayPediatrics.set(res);
     })
 })
 Template.eyeTemplate.onCreated(function(){
@@ -197,7 +197,7 @@ Template.landing.onCreated(function () {
 //all the helpers for landing page
 Template.landing.helpers({
     departments() {
-        let departmentArray = ["Surgery", "Gynaecology", "Paediatrics", "Eye", "ENT", "Dental", "Orthopaedics", "Neurology", "Cardiology",
+        let departmentArray = ["Surgery", "Gynaecology", "Pediatrics", "Eye", "ENT", "Dental", "Orthopaedics", "Neurology", "Cardiology",
             "Psychiatry", "Skin", "Plastic Surgery", "Rehabilitation", "Pharmacy", "Radiology"];
         return departmentArray;
     },
@@ -211,7 +211,7 @@ Template.landing.helpers({
         return Template.instance().department.get() === 'Gynaecology'
     },
     paeds(){
-        return Template.instance().department.get() === 'Paediatrics'
+        return Template.instance().department.get() === 'Pediatrics'
     },
     eye(){
         return Template.instance().department.get() === 'Eye'
@@ -273,10 +273,10 @@ Template.gynoTemplate.helpers({
 })
 Template.paedsTemplate.helpers({
     patientNum(){
-        return Template.instance().patientNumPaediatrics.get()
+        return Template.instance().patientNumPediatrics.get()
     },
     busiestDay(){
-        return Template.instance().busiestDayPaediatrics.get()
+        return Template.instance().busiestDayPediatrics.get()
     }
 })
 Template.eyeTemplate.helpers({

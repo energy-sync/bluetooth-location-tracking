@@ -63,7 +63,13 @@ Meteor.methods({
     let departmentArray = dummyBeaconDB.find({department:department}).fetch()
     let timesArray = departmentArray.map(times => times.time)
     for(let i =0; i < timesOfDayArray.length; i++){
-        if(timesArray[i] > timeOfDayArray[i] && timesArray[i] < timeOfDayArray[i+1]){
+        let target = moment(timesArray[i], 'h:mm')
+        let startTime = moment(timeOfDayArray[i], 'h:mm')
+        let endTime = moment(timeOfDayArray[i+1], 'h:mm')
+        if(endTime === null){
+          endTime = moment(timeOfDayArray[0], 'h:mm')
+        }
+        if(target.isBefore(endTime) && target){
 
         }
       }
@@ -542,7 +548,7 @@ function generateRandomBeaconData(numberToGenerate) {
 }
 
 function getDummyDepartment() {
-  let departmentArray = ["Surgery", "Gynaecology", "Paediatrics", "Eye", "ENT", "Dental", "Orthopaedics", "Neurology", "Cardiology",
+  let departmentArray = ["Surgery", "Gynaecology", "Pediatrics", "Eye", "ENT", "Dental", "Orthopaedics", "Neurology", "Cardiology",
     "Psychiatry", "Skin", "Plastic Surgery", "Rehabilitation", "Pharmacy", "Radiology"];
   let department = departmentArray[(getRandomNumber(departmentArray.length))];
   return department;
