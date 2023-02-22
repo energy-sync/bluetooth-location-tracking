@@ -1,6 +1,6 @@
 import { Meteor } from 'meteor/meteor';
 import { WebApp } from 'meteor/webapp';
-import { deviceInformationdb } from '../lib/database.js';
+import { deviceInformationdb, deviceHistorydb } from '../lib/database.js';
 
 import axios from 'axios';
 const fs = Npm.require('fs')
@@ -30,14 +30,16 @@ const radios = config.radios
 Meteor.startup(() => {
   // code to run on server at startup
   deviceInformationdb.remove({});
+  deviceHistorydb.remove({});
 
   for (beacon of beacons) {
-    deviceInformationdb.insert({
-      "beaconID": beacon.beaconID,
-      "macAddress": beacon.macAddress,
-      "location": null,
-      "previousLocation": null
-    });
+    let b = deviceInformationdb.findOne({"beaconID": beacon.beaconID, "macAddress": beacon.macAddress});
+    if (!b) {
+      deviceInformationdb.insert({
+        "beaconID": beacon.beaconID,
+        "macAddress": beacon.macAddress
+      });
+    }
   }
 
   //calls function to send data of ble beacons to hospital software
@@ -53,7 +55,7 @@ WebApp.connectHandlers.use("/location", function (req, res, next) {
   if (req.method === 'POST') {
     req.on('data', Meteor.bindEnvironment((data) => {
       const body = JSON.parse(data);
-      console.log(body);
+      console.log("body:", body);
       const beaconMacAddress = body.beaconMacAddress;
       const distance = body.distance;
       const radioMacAddress = body.radioMacAddress;
@@ -89,7 +91,7 @@ WebApp.connectHandlers.use("/testLocation", function (req, res, next) {
   if (req.method === 'POST') {
     req.on('data', Meteor.bindEnvironment((data) => {
       const body = JSON.parse(data);
-      console.log(body);
+      console.log("body:", body);
       const beaconID = body.beaconID
       const location = body.location
       const distance = body.distance
@@ -97,7 +99,7 @@ WebApp.connectHandlers.use("/testLocation", function (req, res, next) {
       console.log(beaconID, location)
       if (distance <= distanceToUpdate) {
         addLocation(beaconMacAddress, location, distance)
-        updateLocation(beaconMacAddress)
+        updateLocation(beaconMacAddress, location)
       }
     }));
     res.end(Meteor.release)
@@ -116,45 +118,45 @@ function testUpdateLocation(beaconID) {
     beaconID: beaconToUpdate.beaconID,
     location: beaconToUpdate.location
   })
-    .then(function (response) {
-    })
-    .catch(function (error) {
-      console.log(error)
-    })
+  .then(function (response) {
+  })
+  .catch(function (error) {
+    console.log(error)
+  })
 }
 
 //end of test code
 
 //update beacon location
-function updateLocation(beaconMacAddress) {
-  let beaconToUpdate = deviceInformationdb.findOne({ macAddress: beaconMacAddress })
-  console.log(beaconToUpdate.beaconID, beaconToUpdate.location)
+function updateLocation(beaconMacAddress, location) {
+  let beaconToUpdate = deviceInformationdb.findOne({ macAddress: beaconMacAddress });
+  deviceInformationdb.update({ macAddress: beaconMacAddress }, { $set: { location: location } });
+  console.log("2", beaconToUpdate.beaconID, location);
   axios.post('http://localhost:3000/update', {
     beaconID: beaconToUpdate.beaconID,
-    location: beaconToUpdate.location
+    location: location
   })
-    .then(function (response) {
-    })
-    .catch(function (error) {
-      console.log(error)
-    })
+  .then(function (response) {
+  })
+  .catch(function (error) {
+    console.log(error)
+  })
 }
 
-//add location to beacon
+//add location to beacon history
 function addLocation(beaconMacAddress, location, distance) {
-  let locArray=[]
-  let prevArray=[]
-  
-  let beaconToUpdate = deviceInformationdb.findOne({macAddress:beaconMacAddress});
-  
-  prevArray.push(beaconToUpdate.arr)
-  for(let i=0;i<prevArray.length;i++){
-    locArray.push(prevArray[i])
+  let beaconHistory = deviceHistorydb.findOne({macAddress:beaconMacAddress});
+  if (!beaconHistory) {
+    deviceHistorydb.insert({
+      macAddress: beaconMacAddress,
+      history: [{location: location, timestamp: new Date(Date.now())}]
+    })
   }
-
-  deviceInformationdb.update({ macAddress: beaconMacAddress }, { $set: { location: location, time: getCurrentTime(), distance: distance, previousLocation: beaconToUpdate.location, arr:locArray } })
-  
-  
+  else if (!location || beaconHistory.history[beaconHistory.history.length - 1].location !== location) {
+    newHistory = beaconHistory.history;
+    newHistory.push({location: location, timestamp: new Date(Date.now())});
+    deviceHistorydb.update({ macAddress: beaconMacAddress }, { $set: { history: newHistory } });
+  }  
 }
 
 //send all beacons to EHR
