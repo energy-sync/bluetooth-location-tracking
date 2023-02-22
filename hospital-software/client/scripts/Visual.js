@@ -1,6 +1,7 @@
-import { Session } from 'meteor/session';
 import { Template } from 'meteor/templating';
+import { Session } from 'meteor/session';
 import './Visual.html';
+import './Visual.js';
 
 Template.Visual.helpers({
   dot1: function() {
