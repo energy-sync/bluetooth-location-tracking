@@ -8,7 +8,7 @@ tr{
     border-width:2px;
 }
 
-.device-row:hover {
+.clickable-row:hover {
     background-color: #aaa;
     cursor: pointer;
 }
@@ -33,14 +33,16 @@ tr{
     background-color: rgb(237, 232, 232);
     max-height: 90%;
     overflow: hidden;
+    padding-bottom: 10px;
 }
 
 .history-table {
     display: flex;
     flex-flow: column;
-    height: 300px;
-    max-height: 100%;
+    height: fit-content;
+    max-height: 301px;
     overflow-y: scroll;
+    line-height: 50%;
 }
 
 .modal-header {
@@ -63,4 +65,18 @@ tr{
 
 .gray-text {
     color: gray;
+}
+
+.subtext {
+    color: gray;
+    padding: 0;
+    margin-bottom: 4px;
+}
+
+input {
+    max-width: 100px;
+}
+
+h5 {
+    margin-bottom: 4px;
 }

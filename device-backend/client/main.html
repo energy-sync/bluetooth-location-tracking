@@ -11,7 +11,7 @@
     <div class="container text-center text-decoration-underline">
         <br>
         <br>
-        <h1>Device Information</h1>
+        <h1>Beacons</h1>
         <br>
     </div>
     <div class="container text-center fw-bold mx-auto">
@@ -20,19 +20,39 @@
                 <th>Name</th>
                 <th>Current Location</th>
                 <th>Previous Location</th>
-
             </thead>
             <tbody>
-                {{#each device in devices}}
+                {{#each beacon in beacons}}
+                    <tr class="col table-active device-row clickable-row">
+                        <td>{{beacon.beaconID}}</td>
+                        <td>{{beacon.location}}</td>
+                        <td>{{getLastLocation beacon}}</td>
+                    </tr>
+                {{/each}}
+            </tbody>
+        </table>
+    </div>
 
-                <tr class="col table-active device-row">
-
-                    <td>{{device.beaconID}}</td>
-                    <td>{{device.location}}</td>
-                    <td>{{getLastLocation device}}</td>
-
-                </tr>
-
+    <div class="container text-center text-decoration-underline">
+        <br>
+        <br>
+        <h1>Computer Boards</h1>
+        <br>
+    </div>
+    <div class="container text-center fw-bold mx-auto">
+        <table class="table table-bordered table-striped ">
+            <thead class="col text-bg-secondary">
+                <th>Name</th>
+                <th>MAC Address</th>
+                <th>Status</th>
+            </thead>
+            <tbody>
+                {{#each radio in radios}}
+                    <tr class="col table-active device-row clickable-row">
+                        <td>{{radio.location}}</td>
+                        <td>{{radio.macAddress}}</td>
+                        <td>{{radioStatus radio}}</td>
+                    </tr>
                 {{/each}}
             </tbody>
         </table>
@@ -43,14 +63,14 @@
             <div class="container device-menu mx-auto">
                 <div class="container">
                     <div class="container modal-header">
-                        <h3 class="modal-title" id="deviceModalLabel">Device Information: <strong>{{getDeviceName}}</strong></h3>
+                        <h2 class="modal-title" id="deviceModalLabel">Device Information: <strong>{{getDeviceName}}</strong></h2>
                         <button type="button" class="close x-button" id="closeMenu" data-dismiss="modal" aria-label="Close">
                             <span aira-hidden="true">&times;</span>
                         </button>
                     </div>
                     <div class="modal-body">
-                        <h5>Current location: <strong>{{getCurrentLocation}}</strong></h5>
-                        <h5 class="small-header">History</h5>
+                        <h4>Current location: <strong>{{getCurrentLocation}}</strong></h4>
+                        <h4 class="small-header">History</h4>
                         {{#if deviceHasHistory}}
                             <table class="history-table table table-bordered table-striped text-center">
                                 <tbody>
@@ -65,6 +85,55 @@
                         {{else}}
                         <p class="gray-text">No history</p>
                         {{/if}}
+                    </div>
+                    <div>
+                        <h4 class="small-header">Settings</h4>
+                        
+                        <div class="row align-items-center">
+                            <div class="col-md-9 justify-content-left">
+                                <h5>Refresh time</h5>
+                                <p class="subtext">The interval in seconds to scan for BLE beacons</p>
+                            </div>
+                            <div class="col-md-3 justify-content-right">
+                                <input class="form-control float-end" type="number" min="1" id="refreshTimeInput" value={{getRefreshTime}}>
+                            </div>
+                        </div>
+
+                        <div class="row align-items-center">
+                            <div class="col-md-9 justify-content-left">
+                                <h5>Measured power</h5>
+                                <p class="subtext">The signal strength in dBm at 1 meter distance provided by the manufacturer</p>
+                            </div>
+                            <div class="col-md-3 justify-content-right">
+                                <input class="form-control float-end" type="number" min="-120" max="0" id="measuredPowerInput" value={{getMeasuredPower}}>
+                            </div>
+                        </div>
+
+                        <div class="row align-items-center">
+                            <div class="col-md-9 justify-content-left">
+                                <h5>Environmental factor</h5>
+                                <p class="subtext">idk how to explain this one</p>
+                            </div>
+                            <div class="col-md-3 justify-content-right">
+                                <input class="form-control float-end" type="number" min="2" max="4" step="0.1" id="environmentalFactorInput">
+                            </div>
+                        </div>
+
+                        <div class="row align-items-center">
+                            <div class="col-md-9 justify-content-left">
+                                <h5>Distance change to transmit</h5>
+                                <p class="subtext">The distance in meters a beacon needs to move before an update is triggered</p>
+                            </div>
+                            <div class="col-md-3 justify-content-right">
+                                <input class="form-control float-end" type="number" min="0" id="distanceChangeToTransmitInput">
+                            </div>
+                        </div>
+
+                        <div class="btn-group float-end">
+                            <button class="btn btn-danger" id="restartDeviceButton">Restart device</button>
+                            <button class="btn btn-secondary" id="applyAllButton">Apply to all</button>
+                            <button class="btn btn-success" if="applyButton">Apply</button>
+                        </div>
                     </div>
                 </div>
             </div>

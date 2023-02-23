@@ -8,10 +8,22 @@ Template.main.onCreated(function () {
     this.showDeviceMenu = new ReactiveVar(false);
     this.currentDevice = new ReactiveVar();
     this.currentDeviceHistory = new ReactiveVar();
+    this.radios = new ReactiveVar();
+});
+
+Template.main.onRendered(function() {
+    Meteor.call("getConfig", (error, result) => {
+        if (error) {
+            console.error(error);
+            return;
+        }
+        console.log(result.radios);
+        this.radios.set(result.radios);
+    })
 });
 
 Template.main.helpers({
-    devices() {
+    beacons() {
         return deviceInformationdb.find();
     },
 
@@ -56,6 +68,15 @@ Template.main.helpers({
         let days = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
         let day = days[date.getDay()];
         return `${day} ${date.getMonth()}/${date.getDate()}/${date.getFullYear()} ${date.getHours()}:${date.getMinutes()}`;
+    },
+
+    radios() {
+        return this.radios;
+    },
+
+    radioStatus(radio) {
+        let r = radiodb.findOne({macAddress: radio.macAddress});
+        console.log(r);
     }
 });
 
@@ -66,7 +87,8 @@ Template.main.events({
         let device = deviceInformationdb.findOne({beaconID: deviceName});
         templateInstance.currentDevice.set(device);
         let deviceHistory = deviceHistorydb.findOne({macAddress: device.macAddress});
-        templateInstance.currentDeviceHistory.set(deviceHistory);
+        if (deviceHistory)
+            templateInstance.currentDeviceHistory.set(deviceHistory);
     },
 
     "click #closeMenu": (event, templateInstance) => {

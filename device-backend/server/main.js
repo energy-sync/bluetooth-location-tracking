@@ -1,6 +1,6 @@
 import { Meteor } from 'meteor/meteor';
 import { WebApp } from 'meteor/webapp';
-import { deviceInformationdb, deviceHistorydb } from '../lib/database.js';
+import { deviceInformationdb, deviceHistorydb, radiodb } from '../lib/database.js';
 
 import axios from 'axios';
 const fs = Npm.require('fs')
@@ -37,7 +37,18 @@ Meteor.startup(() => {
     if (!b) {
       deviceInformationdb.insert({
         "beaconID": beacon.beaconID,
-        "macAddress": beacon.macAddress
+        "macAddress": beacon.macAddress,
+        "config": config
+      });
+    }
+  }
+
+  for (radio of radios) {
+    let r = radiodb.findOne({"macAddress": radio.macAddress});
+    if (!r) {
+      radiodb.insert({
+        "macAddress": radio.macAddress,
+        "online": false
       });
     }
   }
@@ -81,8 +92,13 @@ WebApp.connectHandlers.use("/location", function (req, res, next) {
 
 //handle request from ble-receiver to respond with the config file
 WebApp.connectHandlers.use("/config", (req, res, next) => {
-  if (req.method === 'GET') {
-    res.writeHead(200).end(JSON.stringify(config));
+  if (req.method === 'POST') {
+    req.on("data", Meteor.bindEnvironment(data => {
+      console.log(data);
+      let radio = deviceInformationdb.findOne({macAddress: data.macAddress});
+      console.log(radio);
+      res.writeHead(200).end(JSON.stringify(config));
+    }));
   }
 });
 
@@ -105,6 +121,18 @@ WebApp.connectHandlers.use("/testLocation", function (req, res, next) {
     res.end(Meteor.release)
   }
 });
+
+function getConfig1() {
+  return config;
+}
+
+let getConfigAsync = Meteor.wrapAsync(getConfig1);
+
+Meteor.methods({
+  getConfig: () => {
+    return getConfig1();
+  }
+})
 
 //add test location to beacon
 function testAddLocation(beaconID, location, distance) {
