@@ -1,25 +1,15 @@
 import { Template } from "meteor/templating";
 import { FlowRouter } from 'meteor/ostrio:flow-router-extra';
-import { deviceInformationdb, deviceHistorydb } from "../lib/database"
+import { deviceInformationdb, deviceHistorydb, radiodb } from "../lib/database"
 import "./bootstrap.min.css";
 import "./main.css"
 
 Template.main.onCreated(function () {
-    this.showDeviceMenu = new ReactiveVar(false);
-    this.currentDevice = new ReactiveVar();
-    this.currentDeviceHistory = new ReactiveVar();
-    this.radios = new ReactiveVar();
-});
-
-Template.main.onRendered(function() {
-    Meteor.call("getConfig", (error, result) => {
-        if (error) {
-            console.error(error);
-            return;
-        }
-        console.log(result.radios);
-        this.radios.set(result.radios);
-    })
+    this.showBeaconMenu = new ReactiveVar(false);
+    this.showRadioMenu = new ReactiveVar(false);
+    this.currentBeacon = new ReactiveVar();
+    this.currentBeaconHistory = new ReactiveVar();
+    this.currentRadio = new ReactiveVar();
 });
 
 Template.main.helpers({
@@ -28,40 +18,50 @@ Template.main.helpers({
     },
 
     isMenuOpen() {
-        return Template.instance().showDeviceMenu.get();
+        let isBeaconMenuOpen = Template.instance().showBeaconMenu.get();
+        let isRadioMenuOpen = Template.instance().showRadioMenu.get();
+        return isBeaconMenuOpen || isRadioMenuOpen;
     },
 
-    getLastLocation(device) {
-        let deviceHistory = deviceHistorydb.findOne({macAddress: device.macAddress});
-        if (!deviceHistory || deviceHistory.history.length < 2)
+    isBeaconMenuOpen() {
+        return Template.instance().showBeaconMenu.get();
+    },
+
+    isRadioMenuOpen() {
+        return Template.instance().showRadioMenu.get();
+    },
+
+    getLastLocation(beacon) {
+        let beaconHistory = deviceHistorydb.findOne({macAddress: beacon.macAddress});
+        if (!beaconHistory || beaconHistory.history.length < 2)
             return undefined;
         else {
-            return deviceHistory.history[deviceHistory.history.length - 2].location;
+            return beaconHistory.history[beaconHistory.history.length - 2].location;
         }
     },
 
-    getDeviceName() {
-        return Template.instance().currentDevice.curValue.beaconID;
+    getBeaconName() {
+        return Template.instance().currentBeacon.curValue.beaconID;
     },
 
-    getCurrentDevice() {
-        return Template.instance().currentDevice.curValue;
+    getcurrentBeacon() {
+        return Template.instance().currentBeacon.curValue;
     },
 
     getCurrentLocation() {
-        let historyLog = Template.instance().currentDeviceHistory.curValue;
+        let historyLog = Template.instance().currentBeaconHistory.curValue;
         if (!historyLog)
             return "None";
         let history = historyLog.history;
         return history[history.length - 1].location;
     },
 
-    deviceHasHistory() {
-        return Template.instance().currentDeviceHistory.curValue !== undefined;
+    beaconHasHistory() {
+        return Template.instance().currentBeaconHistory.curValue !== undefined;
     },
 
-    getCurrentDeviceHistory() {
-        return Template.instance().currentDeviceHistory.curValue.history.reverse();
+    getcurrentBeaconHistory() {
+        return Template.instance().currentBeaconHistory.curValue.history.reverse();
     },
 
     getReadableTimestamp(date) {
@@ -71,27 +71,54 @@ Template.main.helpers({
     },
 
     radios() {
-        return this.radios;
+        return radiodb.find();
     },
 
-    radioStatus(radio) {
-        let r = radiodb.findOne({macAddress: radio.macAddress});
-        console.log(r);
+    radioOnline(radio) {
+        return radiodb.findOne({macAddress: radio.macAddress}).online;
+    },
+
+    getRadioName() {
+        return Template.instance().currentRadio.curValue.location;
+    },
+
+    getRefreshTime() {
+        return Template.instance().currentRadio.curValue.config.refreshTime;
+    },
+
+    getMeasuredPower() {
+        return Template.instance().currentRadio.curValue.config.measuredPower;
+    },
+
+    getEnvironmentalFactor() {
+        return Template.instance().currentRadio.curValue.config.environmentalFactor;
+    },
+
+    getDistanceChangeToTransmit() {
+        return Template.instance().currentRadio.curValue.config.distanceChangeToTransmit;
     }
 });
 
 Template.main.events({
-    "click .device-row": (event, templateInstance) => {
-        templateInstance.showDeviceMenu.set(true);
-        let deviceName = event.currentTarget.children[0].innerHTML;
-        let device = deviceInformationdb.findOne({beaconID: deviceName});
-        templateInstance.currentDevice.set(device);
-        let deviceHistory = deviceHistorydb.findOne({macAddress: device.macAddress});
-        if (deviceHistory)
-            templateInstance.currentDeviceHistory.set(deviceHistory);
+    "click .beacon-row": (event, templateInstance) => {
+        templateInstance.showBeaconMenu.set(true);
+        let beaconName = event.currentTarget.children[0].innerHTML;
+        let beacon = deviceInformationdb.findOne({beaconID: beaconName});
+        templateInstance.currentBeacon.set(beacon);
+        let beaconHistory = deviceHistorydb.findOne({macAddress: beacon.macAddress});
+        if (beaconHistory)
+            templateInstance.currentBeaconHistory.set(beaconHistory);
     },
 
-    "click #closeMenu": (event, templateInstance) => {
-        templateInstance.showDeviceMenu.set(false);
+    "click .radio-row": (event, templateInstance) => {
+        templateInstance.showRadioMenu.set(true);
+        let radioName = event.currentTarget.children[0].innerHTML;
+        let radio = radiodb.findOne({location: radioName});
+        templateInstance.currentRadio.set(radio);
+    },
+
+    "click .x-button": (event, templateInstance) => {
+        templateInstance.showBeaconMenu.set(false);
+        templateInstance.showRadioMenu.set(false);
     }
 });

@@ -25,12 +25,13 @@ else config = JSON.parse(fs.readFileSync(configPath, "utf-8"));
 const beacons = config.beacons
 const radios = config.radios
 
-
-
 Meteor.startup(() => {
   // code to run on server at startup
+
+  //for clearing collections on startup for testing purposes
   deviceInformationdb.remove({});
   deviceHistorydb.remove({});
+  radiodb.remove({});
 
   for (beacon of beacons) {
     let b = deviceInformationdb.findOne({"beaconID": beacon.beaconID, "macAddress": beacon.macAddress});
@@ -47,8 +48,10 @@ Meteor.startup(() => {
     let r = radiodb.findOne({"macAddress": radio.macAddress});
     if (!r) {
       radiodb.insert({
+        "location": radio.location,
         "macAddress": radio.macAddress,
-        "online": false
+        "online": false,
+        "config": config
       });
     }
   }
@@ -121,18 +124,6 @@ WebApp.connectHandlers.use("/testLocation", function (req, res, next) {
     res.end(Meteor.release)
   }
 });
-
-function getConfig1() {
-  return config;
-}
-
-let getConfigAsync = Meteor.wrapAsync(getConfig1);
-
-Meteor.methods({
-  getConfig: () => {
-    return getConfig1();
-  }
-})
 
 //add test location to beacon
 function testAddLocation(beaconID, location, distance) {

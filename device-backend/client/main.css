@@ -29,6 +29,8 @@ tr{
     -webkit-transform: translate(-50%, -50%);
     transform: translateX(-50%, -50%);
     width: fit-content;
+    max-width: 90%;
+    max-height: 90vh;
     border: 1px solid black;
     background-color: rgb(237, 232, 232);
     max-height: 90%;
@@ -40,7 +42,7 @@ tr{
     display: flex;
     flex-flow: column;
     height: fit-content;
-    max-height: 301px;
+    max-height: 70vh;
     overflow-y: scroll;
     line-height: 50%;
 }
@@ -79,4 +81,16 @@ input {
 
 h5 {
     margin-bottom: 4px;
+}
+
+.online {
+    color: green !important;
+}
+
+.offline {
+    color: red !important;
+}
+
+.btn-group {
+    padding-top: 5px;
 }
