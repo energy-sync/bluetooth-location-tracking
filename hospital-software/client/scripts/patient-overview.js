@@ -160,8 +160,8 @@ function createTemplateHelpers(templateName) {
   Template.cardioTemplate.helpers(createTemplateHelpers('Cardiology'));
   Template.psychTemplate.helpers(createTemplateHelpers('Psychiatry'));
   Template.skinTemplate.helpers(createTemplateHelpers('Skin'));
-  Template.plasticSurgeryTemplate.helpers(createTemplateHelpers('PlasticSurgery'));
-  Template.rehabTemplate.helpers(createTemplateHelpers('Rehab'));
+  Template.plasticSurgeryTemplate.helpers(createTemplateHelpers('Plastic Surgery'));
+  Template.rehabTemplate.helpers(createTemplateHelpers('Rehabilitation'));
   Template.pharmaTemplate.helpers(createTemplateHelpers('Pharmacy'));
   Template.radioTemplate.helpers(createTemplateHelpers('Radiology'));
   Template.neuroTemplate.helpers(createTemplateHelpers('Neurology'));
