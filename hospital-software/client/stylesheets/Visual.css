@@ -10,24 +10,28 @@
     position: absolute;
     top: 0;
     left: 0;
+    background-color: red;
   }
   
   .btn2 {
     position: absolute;
     top: 0;
     right: 0;
+    background-color: red;
   }
   
   .btn3 {
     position: absolute;
     bottom: 0;
     left: 0;
+    background-color: red;
   }
   
   .btn4 {
     position: absolute;
     bottom: 0;
     right: 0;
+    background-color: red;
   }
   
   .notes {
