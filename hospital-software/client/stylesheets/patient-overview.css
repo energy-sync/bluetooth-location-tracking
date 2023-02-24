@@ -1,0 +1,11 @@
+div.col-6 {
+    border-style:groove;
+    border-color:rgb(147, 147, 255);
+    border-width:2px;
+}
+
+h2{
+    border-bottom-style:solid;
+    border-color:rgb(147, 147, 255);
+    border-width:2px;
+}

@@ -44,7 +44,34 @@ Meteor.methods({
   getDevices: () => {
     //printArray(arrayofdevices)
     return arrayofdevices.map(ids => ids.beaconID);
-  }
+  },
+
+  getPatientCountAt: (location) => {
+    return patientInformationdb.find({location:location}).count();
+  },
+
+  getWaitTimes: (location) => {
+    let patients = patientInformationdb.find({location:location}).fetch().map(waitTime=>waitTime.waitTime).filter(Boolean);
+    
+    let totalWaitTime = patients.reduce((sum, waitTime)=> sum + waitTime, 0);
+    let averageWaitTimes = totalWaitTime/patients.length;
+
+    return Math.round(averageWaitTimes);
+    },
+
+    getBusyTime: (location) => {
+      let busiestTime;
+      let hourWithPatients = Array.from({ length: 24 }, (_, hour) =>
+        patientInformationdb.find({ location, hour }).count()
+      );
+      busiestTime = hourWithPatients.indexOf(Math.max(...hourWithPatients));
+      if(busiestTime < 10){
+        busiestTime = '0' + busiestTime;
+      }
+      console.log(busiestTime);
+      return busiestTime;
+    }
+
 })
 
 function printArray(arr) {
@@ -311,7 +338,7 @@ function generateDummyPatients(numberToGenerate) {
       },
       "location": generateRandomLocation(),
       'beaconID': beaconID,
-      'waitTime': generateWaitTime() + ' minute(s)'
+      'waitTime': generateWaitTime()
 
     });
 
@@ -433,7 +460,10 @@ function generateRealPatients(numberToGenerate) {
         "psoriasis": getBoolean(),
         "vitiligo": getBoolean()
       },
-      "location": 'Receptionist'
+      "location": 'Receptionist',
+      'hour': getRandomHour(),
+      'minute': getRandomMinute(),
+      'day': getRandomDayOfWeek()
 
     });
 
@@ -446,4 +476,26 @@ function generateWaitTime() {
     waitTime++;
   }
   return waitTime;
+}
+
+function getRandomHour() {
+  let hour = getRandomNumber(24);
+  return hour;
+}
+
+function getRandomMinute(){
+  let minute = getRandomNumber(59);
+
+  if (minute < 10) {
+    minute = '0' + minute;
+  }
+  return minute;
+}
+
+function getRandomDayOfWeek() {
+  let dayArray = ["Sunday", "Monday", "Tuesday",
+    "Wednesday", "Thursday", "Friday", "Saturday"]
+  let day = dayArray[getRandomNumber(dayArray.length)]
+
+  return day;
 }
