@@ -338,7 +338,10 @@ function generateDummyPatients(numberToGenerate) {
       },
       "location": generateRandomLocation(),
       'beaconID': beaconID,
-      'waitTime': generateWaitTime()
+      'waitTime': generateWaitTime(),
+      'hour': getRandomHour(),
+      'minute': getRandomMinute(),
+      'day': getRandomDayOfWeek()
 
     });
 
@@ -461,9 +464,6 @@ function generateRealPatients(numberToGenerate) {
         "vitiligo": getBoolean()
       },
       "location": 'Receptionist',
-      'hour': getRandomHour(),
-      'minute': getRandomMinute(),
-      'day': getRandomDayOfWeek()
 
     });
 
