@@ -71,6 +71,9 @@ Meteor.methods({
     dummyBeaconDB.find({ department, hour }).count()
   );
   busiestTime = hourWithPatients.indexOf(Math.max(...hourWithPatients));
+  if(busiestTime < 10 ){
+    busiestTime = '0'+busiestTime;
+  }
   return busiestTime;
 }
 ,
