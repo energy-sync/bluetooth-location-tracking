@@ -1,0 +1,40 @@
+.container {
+    position: relative;
+    width: 400px;
+    height: 400px;
+    margin: 0 auto;
+    border: 2px solid black;
+  }
+  
+  .btn1 {
+    position: absolute;
+    top: 0;
+    left: 0;
+  }
+  
+  .btn2 {
+    position: absolute;
+    top: 0;
+    right: 0;
+  }
+  
+  .btn3 {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+  }
+  
+  .btn4 {
+    position: absolute;
+    bottom: 0;
+    right: 0;
+  }
+  
+  .notes {
+    position: absolute;
+    top: 20px;
+    border-bottom-right-radius: 20px;
+  }
+  
+  
+  

@@ -1,45 +1,37 @@
-import { Template } from 'meteor/templating';
-import { Session } from 'meteor/session';
+Template.Visual.onRendered(function() {
+  const note = this.find('.note');
+  const btn1 = this.find('.btn1');
+  const btn2 = this.find('.btn2');
+  const btn3 = this.find('.btn3');
+  const btn4 = this.find('.btn4');
+  const currentLocation = this.find('.Locator p:first-child');
 
+  // add event listeners to the buttons
+  btn1.addEventListener('click', function() {
+    currentLocation.textContent = 'Current location: Button 1';
+  });
 
-Template.Visual.helpers({
-  dot1: function() {
-    return Session.get('dot1');
-  },
-  dot2: function() {
-    return Session.get('dot2');
-  },
-  dot3: function() {
-    return Session.get('dot3');
-  },
-  dot4: function() {
-    return Session.get('dot4');
-  },
-  note: function() {
-    return Session.get('note');
-  }
+  btn2.addEventListener('click', function() {
+    currentLocation.textContent = 'Current location: Button 2';
+  });
+
+  btn3.addEventListener('click', function() {
+    currentLocation.textContent = 'Current location: Button 3';
+  });
+
+  btn4.addEventListener('click', function() {
+    currentLocation.textContent = 'Current location: Button 4';
+  });
+
+  note.addEventListener('input', function(e) {
+    const target = e.target;
+    const start = target.selectionStart;
+    const end = target.selectionEnd;
+    const value = target.value;
+
+    if (value.slice(-1) === '\n') {
+      target.value = value + '- ';
+      target.setSelectionRange(start + 2, end + 2);
+    }
+  });
 });
-
-Template.Visual.events({
-  'click #btn1': function(event) {
-    event.preventDefault();
-    Session.set('dot1', !Session.get('dot1'));
-  },
-  'click #btn2': function(event) {
-    event.preventDefault();
-    Session.set('dot2', !Session.get('dot2'));
-  },
-  'click #btn3': function(event) {
-    event.preventDefault();
-    Session.set('dot3', !Session.get('dot3'));
-  },
-  'click #btn4': function(event) {
-    event.preventDefault();
-    Session.set('dot4', !Session.get('dot4'));
-  },
-  'change .note': function(event) {
-    event.preventDefault();
-    Session.set('note', event.target.value);
-  }
-});
-

@@ -12,7 +12,6 @@ import "./stylesheets/bootstrap.min.css";
 import "./stylesheets/device-list.css";
 import "./pages/patient-overview.html";
 import "./pages/Visual.html";
-import "./pages/tracker.html";
 import "./scripts/Visual.js";
 
 
