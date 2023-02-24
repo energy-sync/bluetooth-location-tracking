@@ -511,8 +511,11 @@ function generateWaitTime() {
 
 function generateRandomBeaconData(numberToGenerate) {
   for (let i = 0; i < numberToGenerate; i++) {
+    let beaconID = "XXXXXXX".replace(/X/g, function () {
+      return "0123456789ABCDEF".charAt((Math.random() * 16))
+    });
     dummyBeaconDB.insert({
-      'beaconNumber': i,
+      'beaconID': beaconID,
       'department': getDummyDepartment(),
       'hour': getRandomHour(),
       'minute': getRandomMinute(),
