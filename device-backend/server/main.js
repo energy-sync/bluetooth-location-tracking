@@ -69,18 +69,13 @@ WebApp.connectHandlers.use("/location", function (req, res, next) {
   if (req.method === 'POST') {
     req.on('data', Meteor.bindEnvironment((data) => {
       const body = JSON.parse(data);
-      console.log("body:", body);
       const beaconMacAddress = body.beaconMacAddress;
       const distance = body.distance;
       const radioMacAddress = body.radioMacAddress;
       //if statement checking how far away the beacon is from the radio sending the transmission
       if (distance <= distanceToUpdate) {
         for (radio of radios) {
-          console.log(radioMacAddress);
-          console.log(radio.macAddress);
-          console.log(radioMacAddress === radio.macAddress)
           if (radioMacAddress === radio.macAddress) {
-            console.log('success checking radio')
             //calling functions to add location to deviceDB and then send updated information to patientDB
             addLocation(beaconMacAddress, radio.location, distance)
             updateLocation(beaconMacAddress);
@@ -97,10 +92,9 @@ WebApp.connectHandlers.use("/location", function (req, res, next) {
 WebApp.connectHandlers.use("/config", (req, res, next) => {
   if (req.method === 'POST') {
     req.on("data", Meteor.bindEnvironment(data => {
-      console.log(data);
-      let radio = deviceInformationdb.findOne({macAddress: data.macAddress});
-      console.log(radio);
-      res.writeHead(200).end(JSON.stringify(config));
+      let radioConfig = radiodb.findOne({macAddress: JSON.parse(data).macAddress}).config;
+      console.log(radioConfig.refreshTime);
+      res.writeHead(200).end(JSON.stringify(radioConfig));
     }));
   }
 });
@@ -110,7 +104,7 @@ WebApp.connectHandlers.use("/testLocation", function (req, res, next) {
   if (req.method === 'POST') {
     req.on('data', Meteor.bindEnvironment((data) => {
       const body = JSON.parse(data);
-      console.log("body:", body);
+      //console.log("body:", body);
       const beaconID = body.beaconID
       const location = body.location
       const distance = body.distance
@@ -122,6 +116,18 @@ WebApp.connectHandlers.use("/testLocation", function (req, res, next) {
       }
     }));
     res.end(Meteor.release)
+  }
+});
+
+WebApp.connectHandlers.use("/historyByDay", function (req, res, next) {
+  if (req.method === 'GET') {
+    res.writeHead(200).end(JSON.stringify(getHistoryByDay()));
+  }
+});
+
+WebApp.connectHandlers.use("/randomHistoryByDay", function (req, res, next) {
+  if (req.method === 'GET') {
+    res.writeHead(200).end(JSON.stringify(getRandomHistoryByDay()));
   }
 });
 
@@ -150,7 +156,6 @@ function testUpdateLocation(beaconID) {
 function updateLocation(beaconMacAddress, location) {
   let beaconToUpdate = deviceInformationdb.findOne({ macAddress: beaconMacAddress });
   deviceInformationdb.update({ macAddress: beaconMacAddress }, { $set: { location: location } });
-  console.log("2", beaconToUpdate.beaconID, location);
   axios.post('http://localhost:3000/update', {
     beaconID: beaconToUpdate.beaconID,
     location: location
@@ -191,6 +196,32 @@ function sendData() {
     })
 }
 
+function getHistoryByDay() {
+  let days = [[], [], [], [], [], [], []];
+  for (device of deviceHistorydb.find().fetch()) {
+    for (record of device.history) {
+      days[record.timestamp.getDay()].push(record);
+    }
+  }
+  return days;
+}
+
+function getRandomHistoryByDay() {
+  const LOCATIONS = ["Receptionist", "General Practitioner", "Lab", "Dermatology"];
+  let days = [[], [], [], [], [], [], []];
+  for (device of deviceHistorydb.find().fetch()) {
+    for (let i = 0; i < random(5, 20); i++) {
+      let date = new Date(Date.now());
+      date.setDate(date.getDate() + random(0, 6));
+      days[random(0, 6)].push({
+        location: LOCATIONS[random(0, LOCATIONS.length - 1)],
+        timestamp: date
+      });
+    }
+  }
+  return days;
+}
+
 function getCurrentTime() {
   return Date(Date.now())
 }
@@ -208,3 +239,15 @@ function saveConfig() {
   fs.writeFileSync(configPath, JSON.stringify(config, null, 4));
   fs.chmodSync(configPath, "0777");
 }
+
+function random(min, max) {
+  min = Math.ceil(min);
+  max = Math.floor(max);
+  return Math.floor(Math.random() * (max - min + 1) + min);
+}
+
+Meteor.methods({
+  updateRadioConfig: (macAddress, config) => {
+    radiodb.update({macAddress: macAddress}, {$set: {config: config}});
+  }
+})

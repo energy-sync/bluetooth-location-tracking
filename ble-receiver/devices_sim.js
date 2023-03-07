@@ -5,7 +5,7 @@ const fs = require("fs");
 
 const config = JSON.parse(fs.readFileSync("config.json", "utf-8"));
 dotenv.config();
-const POST_URL = "http://localhost:3002/testLocation";
+const POST_URL = `${config.controllerUrl}/testLocation`;
 const LOCATIONS = ["Receptionist", "General Practitioner", "Lab", "Dermatology"];
 
 let devices = [];

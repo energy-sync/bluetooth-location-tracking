@@ -120,5 +120,19 @@ Template.main.events({
     "click .x-button": (event, templateInstance) => {
         templateInstance.showBeaconMenu.set(false);
         templateInstance.showRadioMenu.set(false);
+    },
+
+    "click #applyButton": (event, templateInstance) => {
+        let currentRadio = Template.instance().currentRadio.curValue;
+        let radioConfig = radiodb.findOne({macAddress: currentRadio.macAddress}).config;
+        radioConfig.refreshTime = refreshTimeInput.value;
+        radioConfig.measuredPower = measuredPowerInput.value;
+        radioConfig.environmentalFactor = environmentalFactorInput.value;
+        radioConfig.distanceChangeToTransmit = distanceChangeToTransmitInput.value;
+        console.log(radioConfig);
+        Meteor.call('updateRadioConfig', currentRadio.macAddress, radioConfig, (error, result) => {
+            if (error)
+                console.error(error);
+        });
     }
 });
