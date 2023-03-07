@@ -3,7 +3,7 @@
     "measuredPower": -59,
     "environmentalFactor": 2.5,
     "distanceChangeToTransmit": 1,
-    "controllerUrl": "http://10.13.10.92:3002",
+    "controllerUrl": "http://10.71.4.52:3002",
     "beacons": [
         {
             "beaconID": "Bob",
@@ -50,6 +50,10 @@
         {
             "location": "Libre Computer 5 (reception)",
             "macAddress": "18:66:c7:ba:38:6e"
+        },
+        {
+            "location": "pi",
+            "macAddress": "b8:27:eb:ac:13:68"
         }
     ]
 }

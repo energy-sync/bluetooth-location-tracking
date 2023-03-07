@@ -1,0 +1,159 @@
+<head>
+    <link rel="stylesheet" href="./bootstrap.min.css">
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Device List</title>
+</head>
+
+<template name="main">
+
+    <div class="container text-center text-decoration-underline">
+        <br>
+        <br>
+        <h1>Beacons</h1>
+        <br>
+    </div>
+    <div class="container text-center fw-bold mx-auto">
+        <table class="table table-bordered table-striped ">
+            <thead class="col text-bg-secondary">
+                <th>Name</th>
+                <th>Current Location</th>
+                <th>Previous Location</th>
+            </thead>
+            <tbody>
+                {{#each beacon in beacons}}
+                    <tr class="col table-active device-row beacon-row clickable-row">
+                        <td>{{beacon.beaconID}}</td>
+                        <td>{{beacon.location}}</td>
+                        <td>{{getLastLocation beacon}}</td>
+                    </tr>
+                {{/each}}
+            </tbody>
+        </table>
+    </div>
+
+    <div class="container text-center text-decoration-underline">
+        <br>
+        <br>
+        <h1>Computer Boards</h1>
+        <br>
+    </div>
+    <div class="container text-center fw-bold mx-auto">
+        <table class="table table-bordered table-striped">
+            <thead class="col text-bg-secondary">
+                <th>Location</th>
+                <th>MAC Address</th>
+                <th>Status</th>
+            </thead>
+            <tbody>
+                {{#each radio in radios}}
+                    <tr class="col table-active device-row radio-row clickable-row">
+                        <td>{{radio.location}}</td>
+                        <td>{{radio.macAddress}}</td>
+                        {{#if radioOnline radio}}
+                            <td class="online">Online</td>
+                        {{else}}
+                            <td class="offline">Offline</td>
+                        {{/if}}
+                    </tr>
+                {{/each}}
+            </tbody>
+        </table>
+    </div>
+
+    {{#if isMenuOpen}}
+        <div class="darkened">
+            <div class="container device-menu mx-auto">
+                <div class="container">
+                    <div class="container modal-header">
+                        <h2 class="modal-title">
+                            {{#if isBeaconMenuOpen}}
+                                Beacon: <strong>{{getBeaconName}}</strong>
+                            {{else}}
+                                Device: <strong>{{getRadioName}}</strong>
+                            {{/if}}
+                        </h2>
+                        <button type="button" class="close x-button" data-dismiss="modal" aria-label="Close">
+                            <span aira-hidden="true">&times;</span>
+                        </button>
+                    </div>
+
+                    {{#if isBeaconMenuOpen}}
+                        <div class="modal-body">
+                            <h4>Current location: <strong>{{getCurrentLocation}}</strong></h4>
+                            <h4 class="small-header">History</h4>
+                            {{#if beaconHasHistory}}
+                                <table class="history-table table table-bordered table-striped text-center">
+                                    <tbody>
+                                        {{#each record in getcurrentBeaconHistory}}
+                                            <tr class="col table-active device-row">
+                                                <td>{{record.location}}</td>
+                                                <td>{{getReadableTimestamp record.timestamp}}</td>
+                                            </tr>
+                                        {{/each}}
+                                    </tbody>
+                                </table>
+                            {{else}}
+                                <p class="gray-text">No history</p>
+                            {{/if}}
+                        </div>
+                    {{/if}}
+                    
+                    {{#if isRadioMenuOpen}}
+                        <div>
+                            <h4 class="small-header">Settings</h4>
+                            
+                            <div class="row align-items-center">
+                                <div class="col-md-9 justify-content-left">
+                                    <h5>Refresh time</h5>
+                                    <p class="subtext">The interval in seconds to scan for BLE beacons</p>
+                                </div>
+                                <div class="col-md-3 justify-content-right">
+                                    <input class="form-control float-end" type="number" min="1" id="refreshTimeInput" value={{getRefreshTime}}>
+                                </div>
+                            </div>
+
+                            <div class="row align-items-center">
+                                <div class="col-md-9 justify-content-left">
+                                    <h5>Measured power</h5>
+                                    <p class="subtext">The signal strength in dBm at 1 meter distance provided by the manufacturer</p>
+                                </div>
+                                <div class="col-md-3 justify-content-right">
+                                    <input class="form-control float-end" type="number" min="-120" max="0" id="measuredPowerInput" value={{getMeasuredPower}}>
+                                </div>
+                            </div>
+
+                            <div class="row align-items-center">
+                                <div class="col-md-9 justify-content-left">
+                                    <h5>Environmental factor</h5>
+                                    <p class="subtext">Density of the environment in a range from 2-4 with higher values increasing sensitivity</p>
+                                </div>
+                                <div class="col-md-3 justify-content-right">
+                                    <input class="form-control float-end" type="number" min="2" max="4" step="0.1" id="environmentalFactorInput" value="{{getEnvironmentalFactor}}">
+                                </div>
+                            </div>
+
+                            <div class="row align-items-center">
+                                <div class="col-md-9 justify-content-left">
+                                    <h5>Distance change to transmit</h5>
+                                    <p class="subtext">The distance in meters a beacon needs to move before an update is triggered</p>
+                                </div>
+                                <div class="col-md-3 justify-content-right">
+                                    <input class="form-control float-end" type="number" min="0" id="distanceChangeToTransmitInput" value="{{getDistanceChangeToTransmit}}">
+                                </div>
+                            </div>
+
+                            <div class="btn-group float-end">
+                                <button class="btn btn-danger" id="restartRadioButton">Restart device</button>
+                                <button class="btn btn-secondary" id="applyAllButton">Apply to all</button>
+                                <button class="btn btn-success" id="applyButton">Apply</button>
+                            </div>
+                        </div>
+                    {{/if}}
+                </div>
+            </div>
+        </div>
+    {{/if}}
+
+</template>

@@ -1,6 +1,6 @@
 import { Meteor } from 'meteor/meteor';
 import { WebApp } from 'meteor/webapp';
-import { deviceInformationdb } from '../lib/database.js';
+import { deviceInformationdb, deviceHistorydb, radiodb } from '../lib/database.js';
 
 import axios from 'axios';
 const fs = Npm.require('fs')
@@ -25,17 +25,35 @@ else config = JSON.parse(fs.readFileSync(configPath, "utf-8"));
 const beacons = config.beacons
 const radios = config.radios
 
-
-
 Meteor.startup(() => {
   // code to run on server at startup
+
+  //for clearing collections on startup for testing purposes
   deviceInformationdb.remove({});
+  deviceHistorydb.remove({});
+  radiodb.remove({});
 
   for (beacon of beacons) {
-    deviceInformationdb.insert({
-      "beaconID": beacon.beaconID,
-      "macAddress": beacon.macAddress
-    });
+    let b = deviceInformationdb.findOne({"beaconID": beacon.beaconID, "macAddress": beacon.macAddress});
+    if (!b) {
+      deviceInformationdb.insert({
+        "beaconID": beacon.beaconID,
+        "macAddress": beacon.macAddress,
+        "config": config
+      });
+    }
+  }
+
+  for (radio of radios) {
+    let r = radiodb.findOne({"macAddress": radio.macAddress});
+    if (!r) {
+      radiodb.insert({
+        "location": radio.location,
+        "macAddress": radio.macAddress,
+        "online": false,
+        "config": config
+      });
+    }
   }
 
   //calls function to send data of ble beacons to hospital software
@@ -45,24 +63,19 @@ Meteor.startup(() => {
 
 //the farest away in meters the beacon can be from the radio before it will not update location
 
-const distanceToUpdate = 2;
+const distanceToUpdate = 20;
 //handle request from ble-reciever to update db with location of device
 WebApp.connectHandlers.use("/location", function (req, res, next) {
   if (req.method === 'POST') {
     req.on('data', Meteor.bindEnvironment((data) => {
       const body = JSON.parse(data);
-      console.log(body);
       const beaconMacAddress = body.beaconMacAddress;
       const distance = body.distance;
       const radioMacAddress = body.radioMacAddress;
       //if statement checking how far away the beacon is from the radio sending the transmission
       if (distance <= distanceToUpdate) {
         for (radio of radios) {
-          console.log(radioMacAddress);
-          console.log(radio.macAddress);
-          console.log(radioMacAddress === radio.macAddress)
           if (radioMacAddress === radio.macAddress) {
-            console.log('success checking radio')
             //calling functions to add location to deviceDB and then send updated information to patientDB
             addLocation(beaconMacAddress, radio.location, distance)
             updateLocation(beaconMacAddress);
@@ -77,8 +90,12 @@ WebApp.connectHandlers.use("/location", function (req, res, next) {
 
 //handle request from ble-receiver to respond with the config file
 WebApp.connectHandlers.use("/config", (req, res, next) => {
-  if (req.method === 'GET') {
-    res.writeHead(200).end(JSON.stringify(config));
+  if (req.method === 'POST') {
+    req.on("data", Meteor.bindEnvironment(data => {
+      let radioConfig = radiodb.findOne({macAddress: JSON.parse(data).macAddress}).config;
+      console.log(radioConfig.refreshTime);
+      res.writeHead(200).end(JSON.stringify(radioConfig));
+    }));
   }
 });
 
@@ -87,7 +104,7 @@ WebApp.connectHandlers.use("/testLocation", function (req, res, next) {
   if (req.method === 'POST') {
     req.on('data', Meteor.bindEnvironment((data) => {
       const body = JSON.parse(data);
-      console.log(body);
+      //console.log("body:", body);
       const beaconID = body.beaconID
       const location = body.location
       const distance = body.distance
@@ -95,10 +112,22 @@ WebApp.connectHandlers.use("/testLocation", function (req, res, next) {
       console.log(beaconID, location)
       if (distance <= distanceToUpdate) {
         addLocation(beaconMacAddress, location, distance)
-        updateLocation(beaconMacAddress)
+        updateLocation(beaconMacAddress, location)
       }
     }));
     res.end(Meteor.release)
+  }
+});
+
+WebApp.connectHandlers.use("/historyByDay", function (req, res, next) {
+  if (req.method === 'GET') {
+    res.writeHead(200).end(JSON.stringify(getHistoryByDay()));
+  }
+});
+
+WebApp.connectHandlers.use("/randomHistoryByDay", function (req, res, next) {
+  if (req.method === 'GET') {
+    res.writeHead(200).end(JSON.stringify(getRandomHistoryByDay()));
   }
 });
 
@@ -114,33 +143,44 @@ function testUpdateLocation(beaconID) {
     beaconID: beaconToUpdate.beaconID,
     location: beaconToUpdate.location
   })
-    .then(function (response) {
-    })
-    .catch(function (error) {
-      console.log(error)
-    })
+  .then(function (response) {
+  })
+  .catch(function (error) {
+    console.log(error)
+  })
 }
 
 //end of test code
 
 //update beacon location
-function updateLocation(beaconMacAddress) {
-  let beaconToUpdate = deviceInformationdb.findOne({ macAddress: beaconMacAddress })
-  console.log(beaconToUpdate.beaconID, beaconToUpdate.location)
+function updateLocation(beaconMacAddress, location) {
+  let beaconToUpdate = deviceInformationdb.findOne({ macAddress: beaconMacAddress });
+  deviceInformationdb.update({ macAddress: beaconMacAddress }, { $set: { location: location } });
   axios.post('http://localhost:3000/update', {
     beaconID: beaconToUpdate.beaconID,
-    location: beaconToUpdate.location
+    location: location
   })
-    .then(function (response) {
-    })
-    .catch(function (error) {
-      console.log(error)
-    })
+  .then(function (response) {
+  })
+  .catch(function (error) {
+    console.log(error)
+  })
 }
 
-//add location to beacon
+//add location to beacon history
 function addLocation(beaconMacAddress, location, distance) {
-  deviceInformationdb.update({ macAddress: beaconMacAddress }, { $set: { location: location, time: getCurrentTime(), distance: distance } })
+  let beaconHistory = deviceHistorydb.findOne({macAddress:beaconMacAddress});
+  if (!beaconHistory) {
+    deviceHistorydb.insert({
+      macAddress: beaconMacAddress,
+      history: [{location: location, timestamp: new Date(Date.now())}]
+    })
+  }
+  else if (!location || beaconHistory.history[beaconHistory.history.length - 1].location !== location) {
+    newHistory = beaconHistory.history;
+    newHistory.push({location: location, timestamp: new Date(Date.now())});
+    deviceHistorydb.update({ macAddress: beaconMacAddress }, { $set: { history: newHistory } });
+  }  
 }
 
 //send all beacons to EHR
@@ -154,6 +194,32 @@ function sendData() {
     .catch(function (error) {
       console.log(error)
     })
+}
+
+function getHistoryByDay() {
+  let days = [[], [], [], [], [], [], []];
+  for (device of deviceHistorydb.find().fetch()) {
+    for (record of device.history) {
+      days[record.timestamp.getDay()].push(record);
+    }
+  }
+  return days;
+}
+
+function getRandomHistoryByDay() {
+  const LOCATIONS = ["Receptionist", "General Practitioner", "Lab", "Dermatology"];
+  let days = [[], [], [], [], [], [], []];
+  for (device of deviceHistorydb.find().fetch()) {
+    for (let i = 0; i < random(5, 20); i++) {
+      let date = new Date(Date.now());
+      date.setDate(date.getDate() + random(0, 6));
+      days[random(0, 6)].push({
+        location: LOCATIONS[random(0, LOCATIONS.length - 1)],
+        timestamp: date
+      });
+    }
+  }
+  return days;
 }
 
 function getCurrentTime() {
@@ -173,3 +239,15 @@ function saveConfig() {
   fs.writeFileSync(configPath, JSON.stringify(config, null, 4));
   fs.chmodSync(configPath, "0777");
 }
+
+function random(min, max) {
+  min = Math.ceil(min);
+  max = Math.floor(max);
+  return Math.floor(Math.random() * (max - min + 1) + min);
+}
+
+Meteor.methods({
+  updateRadioConfig: (macAddress, config) => {
+    radiodb.update({macAddress: macAddress}, {$set: {config: config}});
+  }
+})

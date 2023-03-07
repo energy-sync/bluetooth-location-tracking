@@ -85,7 +85,7 @@ setTimeout(scanTimeout, 1000 * config.refreshTime);
 //fetching config.json from controller server and updating local copy if changed
 setInterval(() => {
     console.log("Checking for config update");
-    axios.get(`${config.controllerUrl}/config`)
+    axios.post(`${config.controllerUrl}/config`, {macAddress: getMAC()})
     .then(response => {
         if (JSON.stringify(config) !== JSON.stringify(response.data)) {
             config = response.data;
