@@ -28,18 +28,30 @@
         <option value="" selected>Un-Assign Beacon</option>
     </select>
     <button id="assignBtn">Assign Beacon</button>
-    <h5>Basic Information:</h5>
+    
     <div class="vstack">
         <table class="table table-striped table-bordered table-hover">
+            <th><h5>Basic Information:</h5></th>
             <tr>
-
-                <td><b>Date of Birth:</b> {{patient.patientInformation.DOB}}</td>
-                <td><b>Age:</b> {{patient.patientInformation.age}}</td>
-                <td><b>Address:</b> {{patient.patientInformation.address}}</td>
+                <th>Date of Birth:</th>
+                <td>{{patient.patientInformation.DOB}}</td>
+                </tr>
+            <tr>
+                <th>Age:</th> 
+                <td>{{patient.patientInformation.age}}</td>
+            </tr>
+                <tr>
+                    <th>Address:</th>
+                    <td> {{patient.patientInformation.address}}</td>
+                </tr>
+                
+            <tr>
+                <th>Patient ID:</th>
+                <td>{{patient.patientInformation.patientID}}</td>
             </tr>
             <tr>
-                <td><b>Patient ID:</b> {{patient.patientInformation.patientID}}</td>
-                <td><b>Assigned Physician:</b> {{patient.patientInformation.physicianName}}</td>
+                <th>Assigned Physician:</th>
+                <td>{{patient.patientInformation.physicianName}}</td>
             </tr>
         </table>
     </div>
@@ -58,9 +70,9 @@
 </template>
 
 <template name="vitals">
-    <h5>Vitals:</h5>
     <div class="vstack">
         <table class="table table-striped table-bordered table-hover">
+            <th><h5>Vitals:</h5></th>
             <tr>
                 <td><b>Blood Pressure:</b> {{patient.vitals.bloodPressure}}</td>
                 <td><b>Heart Rate:</b> {{patient.vitals.heartRate}}</td>
@@ -73,9 +85,9 @@
 </template>
 
 <template name="labWork">
-    <h5>Lab Work:</h5>
     <div class="vstack">
         <table class="table table-striped table-bordered table-hover">
+            <th><h5>Lab Work:</h5></th>
             <tr>
                 <td><b>RBC:</b> {{patient.labWork.RBC}}</td>
                 <td><b>Blood Glucose Level:</b> {{patient.labWork.bloodGlucose}}</td>
@@ -97,17 +109,18 @@
 </template>
 
 <template name="prescriptions">
-    <h5>Prescriptions:</h5>
-    <ul class="list-group">
+    <table class="table table-striped table-bordered table-hover">
+        <th><h5>Prescriptions:</h5></th>
         {{#each prescription in patient.prescriptions}}
-        <li>{{prescription}}</li>
+        <tr>{{prescription}}</tr>
         {{/each}}
-    </ul>
+    </table>
 </template>
 <template name="dermatology">
-    <h5>Dermatology:</h5>
-    <div class="container text-center">
+    
+    <div class="vstack">
         <table class="table table-striped table-bordered table-hover">
+            <th><h5>Dermatology:</h5></th>
             <tr>
             <td><b>Acne:</b> {{printBool patient.dermatology.acne}}</td>
             <td><b>Acne Scars:</b> {{printBool patient.dermatology.acneScars}}</td>
