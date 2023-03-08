@@ -2,7 +2,7 @@
 import { Meteor } from 'meteor/meteor';
 import '../lib/database.js';
 import { patientInformationdb } from "../lib/database"
-import { dummyBeaconDB } from '../lib/database';
+import { historicalPatientInformationDB } from '../lib/database';
 import { WebApp } from 'meteor/webapp';
 
 let arrayofdevices = [];
@@ -10,7 +10,7 @@ let arrayofdevices = [];
 Meteor.startup(() => {
   // code to run on server at startup
   patientInformationdb.remove({});
-  dummyBeaconDB.remove({});
+  historicalPatientInformationDB.remove({});
   generateRealPatients(6);
   generateDummyPatients(50);
   generateRandomBeaconData(500);
@@ -50,25 +50,25 @@ Meteor.methods({
     return arrayofdevices.map(ids => ids.beaconID);
   },
 
-  //get number of patients in department
-  getPatientNum: (department) => {
-    let totalNumOfPatients = dummyBeaconDB.find({ department: department }).count()
+  //get number of patients in location
+  getPatientNum: (location) => {
+    let totalNumOfPatients = historicalPatientInformationDB.find({ location: location }).count()
     return totalNumOfPatients;
   },
-  getTimes: (department)=>{
-    let info = dummyBeaconDB.find({department:department}).fetch()
+  getTimes: (location)=>{
+    let info = historicalPatientInformationDB.find({location:location}).fetch()
     return info.map(times => times.time)
   },
-  getDays: (department)=>{
-    let info = dummyBeaconDB.find({department:department}).fetch()
+  getDays: (location)=>{
+    let info = historicalPatientInformationDB.find({location:location}).fetch()
     return info.map(days => days.day)
   },
 
-  //get busy time of day in department
-  getBusyTime: (department) => {
+  //get busy time of day in location
+  getBusyTime: (location) => {
   let busiestTime;
   let hourWithPatients = Array.from({ length: 24 }, (_, hour) =>
-    dummyBeaconDB.find({ department, hour }).count()
+    historicalPatientInformationDB.find({ location, hour }).count()
   );
   busiestTime = hourWithPatients.indexOf(Math.max(...hourWithPatients));
   if(busiestTime < 10 ){
@@ -78,26 +78,26 @@ Meteor.methods({
 }
 ,
 
-  getNumberOfPeoplePerDay : (department)=>{
+  getNumberOfPeoplePerDay : (location)=>{
     let dayArray = ["Sunday", "Monday", "Tuesday",
     "Wednesday", "Thursday", "Friday", "Saturday"]
     let dataArray = []
 
     for(let i =0;i<dayArray.length;i++){
-      data = dummyBeaconDB.find({department:department, day:dayArray[i]}).count()
+      data = historicalPatientInformationDB.find({location:location, day:dayArray[i]}).count()
       dataArray.push([dayArray[i],data])
     }
     return dataArray;
   },
 
-  //get the busiest day of each department
-  getBusiestDay: (department)=>{
+  //get the busiest day of each location
+  getBusiestDay: (location)=>{
     const dayArray = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
     let busiestDay = null;
     let maxPatients = -Infinity;
     
     for (let i = 0; i < dayArray.length; i++) {
-      const patientsCount = dummyBeaconDB.find({department, day: dayArray[i]}).count();
+      const patientsCount = historicalPatientInformationDB.find({location, day: dayArray[i]}).count();
       if (patientsCount > maxPatients) {
         busiestDay = dayArray[i];
         maxPatients = patientsCount;
@@ -235,12 +235,19 @@ function storeInfo(body) {
 
 //function to update location
 function updateLocation(beaconID, location) {
-  patientInformationdb.update({ beaconID: beaconID }, { $set: { location: location, timeOfUpdate: getCurrentTime(), waitTime: waitTime() } })
+  patientInformationdb.update({ beaconID: beaconID }, { $set: { location: location, timeOfUpdate: getCurrentTime()} })
+  historicalPatientInformationDB.insert({
+    'beaconID':beaconID,
+    'location': location,
+    'hour': readHour(getCurrentTime()),
+    'minute': readMinute(getCurrentTime()),
+    'day': readDays(getCurrentTime())
+  })
 }
 
 //function to get current time
 function getCurrentTime() {
-  return Date(Date.now().toLocaleString())
+  return Date(Date.now())
 }
 
 //generate random locations for dummy data
@@ -514,22 +521,15 @@ function generateRandomBeaconData(numberToGenerate) {
     let beaconID = "XXXXXXX".replace(/X/g, function () {
       return "0123456789ABCDEF".charAt((Math.random() * 16))
     });
-    dummyBeaconDB.insert({
+    historicalPatientInformationDB.insert({
       'beaconID': beaconID,
-      'department': getDummyDepartment(),
+      'location': generateRandomLocation(),
       'hour': getRandomHour(),
       'minute': getRandomMinute(),
       'day': getRandomDayOfWeek()
     })
 
   }
-}
-
-function getDummyDepartment() {
-  let departmentArray = ["Surgery", "Gynaecology", "Pediatrics", "Eye", "ENT", "Dental", "Orthopaedics", "Neurology", "Cardiology",
-    "Psychiatry", "Skin", "Plastic Surgery", "Rehabilitation", "Pharmacy", "Radiology"];
-  let department = departmentArray[(getRandomNumber(departmentArray.length))];
-  return department;
 }
 
 function getRandomHour() {
@@ -554,26 +554,44 @@ function getRandomDayOfWeek() {
   return day;
 }
 
-function waitTime(){
-  let time = moment.updateLocale('en',{
-    relativeTime: {
-      future: "in %s",
-      past: "%s ",
-      s: 'a second',
-      ss: '%d seconds',
-      m: "a minute",
-      mm: "%d minutes",
-      h: "an hour",
-      hh: "%d hours",
-      d: "a day",
-      dd: "%d days",
-      M: "a month",
-      MM: "%d months",
-      y: "a year",
-      yy: "%d years"
+
+function readHour(){
+  let now = new Date();
+  let hour = now.getHours()
+  return hour
+}
+
+function readMinute(time){
+  let now = new Date();
+  let minute = now.getMinutes();
+  return minute
+}
+
+function readDays(){
+  let now = new Date();
+  let day = now.getDay()
+  switch(day){
+    case 0:
+      day = 'Sunday'
+      break
+    case 1:
+      day = 'Monday'
+      break
+    case 2:
+      day = 'Tuesday'
+      break
+    case 3:
+      day = 'Wednesday'
+      break
+    case 4:
+      day = 'Thursday'
+      break
+    case 5:
+      day = 'Friday'
+      break
+    case 6:
+      day = 'Saturday'
+      break
   }
-  })
-  let waitTime = moment().fromNow();
-  console.log(waitTime)
-  return waitTime
+  return day
 }

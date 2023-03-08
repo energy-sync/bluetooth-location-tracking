@@ -3,7 +3,7 @@
     "measuredPower": -59,
     "environmentalFactor": 3,
     "distanceChangeToTransmit": 3,
-    "controllerUrl": "http://10.71.4.52:3002",
+    "controllerUrl": "http://localhost:3002",
     "beacons": [
         {
             "beaconID": "Bob",

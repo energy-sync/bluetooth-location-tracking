@@ -1,79 +1,30 @@
 import { Template } from "meteor/templating";
-import { dummyBeaconDB } from "../../lib/database";
+import { historicalPatientInformationDB } from "../../lib/database";
 import '../pages/patient-overview.html';
 
-Template.surgeryTemplate.onCreated(function () {
-    initializeSpecialty('Surgery', this)
-    initializeSpecialtyChart('Surgery', this);
+Template.receptionistTemplate.onCreated(function () {
+    initializeSpecialty('Receptionist', this)
+    initializeSpecialtyChart('Receptionist', this);
 });
 
-Template.gynoTemplate.onCreated(function () {
-    initializeSpecialty('Gynaecology', this);
-    initializeSpecialtyChart('Gynaecology', this);
+Template.generalPractitionerTemplate.onCreated(function () {
+    initializeSpecialty('General Practitioner', this);
+    initializeSpecialtyChart('General Practitioner', this);
 });
 
-Template.paedsTemplate.onCreated(function () {
-    initializeSpecialty('Pediatrics', this);
-    initializeSpecialtyChart('Pediatrics', this);
+Template.labTemplate.onCreated(function () {
+    initializeSpecialty('Lab', this);
+    initializeSpecialtyChart('Lab', this);
 });
 
-Template.eyeTemplate.onCreated(function () {
-    initializeSpecialty('Eye', this);
-    initializeSpecialtyChart('Eye', this);
+Template.dermaTemplate.onCreated(function () {
+    initializeSpecialty('Dermatology', this);
+    initializeSpecialtyChart('Dermatology', this);
 });
-
-Template.entTemplate.onCreated(function () {
-    initializeSpecialty('ENT', this);
-    initializeSpecialtyChart('ENT', this);
-});
-
-Template.dentalTemplate.onCreated(function () {
-    initializeSpecialty('Dental', this);
-    initializeSpecialtyChart('Dental', this);
-});
-
-Template.orthoTemplate.onCreated(function () {
-    initializeSpecialty('Orthopaedics', this);
-    initializeSpecialtyChart('Orthopaedics', this);
-});
-
-Template.neuroTemplate.onCreated(function () {
-    initializeSpecialty('Neurology', this);
-    initializeSpecialtyChart('Neurology', this);
-});
-Template.cardioTemplate.onCreated(function () {
-    initializeSpecialty('Cardiology', this);
-    initializeSpecialtyChart('Cardiology', this);
-});
-Template.psychTemplate.onCreated(function () {
-    initializeSpecialty('Psychiatry', this);
-    initializeSpecialtyChart('Psychiatry', this);
-});
-Template.skinTemplate.onCreated(function () {
-    initializeSpecialty('Skin', this);
-    initializeSpecialtyChart('Skin', this);
-});
-Template.plasticSurgeryTemplate.onCreated(function () {
-    initializeSpecialty('Plastic Surgery', this);
-    initializeSpecialtyChart('Plastic Surgery', this);
-});
-Template.rehabTemplate.onCreated(function () {
-    initializeSpecialty('Rehabilitation', this);
-    initializeSpecialtyChart('Rehabilitation', this);
-});
-Template.pharmaTemplate.onCreated(function () {
-    initializeSpecialty('Pharmacy', this);
-    initializeSpecialtyChart('Pharmacy', this);
-});
-Template.radioTemplate.onCreated(function () {
-    initializeSpecialty('Radiology', this);
-    initializeSpecialtyChart('Radiology', this);
-});
-
 
 
 Template.landing.onCreated(function () {
-    this.department = new ReactiveVar('General Info');
+    this.location = new ReactiveVar('General Info');
 });
 
 function initializeSpecialty(specialtyName, instance) {
@@ -117,23 +68,12 @@ function initializeSpecialtyChart(specialty) {
 
 //all the helpers for landing page
 Template.landing.helpers({
-    departments: ["Surgery", "Gynaecology", "Pediatrics", "Eye", "ENT", "Dental", "Orthopaedics", "Neurology", "Cardiology", "Psychiatry", "Skin", "Plastic Surgery", "Rehabilitation", "Pharmacy", "Radiology"],
-    generalInfo: () => Template.instance().department.get() === 'General Info',
-    surgery: () => Template.instance().department.get() === 'Surgery',
-    gyno: () => Template.instance().department.get() === 'Gynaecology',
-    paeds: () => Template.instance().department.get() === 'Pediatrics',
-    eye: () => Template.instance().department.get() === 'Eye',
-    ent: () => Template.instance().department.get() === 'ENT',
-    dental: () => Template.instance().department.get() === 'Dental',
-    ortho: () => Template.instance().department.get() === 'Orthopaedics',
-    neuro: () => Template.instance().department.get() === 'Neurology',
-    cardio: () => Template.instance().department.get() === 'Cardiology',
-    psych: () => Template.instance().department.get() === 'Psychiatry',
-    skin: () => Template.instance().department.get() === 'Skin',
-    plasticSurgery: () => Template.instance().department.get() === 'Plastic Surgery',
-    rehab: () => Template.instance().department.get() === 'Rehabilitation',
-    pharma: () => Template.instance().department.get() === 'Pharmacy',
-    radio: () => Template.instance().department.get() === 'Radiology',
+    locations: ['Receptionist', 'General Practitioner', 'Lab', 'Dermatology'],
+    generalInfo: () => Template.instance().location.get() === 'General Info',
+    receptionist: () => Template.instance().location.get() === 'Receptionist',
+    generalPractitioner: () => Template.instance().location.get() === 'General Practitioner',
+    lab: () => Template.instance().location.get() === 'Lab',
+    derma: () => Template.instance().location.get() === 'Dermatology',
   });
 
 function createTemplateHelpers(templateName) {
@@ -150,33 +90,22 @@ function createTemplateHelpers(templateName) {
     return helpers;
   }
   
-  Template.surgeryTemplate.helpers(createTemplateHelpers('Surgery'));
-  Template.gynoTemplate.helpers(createTemplateHelpers('Gynaecology'));
-  Template.paedsTemplate.helpers(createTemplateHelpers('Pediatrics'));
-  Template.eyeTemplate.helpers(createTemplateHelpers('Eye'));
-  Template.entTemplate.helpers(createTemplateHelpers('ENT'));
-  Template.dentalTemplate.helpers(createTemplateHelpers('Dental'));
-  Template.orthoTemplate.helpers(createTemplateHelpers('Orthopaedics'));
-  Template.cardioTemplate.helpers(createTemplateHelpers('Cardiology'));
-  Template.psychTemplate.helpers(createTemplateHelpers('Psychiatry'));
-  Template.skinTemplate.helpers(createTemplateHelpers('Skin'));
-  Template.plasticSurgeryTemplate.helpers(createTemplateHelpers('Plastic Surgery'));
-  Template.rehabTemplate.helpers(createTemplateHelpers('Rehabilitation'));
-  Template.pharmaTemplate.helpers(createTemplateHelpers('Pharmacy'));
-  Template.radioTemplate.helpers(createTemplateHelpers('Radiology'));
-  Template.neuroTemplate.helpers(createTemplateHelpers('Neurology'));
-  
+  Template.receptionistTemplate.helpers(createTemplateHelpers('Receptionist'));
+  Template.generalPractitionerTemplate.helpers(createTemplateHelpers('General Practitioner'));
+  Template.labTemplate.helpers(createTemplateHelpers('Lab'));
+  Template.dermaTemplate.helpers(createTemplateHelpers('Dermatology'));
+
 
 Template.patientOverview.helpers({
     beacons() {
-        return dummyBeaconDB.find();
+        return historicalPatientInformationDB.find();
     }
 })
 
 
 //event for dropdown changing
 Template.landing.events({
-    "change #selectedDepartment": (event, templateInstance) => {
-        templateInstance.department.set(event.currentTarget.value);
+    "change #selectedLocation": (event, templateInstance) => {
+        templateInstance.location.set(event.currentTarget.value);
     }
 })
