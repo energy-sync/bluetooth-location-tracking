@@ -105,6 +105,15 @@ Meteor.methods({
     }
   
     return busiestDay;
+  },
+  getNumberOfPeoplePerHour : (location)=>{
+    let dataArray = []
+
+    for(let i =0;i<24;i++){
+      data = historicalPatientInformationDB.find({location:location, hour:i}).count()
+      dataArray.push([i,data])
+    }
+    return dataArray;
   }
 })
 

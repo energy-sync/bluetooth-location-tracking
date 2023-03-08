@@ -8,8 +8,6 @@ import "./scripts/patient-list.js";
 import "./pages/patient.html";
 import "./scripts/patient.js";
 import "./stylesheets/main.css";
-import "./stylesheets/bootstrap.min.css";
-import "./stylesheets/device-list.css";
 import "./pages/patient-overview.html"; 
 import "./scripts/patient-overview.js";
 

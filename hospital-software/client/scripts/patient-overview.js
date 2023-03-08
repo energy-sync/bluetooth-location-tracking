@@ -4,22 +4,26 @@ import '../pages/patient-overview.html';
 
 Template.receptionistTemplate.onCreated(function () {
     initializeSpecialty('Receptionist', this)
-    initializeSpecialtyChart('Receptionist', this);
+    initializeSpecialtyChartDays('Receptionist', this);
+    initializeSpecialtyChartHours('Receptionist', this);
 });
 
 Template.generalPractitionerTemplate.onCreated(function () {
     initializeSpecialty('General Practitioner', this);
-    initializeSpecialtyChart('General Practitioner', this);
+    initializeSpecialtyChartDays('General Practitioner', this);
+    initializeSpecialtyChartHours('General Practitioner', this);
 });
 
 Template.labTemplate.onCreated(function () {
     initializeSpecialty('Lab', this);
-    initializeSpecialtyChart('Lab', this);
+    initializeSpecialtyChartDays('Lab', this);
+    initializeSpecialtyChartHours('Lab', this);
 });
 
 Template.dermaTemplate.onCreated(function () {
     initializeSpecialty('Dermatology', this);
-    initializeSpecialtyChart('Dermatology', this);
+    initializeSpecialtyChartDays('Dermatology', this);
+    initializeSpecialtyChartHours('Dermatology', this);
 });
 
 
@@ -45,11 +49,11 @@ function initializeSpecialty(specialtyName, instance) {
     });
 }
 
-function initializeSpecialtyChart(specialty) {
+function initializeSpecialtyChartDays(specialty) {
     console.log(specialty)
         Meteor.call('getNumberOfPeoplePerDay', specialty, (err, res) => {
             let chart = anychart.pie(res);
-            chart.title('Number of Patients Per Day in ' + specialty)
+            chart.title('Number of Patients Per Hour in ' + specialty)
                  .radius('43%')
                  .innerRadius('30%');
             chart.legend()
@@ -58,10 +62,21 @@ function initializeSpecialtyChart(specialty) {
                 .align('center')
                 .title('Days Of Week');
             chart.animation(true);
-            chart.container(specialty).draw();
+            chart.container(specialty+'Days').draw();
         });
     }
 
+function initializeSpecialtyChartHours(specialty) {
+        console.log(specialty)
+            Meteor.call('getNumberOfPeoplePerHour', specialty, (err, res) => {
+                let chart = anychart.column(res);
+                chart.title('Number of Patients Per Hour in ' + specialty)
+                chart.animation(true);
+                chart.xAxis().title('Hours')
+                chart.yAxis().title('Number Of Patients')
+                chart.container(specialty+'Hours').draw();
+            });
+        }
 
 
 
