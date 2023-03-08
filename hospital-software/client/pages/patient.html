@@ -30,16 +30,16 @@
     <button id="assignBtn">Assign Beacon</button>
     <h5>Basic Information:</h5>
     <div class="vstack">
-        <table class="table">
+        <table class="table table-striped table-bordered table-hover">
             <tr>
 
-                <th>Date of Birth: {{patient.patientInformation.DOB}}</th>
-                <th>Age: {{patient.patientInformation.age}}</th>
-                <th>Address: {{patient.patientInformation.address}}</th>
+                <td><b>Date of Birth:</b> {{patient.patientInformation.DOB}}</td>
+                <td><b>Age:</b> {{patient.patientInformation.age}}</td>
+                <td><b>Address:</b> {{patient.patientInformation.address}}</td>
             </tr>
             <tr>
-                <th>Patient ID: {{patient.patientInformation.patientID}}</th>
-                <th>Assigned Physician: {{patient.patientInformation.physicianName}}</th>
+                <td><b>Patient ID:</b> {{patient.patientInformation.patientID}}</td>
+                <td><b>Assigned Physician:</b> {{patient.patientInformation.physicianName}}</td>
             </tr>
         </table>
     </div>
@@ -60,12 +60,12 @@
 <template name="vitals">
     <h5>Vitals:</h5>
     <div class="vstack">
-        <table class="table">
+        <table class="table table-striped table-bordered table-hover">
             <tr>
-                <th>Blood Pressure: {{patient.vitals.bloodPressure}}</th>
-                <th>Heart Rate: {{patient.vitals.heartRate}}</th>
-                <th>Height: {{patient.vitals.height}}</th>
-                <th>Weight: {{patient.vitals.weight}}</th>
+                <td><b>Blood Pressure:</b> {{patient.vitals.bloodPressure}}</td>
+                <td><b>Heart Rate:</b> {{patient.vitals.heartRate}}</td>
+                <td><b>Height:</b> {{patient.vitals.height}}</td>
+                <td><b>Weight:</b> {{patient.vitals.weight}}</td>
             </tr>
         </table>
     </div>
@@ -75,21 +75,21 @@
 <template name="labWork">
     <h5>Lab Work:</h5>
     <div class="vstack">
-        <table class="table">
+        <table class="table table-striped table-bordered table-hover">
             <tr>
-                <th>RBC: {{patient.labWork.RBC}}</th>
-                <th>Blood Glucose Level: {{patient.labWork.bloodGlucose}}</th>
-                <th>Hemoglobin: {{patient.labWork.hemoglobin}}</th>
+                <td><b>RBC:</b> {{patient.labWork.RBC}}</td>
+                <td><b>Blood Glucose Level:</b> {{patient.labWork.bloodGlucose}}</td>
+                <td><b>Hemoglobin:</b> {{patient.labWork.hemoglobin}}</td>
             </tr>
             <tr>
-                <th>Hematocrit: {{patient.labWork.hematocrit}}</th>
-                <th>MCV: {{patient.labWork.MCV}}</th>
-                <th>WBC: {{patient.labWork.WBC}}</th>
+                <td><b>Hematocrit:</b> {{patient.labWork.hematocrit}}</td>
+                <td><b>MCV:</b> {{patient.labWork.MCV}}</td>
+                <td><b>WBC:</b> {{patient.labWork.WBC}}</td>
             </tr>
             <tr>
-                <th>Sodium: {{patient.labWork.sodium}}</th>
-                <th>Potassium: {{patient.labWork.potassium}}</th>
-                <th>Platelet Count: {{patient.labWork.plateletCount}}</th>
+                <td><b>Sodium:</b> {{patient.labWork.sodium}}</td>
+                <td><b>Potassium:</b> {{patient.labWork.potassium}}</td>
+                <td><b>Platelet Count:</b> {{patient.labWork.plateletCount}}</td>
             </tr>
         </table>
     </div>
@@ -107,24 +107,26 @@
 <template name="dermatology">
     <h5>Dermatology:</h5>
     <div class="container text-center">
-        <div class="row">
-            <div class="col"><b>Acne:</b> {{printBool patient.dermatology.acne}}</div>
-            <div class="col"><b>Acne Scars:</b> {{printBool patient.dermatology.acneScars}}</div>
-            <div class="col"><b>Eczema and Dermatitis:</b> {{printBool patient.dermatology.eczemaAndDermatitis}}</div>
-            <div class="col"><b>Hair Loss:</b> {{printBool patient.dermatology.hairLoss}}</div>
-        </div>
-        <div class="row">
-            <div class="col"><b>Nail Problems:</b> {{printBool patient.dermatology.nailProblems}}</div>
-            <div class="col"><b>Warts:</b> {{printBool patient.dermatology.warts}}</div>
-            <div class="col"><b>Fungal Infections:</b> {{printBool patient.dermatology.fungalInfections}}</div>
-            <div class="col"><b>Skin Cancer:</b> {{printBool patient.dermatology.skinCancer}}</div>
-        </div>
-        <div class="row">
-            <div class="col"><b>Shingles:</b> {{printBool patient.dermatology.shingles}}</div>
-            <div class="col"><b>Rosacea:</b> {{printBool patient.dermatology.rosacea}}</div>
-            <div class="col"><b>Psoriasis:</b> {{printBool patient.dermatology.psoriasis}}</div>
-            <div class="col"><b>Vitiligo:</b> {{printBool patient.dermatology.vitiligo}}</div>
-        </div>
+        <table class="table table-striped table-bordered table-hover">
+            <tr>
+            <td><b>Acne:</b> {{printBool patient.dermatology.acne}}</td>
+            <td><b>Acne Scars:</b> {{printBool patient.dermatology.acneScars}}</td>
+            <td><b>Eczema and Dermatitis:</b> {{printBool patient.dermatology.eczemaAndDermatitis}}</td>
+            <td><b>Hair Loss:</b> {{printBool patient.dermatology.hairLoss}}</td>
+        </tr>
+        <tr>
+            <td><b>Nail Problems:</b> {{printBool patient.dermatology.nailProblems}}</td>
+            <td><b>Warts:</b> {{printBool patient.dermatology.warts}}</td>
+            <td><b>Fungal Infections:</b> {{printBool patient.dermatology.fungalInfections}}</td>
+            <td><b>Skin Cancer:</b> {{printBool patient.dermatology.skinCancer}}</td>
+        </tr>
+        <tr>
+            <td><b>Shingles:</b> {{printBool patient.dermatology.shingles}}</td>
+            <td><b>Rosacea:</b> {{printBool patient.dermatology.rosacea}}</td>
+            <td><b>Psoriasis:</b> {{printBool patient.dermatology.psoriasis}}</td>
+            <td><b>Vitiligo:</b> {{printBool patient.dermatology.vitiligo}}</td>
+        </tr>
+        </table>
     </div>
     <br>
 </template>
