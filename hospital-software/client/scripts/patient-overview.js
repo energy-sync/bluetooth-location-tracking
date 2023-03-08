@@ -46,10 +46,10 @@ function initializeSpecialty(specialtyName, instance) {
 }
 
 function initializeSpecialtyChart(specialty) {
-
+    console.log(specialty)
         Meteor.call('getNumberOfPeoplePerDay', specialty, (err, res) => {
             let chart = anychart.pie(res);
-            chart.title('Number of Patients Per Day')
+            chart.title('Number of Patients Per Day in ' + specialty)
                  .radius('43%')
                  .innerRadius('30%');
             chart.legend()
@@ -58,7 +58,7 @@ function initializeSpecialtyChart(specialty) {
                 .align('center')
                 .title('Days Of Week');
             chart.animation(true);
-            chart.container("container").draw();
+            chart.container(specialty).draw();
         });
     }
 
@@ -68,12 +68,7 @@ function initializeSpecialtyChart(specialty) {
 
 //all the helpers for landing page
 Template.landing.helpers({
-    locations: ['Receptionist', 'General Practitioner', 'Lab', 'Dermatology'],
-    generalInfo: () => Template.instance().location.get() === 'General Info',
-    receptionist: () => Template.instance().location.get() === 'Receptionist',
-    generalPractitioner: () => Template.instance().location.get() === 'General Practitioner',
-    lab: () => Template.instance().location.get() === 'Lab',
-    derma: () => Template.instance().location.get() === 'Dermatology',
+
   });
 
 function createTemplateHelpers(templateName) {
@@ -94,18 +89,3 @@ function createTemplateHelpers(templateName) {
   Template.generalPractitionerTemplate.helpers(createTemplateHelpers('General Practitioner'));
   Template.labTemplate.helpers(createTemplateHelpers('Lab'));
   Template.dermaTemplate.helpers(createTemplateHelpers('Dermatology'));
-
-
-Template.patientOverview.helpers({
-    beacons() {
-        return historicalPatientInformationDB.find();
-    }
-})
-
-
-//event for dropdown changing
-Template.landing.events({
-    "change #selectedLocation": (event, templateInstance) => {
-        templateInstance.location.set(event.currentTarget.value);
-    }
-})
