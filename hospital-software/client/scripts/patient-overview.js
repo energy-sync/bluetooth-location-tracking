@@ -53,7 +53,7 @@ function initializeSpecialtyChartDays(specialty) {
     console.log(specialty)
         Meteor.call('getNumberOfPeoplePerDay', specialty, (err, res) => {
             let chart = anychart.pie(res);
-            chart.title('Number of Patients Per Hour in ' + specialty)
+            chart.title('Number of Patients Per Day in ' + specialty)
                  .radius('43%')
                  .innerRadius('30%');
             chart.legend()
