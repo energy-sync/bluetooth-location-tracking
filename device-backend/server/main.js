@@ -50,7 +50,9 @@ Meteor.startup(() => {
       radiodb.insert({
         "location": radio.location,
         "macAddress": radio.macAddress,
+        "lastPing": 0,
         "online": false,
+        "restart": false,
         "config": config
       });
     }
@@ -89,12 +91,13 @@ WebApp.connectHandlers.use("/location", function (req, res, next) {
 });
 
 //handle request from ble-receiver to respond with the config file
+//also acts as an "alive" ping
 WebApp.connectHandlers.use("/config", (req, res, next) => {
   if (req.method === 'POST') {
     req.on("data", Meteor.bindEnvironment(data => {
-      let radioConfig = radiodb.findOne({macAddress: JSON.parse(data).macAddress}).config;
-      console.log(radioConfig.refreshTime);
-      res.writeHead(200).end(JSON.stringify(radioConfig));
+      let radio = radiodb.findOne({macAddress: JSON.parse(data).macAddress});
+      radiodb.update({macAddress: radio.macAddress}, {$set: {lastPing: Date.now()}});
+      res.writeHead(200).end(JSON.stringify(radio.config));
     }));
   }
 });
@@ -119,21 +122,17 @@ WebApp.connectHandlers.use("/testLocation", function (req, res, next) {
   }
 });
 
-WebApp.connectHandlers.use("/historyByDay", function (req, res, next) {
-  if (req.method === 'GET') {
-    res.writeHead(200).end(JSON.stringify(getHistoryByDay()));
+//check for devices that have pinged in the last 10 seconds to determine if they are online
+Meteor.setInterval(function () {
+  for (radio of radiodb.find({}).fetch()) {
+    let isOnline = Date.now() - radio.lastPing < 10000;
+    radiodb.update({macAddress: radio.macAddress}, {$set: {online: isOnline}});
   }
-});
-
-WebApp.connectHandlers.use("/randomHistoryByDay", function (req, res, next) {
-  if (req.method === 'GET') {
-    res.writeHead(200).end(JSON.stringify(getRandomHistoryByDay()));
-  }
-});
+}, 5000);
 
 //add test location to beacon
 function testAddLocation(beaconID, location, distance) {
-  deviceInformationdb.update({ beaconID: beaconID }, { $set: { location: location, time: getCurrentTime(), distance: distance } })
+  deviceInformationdb.update({ beaconID: beaconID }, { $set: { location: location, time: getCurrentTime(), distance: distance } });
 }
 //update the location of the beacon to hospital software when the location changes from beacon
 function testUpdateLocation(beaconID) {
@@ -194,32 +193,6 @@ function sendData() {
     .catch(function (error) {
       console.log(error)
     })
-}
-
-function getHistoryByDay() {
-  let days = [[], [], [], [], [], [], []];
-  for (device of deviceHistorydb.find().fetch()) {
-    for (record of device.history) {
-      days[record.timestamp.getDay()].push(record);
-    }
-  }
-  return days;
-}
-
-function getRandomHistoryByDay() {
-  const LOCATIONS = ["Receptionist", "General Practitioner", "Lab", "Dermatology"];
-  let days = [[], [], [], [], [], [], []];
-  for (device of deviceHistorydb.find().fetch()) {
-    for (let i = 0; i < random(5, 20); i++) {
-      let date = new Date(Date.now());
-      date.setDate(date.getDate() + random(0, 6));
-      days[random(0, 6)].push({
-        location: LOCATIONS[random(0, LOCATIONS.length - 1)],
-        timestamp: date
-      });
-    }
-  }
-  return days;
 }
 
 function getCurrentTime() {

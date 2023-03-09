@@ -18,14 +18,14 @@
         <table class="table table-bordered table-striped ">
             <thead class="col text-bg-secondary">
                 <th>Name</th>
+                <th>MAC Address</th>
                 <th>Current Location</th>
-                <th>Previous Location</th>
             </thead>
             <tbody>
                 {{#each beacon in beacons}}
                     <tr class="col table-active device-row beacon-row clickable-row">
                         <td>{{beacon.beaconID}}</td>
-                        <td>{{beacon.location}}</td>
+                        <td>{{beacon.macAddress}}</td>
                         <td>{{getLastLocation beacon}}</td>
                     </tr>
                 {{/each}}
@@ -74,8 +74,7 @@
                                 Device: <strong>{{getRadioName}}</strong>
                             {{/if}}
                         </h2>
-                        <button type="button" class="close x-button" data-dismiss="modal" aria-label="Close">
-                            <span aira-hidden="true">&times;</span>
+                        <button type="button" class="close btn-close" id="xButton" data-dismiss="modal" aria-label="Close">
                         </button>
                     </div>
 
@@ -151,6 +150,35 @@
                             </div>
                         </div>
                     {{/if}}
+                </div>
+            </div>
+        </div>
+    {{/if}}
+
+    {{#if isConfirmMenuOpen}}
+        <div class="container device-menu mx-auto">
+            <div class="container">
+                <div class="container modal-header">
+                    <h2 class="modal-title">
+                        {{#if isConfirmApplyAllMenuOpen}}
+                            Apply to all devices?
+                        {{else}}
+                            Restart device?
+                        {{/if}}
+                    </h2>
+                    <button type="button" class="close btn-close" id="confirmXButton" data-dismiss="modal" aria-label="Close"></button>
+                </div>
+
+                <p>
+                    {{#if isConfirmApplyAllMenuOpen}}
+                        Are you sure you want to apply these settings to all devices?
+                    {{else}}
+                        Are you sure you want to restart this device?
+                    {{/if}}
+                </p>
+                <div class="btn-group float-end">
+                    <button class="btn btn-danger" id="confirmCancelButton">Cancel</button>
+                    <button class="btn btn-primary" id="confirmButton">Confirm</button>
                 </div>
             </div>
         </div>

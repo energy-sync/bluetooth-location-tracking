@@ -7,6 +7,8 @@ import "./main.css"
 Template.main.onCreated(function () {
     this.showBeaconMenu = new ReactiveVar(false);
     this.showRadioMenu = new ReactiveVar(false);
+    this.showConfirmApplyAllMenu = new ReactiveVar(false);
+    this.showConfirmRestartMenu = new ReactiveVar(false);
     this.currentBeacon = new ReactiveVar();
     this.currentBeaconHistory = new ReactiveVar();
     this.currentRadio = new ReactiveVar();
@@ -23,12 +25,26 @@ Template.main.helpers({
         return isBeaconMenuOpen || isRadioMenuOpen;
     },
 
+    isConfirmMenuOpen() {
+        let isConfirmApplyAllMenuOpen = Template.instance().showConfirmApplyAllMenu.get();
+        let isConfirmRestartMenuOpen = Template.instance().showConfirmRestartMenu.get();
+        return isConfirmApplyAllMenuOpen || isConfirmRestartMenuOpen;
+    },
+
     isBeaconMenuOpen() {
         return Template.instance().showBeaconMenu.get();
     },
 
     isRadioMenuOpen() {
         return Template.instance().showRadioMenu.get();
+    },
+
+    isConfirmApplyAllMenuOpen() {
+        return Template.instance().showConfirmApplyAllMenu.get();
+    },
+
+    isConfirmRestartMenuOpen() {
+        return Template.instance().showConfirmRestartMenu.get();
     },
 
     getLastLocation(beacon) {
@@ -117,9 +133,21 @@ Template.main.events({
         templateInstance.currentRadio.set(radio);
     },
 
-    "click .x-button": (event, templateInstance) => {
+    "click #xButton": (event, templateInstance) => {
         templateInstance.showBeaconMenu.set(false);
         templateInstance.showRadioMenu.set(false);
+        templateInstance.showConfirmApplyAllMenu.set(false);
+        templateInstance.showConfirmRestartMenu.set(false);
+    },
+
+    "click #confirmXButton": (event, templateInstance) => {
+        templateInstance.showConfirmApplyAllMenu.set(false);
+        templateInstance.showConfirmRestartMenu.set(false);
+    },
+
+    "click #confirmCancelButton": (event, templateInstance) => {
+        templateInstance.showConfirmApplyAllMenu.set(false);
+        templateInstance.showConfirmRestartMenu.set(false);
     },
 
     "click #applyButton": (event, templateInstance) => {
@@ -129,10 +157,46 @@ Template.main.events({
         radioConfig.measuredPower = measuredPowerInput.value;
         radioConfig.environmentalFactor = environmentalFactorInput.value;
         radioConfig.distanceChangeToTransmit = distanceChangeToTransmitInput.value;
-        console.log(radioConfig);
+        templateInstance.showRadioMenu.set(false);
         Meteor.call('updateRadioConfig', currentRadio.macAddress, radioConfig, (error, result) => {
             if (error)
                 console.error(error);
         });
+    },
+
+    "click #applyAllButton": (event, templateInstance) => {
+        templateInstance.showConfirmApplyAllMenu.set(true);
+    },
+
+    "click #restartRadioButton": (event, templateInstance) => {
+        templateInstance.showConfirmRestartMenu.set(true);
+    },
+
+    "click #confirmButton": (event, templateInstance) => {
+        let currentRadio = Template.instance().currentRadio.curValue;
+        let radioConfig = radiodb.findOne({macAddress: currentRadio.macAddress}).config;
+        radioConfig.refreshTime = refreshTimeInput.value;
+        radioConfig.measuredPower = measuredPowerInput.value;
+        radioConfig.environmentalFactor = environmentalFactorInput.value;
+        radioConfig.distanceChangeToTransmit = distanceChangeToTransmitInput.value;
+        templateInstance.showBeaconMenu.set(false);
+        templateInstance.showRadioMenu.set(false);
+        templateInstance.showConfirmApplyAllMenu.set(false);
+        templateInstance.showConfirmRestartMenu.set(false);
+        if (Template.instance().showConfirmApplyAllMenu.curValue) {
+            for (radio of radiodb.find({}).fetch()) {
+                Meteor.call('updateRadioConfig', radio.macAddress, radioConfig, (error, result) => {
+                    if (error)
+                        console.error(error);
+                });
+            }
+        }
+        else if (Template.instance().showConfirmRestartMenu.curValue) {
+            radioConfig.restart = true;
+            Meteor.call('updateRadioConfig', currentRadio.macAddress, radioConfig, (error, result) => {
+                if (error)
+                    console.error(error);
+            });
+        }
     }
 });

@@ -52,13 +52,6 @@ tr{
     border-bottom: 1px solid gray;
 }
 
-.x-button {
-    border: none;
-    font-size: 28px;
-    padding: 0px 0px 0px 20px;
-    background-color: transparent;
-}
-
 .small-header {
     border-bottom: 1px solid gray;
     width: fit-content;

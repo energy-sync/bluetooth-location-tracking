@@ -91,6 +91,18 @@ setInterval(() => {
             config = response.data;
             saveConfig();
             console.log("Config updated");
+
+            //restart the script if the restart field is true
+            if (config.restart) {
+                /*process.on("exit", () => {
+                    require("child_process").spawn(process.argv.shift(), process.argv, {
+                        cwd: process.cwd(),
+                        detached: false,
+                        stdio: "inherit"
+                    });
+                });
+                process.exit();*/
+            }
         }
     });
 }, 5000);
