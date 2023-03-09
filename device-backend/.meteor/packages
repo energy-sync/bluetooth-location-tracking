@@ -27,3 +27,4 @@ blaze-hot               # Update files using Blaze's API with HMR
 ostrio:flow-router-extra
 webapp
 meteorhacks:picker
+meteortesting:mocha

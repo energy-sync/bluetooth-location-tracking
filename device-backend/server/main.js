@@ -182,7 +182,7 @@ function addLocation(beaconMacAddress, location, distance) {
 function sendData() {
   //grab an array of devices
   let arrayOfDevices = deviceInformationdb.find().fetch()
-  //console.log(arrayOfDevices)
+  console.log(arrayOfDevices)
   axios.post('http://localhost:3000/getBLEs', arrayOfDevices)
     .then(function (response) {
     })
