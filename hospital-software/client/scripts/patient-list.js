@@ -34,16 +34,16 @@ Template.patientRow.events({
 });
 
 Template.patientRow.helpers({
-    waitTime(patient){
-        if(patient.waitTime === undefined){
+    waitTime(patient) {
+        if (patient.waitTime === undefined) {
             let time = moment(patient.timeOfUpdate).fromNow();
-            
-            if(patient.timeOfUpdate === undefined){
+
+            if (patient.timeOfUpdate === undefined) {
                 return '';
             }
             return time;
-        }else{
-        return patient.waitTime + ' minute(s) ago';
+        } else {
+            return patient.waitTime + ' minute(s) ago';
         }
     },
 
@@ -53,17 +53,17 @@ Template.patientRow.helpers({
     }
 });
 
-Handlebars.registerHelper("isInSearch", function(patient) {
+Handlebars.registerHelper("isInSearch", function (patient) {
     let searchParam = FlowRouter.getQueryParam("search");
     if (!searchParam)
         return true;
-    
+
     let searchStr = FlowRouter.getQueryParam("search").toLowerCase().replaceAll(filterRegex, "").trim();
     if (searchStr.length === 0
         || patient.patientInformation.patientName.toLowerCase().replaceAll(filterRegex, "").trim().includes(searchStr)
         || patient.patientInformation.patientID.toLowerCase().replaceAll(filterRegex, "").trim().includes(searchStr)
         || patient.patientInformation.physicianName.toLowerCase().replaceAll(filterRegex, "").trim().includes(searchStr)
         || patient.macAddress.toLowerCase().replaceAll(filterRegex, "").trim().includes(searchStr)) {
-            return true;
+        return true;
     }
 });

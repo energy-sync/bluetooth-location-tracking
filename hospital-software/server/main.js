@@ -55,63 +55,63 @@ Meteor.methods({
     let totalNumOfPatients = historicalPatientInformationDB.find({ location: location }).count()
     return totalNumOfPatients;
   },
-  getTimes: (location)=>{
-    let info = historicalPatientInformationDB.find({location:location}).fetch()
+  getTimes: (location) => {
+    let info = historicalPatientInformationDB.find({ location: location }).fetch()
     return info.map(times => times.time)
   },
-  getDays: (location)=>{
-    let info = historicalPatientInformationDB.find({location:location}).fetch()
+  getDays: (location) => {
+    let info = historicalPatientInformationDB.find({ location: location }).fetch()
     return info.map(days => days.day)
   },
 
   //get busy time of day in location
   getBusyTime: (location) => {
-  let busiestTime;
-  let hourWithPatients = Array.from({ length: 24 }, (_, hour) =>
-    historicalPatientInformationDB.find({ location, hour }).count()
-  );
-  busiestTime = hourWithPatients.indexOf(Math.max(...hourWithPatients));
-  if(busiestTime < 10 ){
-    busiestTime = '0'+busiestTime;
+    let busiestTime;
+    let hourWithPatients = Array.from({ length: 24 }, (_, hour) =>
+      historicalPatientInformationDB.find({ location, hour }).count()
+    );
+    busiestTime = hourWithPatients.indexOf(Math.max(...hourWithPatients));
+    if (busiestTime < 10) {
+      busiestTime = '0' + busiestTime;
+    }
+    return busiestTime;
   }
-  return busiestTime;
-}
-,
+  ,
 
-  getNumberOfPeoplePerDay : (location)=>{
+  getNumberOfPeoplePerDay: (location) => {
     let dayArray = ["Sunday", "Monday", "Tuesday",
-    "Wednesday", "Thursday", "Friday", "Saturday"]
+      "Wednesday", "Thursday", "Friday", "Saturday"]
     let dataArray = []
 
-    for(let i =0;i<dayArray.length;i++){
-      data = historicalPatientInformationDB.find({location:location, day:dayArray[i]}).count()
-      dataArray.push([dayArray[i],data])
+    for (let i = 0; i < dayArray.length; i++) {
+      data = historicalPatientInformationDB.find({ location: location, day: dayArray[i] }).count()
+      dataArray.push([dayArray[i], data])
     }
     return dataArray;
   },
 
   //get the busiest day of each location
-  getBusiestDay: (location)=>{
+  getBusiestDay: (location) => {
     const dayArray = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
     let busiestDay = null;
     let maxPatients = -Infinity;
-    
+
     for (let i = 0; i < dayArray.length; i++) {
-      const patientsCount = historicalPatientInformationDB.find({location, day: dayArray[i]}).count();
+      const patientsCount = historicalPatientInformationDB.find({ location, day: dayArray[i] }).count();
       if (patientsCount > maxPatients) {
         busiestDay = dayArray[i];
         maxPatients = patientsCount;
       }
     }
-  
+
     return busiestDay;
   },
-  getNumberOfPeoplePerHour : (location)=>{
+  getNumberOfPeoplePerHour: (location) => {
     let dataArray = []
 
-    for(let i =0;i<24;i++){
-      data = historicalPatientInformationDB.find({location:location, hour:i}).count()
-      dataArray.push([i,data])
+    for (let i = 0; i < 24; i++) {
+      data = historicalPatientInformationDB.find({ location: location, hour: i }).count()
+      dataArray.push([i, data])
     }
     return dataArray;
   }
@@ -244,9 +244,9 @@ function storeInfo(body) {
 
 //function to update location
 function updateLocation(beaconID, location) {
-  patientInformationdb.update({ beaconID: beaconID }, { $set: { location: location, timeOfUpdate: getCurrentTime()} })
+  patientInformationdb.update({ beaconID: beaconID }, { $set: { location: location, timeOfUpdate: getCurrentTime() } })
   historicalPatientInformationDB.insert({
-    'beaconID':beaconID,
+    'beaconID': beaconID,
     'location': location,
     'hour': readHour(getCurrentTime()),
     'minute': readMinute(getCurrentTime()),
@@ -546,7 +546,7 @@ function getRandomHour() {
   return hour;
 }
 
-function getRandomMinute(){
+function getRandomMinute() {
   let minute = getRandomNumber(59);
 
   if (minute < 10) {
@@ -564,22 +564,22 @@ function getRandomDayOfWeek() {
 }
 
 
-function readHour(){
+function readHour() {
   let now = new Date();
   let hour = now.getHours()
   return hour
 }
 
-function readMinute(time){
+function readMinute(time) {
   let now = new Date();
   let minute = now.getMinutes();
   return minute
 }
 
-function readDays(){
+function readDays() {
   let now = new Date();
   let day = now.getDay()
-  switch(day){
+  switch (day) {
     case 0:
       day = 'Sunday'
       break

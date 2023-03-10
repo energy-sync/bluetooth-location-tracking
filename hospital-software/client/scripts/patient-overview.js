@@ -50,57 +50,48 @@ function initializeSpecialty(specialtyName, instance) {
 }
 
 function initializeSpecialtyChartDays(specialty) {
-    console.log(specialty)
-        Meteor.call('getNumberOfPeoplePerDay', specialty, (err, res) => {
-            let chart = anychart.pie(res);
-            chart.title('Number of Patients Per Day in ' + specialty)
-                 .radius('43%')
-                 .innerRadius('30%');
-            chart.legend()
-                .position('bottom')
-                .itemsLayout('horizontal')
-                .align('center')
-                .title('Days Of Week');
-            chart.animation(true);
-            chart.container(specialty+'Days').draw();
-        });
-    }
+    Meteor.call('getNumberOfPeoplePerDay', specialty, (err, res) => {
+        let chart = anychart.pie(res);
+        chart.title('Number of Patients Per Day in ' + specialty)
+            .radius('43%')
+            .innerRadius('30%');
+        chart.legend()
+            .position('bottom')
+            .itemsLayout('horizontal')
+            .align('center')
+            .title('Days Of Week');
+        chart.animation(true);
+        chart.container(specialty + 'Days').draw();
+    });
+}
 
 function initializeSpecialtyChartHours(specialty) {
-        console.log(specialty)
-            Meteor.call('getNumberOfPeoplePerHour', specialty, (err, res) => {
-                let chart = anychart.column(res);
-                chart.title('Number of Patients Per Hour in ' + specialty)
-                chart.animation(true);
-                chart.xAxis().title('Hours')
-                chart.yAxis().title('Number Of Patients')
-                chart.container(specialty+'Hours').draw();
-            });
-        }
+    Meteor.call('getNumberOfPeoplePerHour', specialty, (err, res) => {
+        let chart = anychart.column(res);
+        chart.title('Number of Patients Per Hour in ' + specialty)
+        chart.animation(true);
+        chart.xAxis().title('Hours')
+        chart.yAxis().title('Number Of Patients')
+        chart.container(specialty + 'Hours').draw();
+    });
+}
 
-
-
-
-//all the helpers for landing page
-Template.landing.helpers({
-
-  });
 
 function createTemplateHelpers(templateName) {
     const helpers = {};
-    helpers.patientNum = function() {
-      return Template.instance()[`patientNum${templateName}`].get();
+    helpers.patientNum = function () {
+        return Template.instance()[`patientNum${templateName}`].get();
     };
-    helpers.busiestDay = function() {
-      return Template.instance()[`busiestDay${templateName}`].get();
+    helpers.busiestDay = function () {
+        return Template.instance()[`busiestDay${templateName}`].get();
     };
-    helpers.busiestTime = function() {
-      return Template.instance()[`busiestTime${templateName}`].get();
+    helpers.busiestTime = function () {
+        return Template.instance()[`busiestTime${templateName}`].get();
     };
     return helpers;
-  }
-  
-  Template.receptionistTemplate.helpers(createTemplateHelpers('Receptionist'));
-  Template.generalPractitionerTemplate.helpers(createTemplateHelpers('General Practitioner'));
-  Template.labTemplate.helpers(createTemplateHelpers('Lab'));
-  Template.dermaTemplate.helpers(createTemplateHelpers('Dermatology'));
+}
+
+Template.receptionistTemplate.helpers(createTemplateHelpers('Receptionist'));
+Template.generalPractitionerTemplate.helpers(createTemplateHelpers('General Practitioner'));
+Template.labTemplate.helpers(createTemplateHelpers('Lab'));
+Template.dermaTemplate.helpers(createTemplateHelpers('Dermatology'));
