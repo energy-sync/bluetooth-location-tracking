@@ -35,6 +35,7 @@ function initializeSpecialty(specialtyName, instance) {
     instance['patientNum' + specialtyName] = new ReactiveVar([]);
     instance['busiestDay' + specialtyName] = new ReactiveVar([]);
     instance['busiestTime' + specialtyName] = new ReactiveVar([]);
+    instance['avgWaitTime' + specialtyName] = new ReactiveVar([]);
 
     Meteor.call('getPatientNum', specialtyName, (err, res) => {
         instance['patientNum' + specialtyName].set(res);
@@ -47,6 +48,10 @@ function initializeSpecialty(specialtyName, instance) {
     Meteor.call('getBusyTime', specialtyName, (err, res) => {
         instance['busiestTime' + specialtyName].set(res);
     });
+
+    Meteor.call('getAvgWaitTime', specialtyName, (err,res) =>{
+        instance['avgWaitTime' + specialtyName].set(res);
+    })
 }
 
 function initializeSpecialtyChartDays(specialty) {
@@ -88,6 +93,9 @@ function createTemplateHelpers(templateName) {
     helpers.busiestTime = function () {
         return Template.instance()[`busiestTime${templateName}`].get();
     };
+    helpers.avgWaitTime = function (){
+        return Template.instance()[`avgWaitTime${templateName}`].get();
+    }
     return helpers;
 }
 

@@ -114,8 +114,18 @@ Meteor.methods({
       dataArray.push([i, data])
     }
     return dataArray;
+  },
+  getAvgWaitTime: (location) => {
+
+    // locationArray[i]
+    let arrayofpatients = patientInformationdb.find({ location: location }).fetch().map(waitTime => waitTime.waitTime).filter(Boolean)
+
+    let totalWaitTime = arrayofpatients.reduce((sum, waitTime) => sum + waitTime, 0)
+    let avg = totalWaitTime / arrayofpatients.length;
+    return Math.round(avg);
+
   }
-})
+});
 
 function printArray(arr) {
   console.log(arr)
