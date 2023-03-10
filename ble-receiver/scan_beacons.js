@@ -3,6 +3,7 @@ const BeaconScanner = require('node-beacon-scanner');
 const axios = require("axios");
 const dotenv = require("dotenv");
 const getMAC = require("getmac").default;
+const { exec } = require("child_process");
 
 const scanner = new BeaconScanner();
 let config;
@@ -85,7 +86,7 @@ setTimeout(scanTimeout, 1000 * config.refreshTime);
 //fetching config.json from controller server and updating local copy if changed
 setInterval(() => {
     console.log("Checking for config update");
-    axios.post(`${config.controllerUrl}/config`, {macAddress: getMAC()})
+    axios.post(`${config.controllerUrl}/config`, {macAddress: getMAC(), restart: config})
     .then(response => {
         if (JSON.stringify(config) !== JSON.stringify(response.data)) {
             config = response.data;
@@ -94,14 +95,15 @@ setInterval(() => {
 
             //restart the script if the restart field is true
             if (config.restart) {
-                /*process.on("exit", () => {
-                    require("child_process").spawn(process.argv.shift(), process.argv, {
-                        cwd: process.cwd(),
-                        detached: false,
-                        stdio: "inherit"
-                    });
+                console.log("RESTART");
+                exec("pm2 restart 0", (error, stdout, stderr) => {
+                    if (error)
+                        console.error(error);
+                    if (stderr)
+                        console.error(`stderr: ${stderr}`);
+                    if (stdout)
+                        console.log(stdout);
                 });
-                process.exit();*/
             }
         }
     });
