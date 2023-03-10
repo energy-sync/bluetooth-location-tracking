@@ -29,6 +29,7 @@ tr{
     -webkit-transform: translate(-50%, -50%);
     transform: translateX(-50%, -50%);
     width: fit-content;
+    min-width: 40%;
     max-width: 90%;
     max-height: 90vh;
     border: 1px solid black;
@@ -68,8 +69,16 @@ tr{
     margin-bottom: 4px;
 }
 
-input {
+.number-input {
     max-width: 100px;
+}
+
+button:disabled {
+    pointer-events: all !important;
+}
+
+button:disabled:hover {
+    cursor: not-allowed;
 }
 
 h5 {

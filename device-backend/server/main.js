@@ -15,6 +15,7 @@ if (!fs.existsSync(configPath)) {
     environmentalFactor: 3,
     distanceChangeToTransmit: 3,
     controllerUrl: "http://localhost:3002",
+    restart: false,
     beacons: [],
     radios: []
   };
@@ -47,13 +48,14 @@ Meteor.startup(() => {
   for (radio of radios) {
     let r = radiodb.findOne({"macAddress": radio.macAddress});
     if (!r) {
+      let radioConfig = config;
+      delete radioConfig.radios;
       radiodb.insert({
         "location": radio.location,
         "macAddress": radio.macAddress,
         "lastPing": 0,
         "online": false,
-        "restart": false,
-        "config": config
+        "config": radioConfig
       });
     }
   }
@@ -95,9 +97,17 @@ WebApp.connectHandlers.use("/location", function (req, res, next) {
 WebApp.connectHandlers.use("/config", (req, res, next) => {
   if (req.method === 'POST') {
     req.on("data", Meteor.bindEnvironment(data => {
-      let radio = radiodb.findOne({macAddress: JSON.parse(data).macAddress});
-      radiodb.update({macAddress: radio.macAddress}, {$set: {lastPing: Date.now()}});
+      //update last ping timestamp
+      data = JSON.parse(data);
+      radiodb.update({macAddress: data.macAddress}, {$set: {lastPing: Date.now()}});
+
+      //send config as response
+      let radio = radiodb.findOne({macAddress: data.macAddress});
       res.writeHead(200).end(JSON.stringify(radio.config));
+
+      //set restart back to false
+      radio.config.restart = false;
+      radiodb.update({macAddress: radio.macAddress}, {$set: {config: radio.config}});
     }));
   }
 });
@@ -213,14 +223,116 @@ function saveConfig() {
   fs.chmodSync(configPath, "0777");
 }
 
-function random(min, max) {
-  min = Math.ceil(min);
-  max = Math.floor(max);
-  return Math.floor(Math.random() * (max - min + 1) + min);
-}
-
 Meteor.methods({
   updateRadioConfig: (macAddress, config) => {
     radiodb.update({macAddress: macAddress}, {$set: {config: config}});
+  },
+
+  updateBeaconName: (macAddress, beaconID) => {
+    deviceInformationdb.update({macAddress: macAddress}, {$set: {beaconID: beaconID}});
+    for (let i = 0; i < config.beacons.length; i++) {
+      if (config.beacons[i].macAddress === macAddress) {
+        config.beacons[i].beaconID = beaconID;
+        break;
+      }
+    }
+    saveConfig();
+
+    for (let radio of radiodb.find({}).fetch()) {
+      let radioConfig = radio.config;
+      for (let i = 0; i < radioConfig.beacons.length; i++) {
+        if (radioConfig.beacons[i].macAddress === macAddress) {
+          radioConfig.beacons[i].beaconID = beaconID;
+          break;
+        }
+      }
+      radiodb.update({macAddress: radio.macAddress}, {$set: {config: radioConfig}});
+    }
+
+  },
+
+  updateRadioLocation: (macAddress, location) => {
+    radiodb.update({macAddress: macAddress}, {$set: {location: location}});
+    for (let i = 0; i < config.radios.length; i++) {
+      if (config.radios[i].macAddress === macAddress) {
+        config.radios[i].location = location;
+        break;
+      }
+    }
+    saveConfig();
+  },
+
+  addBeacon: (beaconID, macAddress) => {
+    config.beacons.push({
+      beaconID: beaconID,
+      macAddress: macAddress
+    });
+    saveConfig();
+
+    deviceInformationdb.insert({
+      beaconID: beaconID,
+      macAddress: macAddress,
+      config: config 
+    });
+
+    for (let radio of radiodb.find({}).fetch()) {
+      let radioConfig = radio.config;
+      radioConfig.beacons.push({
+        beaconID: beaconID,
+        macAddress: macAddress
+      });
+      radiodb.update({macAddress: radio.macAddress}, {$set: {config: radioConfig}});
+    }
+  },
+
+  addRadio: (location, macAddress) => {
+    config.radios.push({
+      location: location,
+      macAddress: macAddress
+    });
+    saveConfig();
+
+    radiodb.insert({
+      location: location,
+      macAddress: macAddress,
+      lastPing: 0, 
+      online: false,
+      config: config
+    });
+  },
+
+  deleteBeacon: (macAddress) => {
+    for (let i = 0; i < config.beacons.length; i++) {
+      if (config.beacons[i].macAddress === macAddress) {
+        config.beacons.splice(i, 1);
+        break;
+      }
+    }
+    saveConfig();
+
+    deviceInformationdb.remove({macAddress: macAddress});
+
+    for (let radio of radiodb.find({}).fetch()) {
+      let radioConfig = radio.config;
+      for (let i = 0; i < radioConfig.beacons.length; i++) {
+        if (radioConfig.beacons[i].macAddress === macAddress) {
+          radioConfig.beacons.splice(i, 1);
+          break;
+        }
+      }
+      radiodb.update({macAddress: radio.macAddress}, {$set: {config: radioConfig}});
+    }
+  },
+
+  deleteRadio: (macAddress) => {
+    for (let i = 0; i < config.radios.length; i++) {
+      if (config.radios[i].macAddress === macAddress) {
+        config.radios.splice(i, 1);
+        break;
+      }
+    }
+    saveConfig();
+
+    radiodb.remove({macAddress: macAddress});
   }
-})
+}); 
