@@ -388,7 +388,7 @@ function generateDummyPatients(numberToGenerate) {
       },
       "location": generateRandomLocation(),
       'beaconID': beaconID,
-      'waitTime': generateWaitTime() + ' minute(s)'
+      'waitTime': generateWaitTime()
 
     });
 

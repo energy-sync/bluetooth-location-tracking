@@ -34,6 +34,19 @@ Template.patientRow.events({
 });
 
 Template.patientRow.helpers({
+    waitTime(patient){
+        if(patient.waitTime === undefined){
+            let time = moment(patient.timeOfUpdate).fromNow();
+            
+            if(patient.timeOfUpdate === undefined){
+                return '';
+            }
+            return time;
+        }else{
+        return patient.waitTime + ' minute(s) ago';
+        }
+    },
+
     readableDate() {
         let date = new Date();
         return date.toLocaleString();
