@@ -28,7 +28,9 @@ Template.Visual.events({
 function showQuestions() {
   const questions = ['What is your name?', 
   'What is your date of birth?', 
-  'What is the reason for your visit?'];
+  'What is your address?',
+  'What is the reason for your visit?'
+  ];
   
   const popup = document.createElement('div');
   popup.className = 'popup';
