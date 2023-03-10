@@ -10,35 +10,30 @@
     position: absolute;
     top: 0;
     left: 0;
-    background-color: red;
+    background-color: rgb(250, 245, 245);
   }
   
   .btn2 {
     position: absolute;
     top: 0;
     right: 0;
-    background-color: red;
+    background-color: rgb(250, 245, 245);
   }
   
   .btn3 {
     position: absolute;
     bottom: 0;
     left: 0;
-    background-color: red;
+    background-color: rgb(250, 245, 245);
   }
   
   .btn4 {
     position: absolute;
     bottom: 0;
     right: 0;
-    background-color: red;
+    background-color: rgb(250, 245, 245);
   }
   
-  .notes {
-    position: absolute;
-    top: 20px;
-    border-bottom-right-radius: 20px;
-  }
-  
+ 
   
   

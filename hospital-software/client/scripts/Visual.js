@@ -1,37 +1,58 @@
-Template.Visual.onRendered(function() {
-  const note = this.find('.note');
-  const btn1 = this.find('.btn1');
-  const btn2 = this.find('.btn2');
-  const btn3 = this.find('.btn3');
-  const btn4 = this.find('.btn4');
-  const currentLocation = this.find('.Locator p:first-child');
+import { Template } from 'meteor/templating';
+import './Visual.html';
+import './Visual.css';
 
-  // add event listeners to the buttons
-  btn1.addEventListener('click', function() {
-    currentLocation.textContent = 'Current location: Button 1';
-  });
+Template.Visual.events({
+  'click .btn1': function() {
+    const currentLocation = document.querySelector('.Locator p:first-child');
+    currentLocation.textContent = 'Current location: Reception';
+    showQuestions();
+  },
 
-  btn2.addEventListener('click', function() {
-    currentLocation.textContent = 'Current location: Button 2';
-  });
+  'click .btn2': function() {
+    const currentLocation = document.querySelector('.Locator p:first-child');
+    currentLocation.textContent = 'Current location: Lab';
+  },
 
-  btn3.addEventListener('click', function() {
-    currentLocation.textContent = 'Current location: Button 3';
-  });
+  'click .btn3': function() {
+    const currentLocation = document.querySelector('.Locator p:first-child');
+    currentLocation.textContent = 'Current location: Practioner';
+  },
 
-  btn4.addEventListener('click', function() {
-    currentLocation.textContent = 'Current location: Button 4';
-  });
-
-  note.addEventListener('input', function(e) {
-    const target = e.target;
-    const start = target.selectionStart;
-    const end = target.selectionEnd;
-    const value = target.value;
-
-    if (value.slice(-1) === '\n') {
-      target.value = value + '- ';
-      target.setSelectionRange(start + 2, end + 2);
-    }
-  });
+  'click .btn4': function() {
+    const currentLocation = document.querySelector('.Locator p:first-child');
+    currentLocation.textContent = 'Current location: Dermatology';
+  }
 });
+
+function showQuestions() {
+  const questions = ['What is your name?', 
+  'What is your date of birth?', 
+  'What is the reason for your visit?'];
+  
+  const popup = document.createElement('div');
+  popup.className = 'popup';
+
+  const header = document.createElement('h2');
+  header.textContent = 'Questions';
+
+  const list = document.createElement('ul');
+  questions.forEach(function(question) {
+    const listItem = document.createElement('li');
+    listItem.textContent = question;
+    list.appendChild(listItem);
+  });
+
+  popup.appendChild(header);
+  popup.appendChild(list);
+  document.body.appendChild(popup);
+
+  const closeButton = document.createElement('button');
+  closeButton.textContent = 'Close';
+  popup.appendChild(closeButton);
+
+  closeButton.addEventListener('click', function() {
+    document.body.removeChild(popup);
+  });
+}
+

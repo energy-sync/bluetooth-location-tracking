@@ -35,11 +35,21 @@
       {{#if dot4}}
       <div class="dot bottom-right"><button disabled class="button"></button></div>
       {{/if}}
-    </div>
-  </div>
 
-  <div class="notes">
-    <textarea placeholder="Take notes here..." class="note"></textarea>
+    </div>
+   
   </div>
-  
 </template>
+
+<template name="Questions">
+  <div class="popup">
+    <h2>Questions</h2>
+    <ul>
+      {{#each questions}}
+        <li>{{this}}</li>
+      {{/each}}
+    </ul>
+    <button class="close">Close</button>
+  </div>
+</template>
+
