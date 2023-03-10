@@ -2,6 +2,8 @@ import { Template } from 'meteor/templating';
 import { patientInformationdb } from '../../lib/database.js';
 import { FlowRouter } from 'meteor/ostrio:flow-router-extra';
 
+const filterRegex = /[^a-z0-9:]/g;
+
 Template.patient.onCreated(function () {
     this.department = new ReactiveVar();
     this.ids = new ReactiveVar([])
@@ -96,4 +98,139 @@ Template.patient.events({
 //printing yes or no for boolean values with Handlebars
 Handlebars.registerHelper("printBool", function (b) {
     return b ? "Yes" : "No";
+});
+
+Template.patientListSide.events({
+    "click #searchButton": event => {
+        var filterDepartments = document.getElementById("filterDepartments");
+        var filterPhysicians = document.getElementById("filterPhysicians");
+        if (search.value.length > 0){
+            FlowRouter.go(`/patient/`+ FlowRouter.getParam("patientID") +`?search=${search.value}` + `&department=${filterDepartments.value}` + `&physician=${filterPhysicians.value}`);
+        }
+        else FlowRouter.go("/patient/" + FlowRouter.getParam("patientID") + `?department=${filterDepartments.value}` + `&physician=${filterPhysicians.value}`);
+    },
+    "keydown #search": event => {
+        if (event.originalEvent.code === "Enter")
+            searchButton.click();
+    }
+});
+
+Template.patientListSide.helpers({
+    patients() {
+        console.log(patientInformationdb.find());
+        return patientInformationdb.find();
+    },
+    getSearch() {
+        let searchParam = FlowRouter.getQueryParam("search");
+        return searchParam ? searchParam : "";
+    },
+    physicians(){
+        let physiciansArray = new Array();
+
+        patientInformationdb.find().forEach((patient) =>{
+            if(physiciansArray.length == 0){
+                physiciansArray.push(patient.patientInformation.physicianName);
+            }else{
+                let uniquePhysician = true;
+                for(let i = 0; i < physiciansArray.length; i++){
+                    if(physiciansArray[i] === patient.patientInformation.physicianName){
+                        uniquePhysician = false;
+                    }
+                }
+                if(uniquePhysician){
+                    physiciansArray.push(patient.patientInformation.physicianName);
+                }
+            }
+        });
+        console.log(physiciansArray);
+        return physiciansArray;
+
+    }
+});
+
+Template.patientRowSide.events({
+    "click .patientRowSide": event => {
+        let searchParam = FlowRouter.getQueryParam("search");
+        let departmentParam = FlowRouter.getQueryParam("department");
+        let physicianParam = FlowRouter.getQueryParam("physician");
+        if(!searchParam){
+            
+            if(!departmentParam){
+                if(!physicianParam){
+                FlowRouter.go(`/patient/${Template.currentData().patient.patientInformation.patientID}`);
+                return;
+                }
+            }
+            if(!physicianParam){
+                FlowRouter.go(`/patient/${Template.currentData().patient.patientInformation.patientID}` + "?department=" + FlowRouter.getQueryParam("department"));
+                return;
+            }
+
+            FlowRouter.go(`/patient/${Template.currentData().patient.patientInformation.patientID}` + "?department=" + FlowRouter.getQueryParam("department") + "&physician=" + FlowRouter.getQueryParam("physician"));
+            return;
+        }
+        if(!departmentParam){
+            if(!physicianParam){
+            FlowRouter.go(`/patient/${Template.currentData().patient.patientInformation.patientID}` + `?search=${FlowRouter.getQueryParam("search")}`);
+            return;
+            }
+            FlowRouter.go(`/patient/${Template.currentData().patient.patientInformation.patientID}` + `?search=${FlowRouter.getQueryParam("search")}` + `&physician=${FlowRouter.getQueryParam("physician")}`);
+            return;
+        }
+        if(!physicianParam){
+            FlowRouter.go(`/patient/${Template.currentData().patient.patientInformation.patientID}` + `?search=${FlowRouter.getQueryParam("search")}` + "&department=" + FlowRouter.getQueryParam("department"));
+            return;
+        }
+        FlowRouter.go(`/patient/${Template.currentData().patient.patientInformation.patientID}` + `?search=${FlowRouter.getQueryParam("search")}` + "&department=" + FlowRouter.getQueryParam("department")  + `&physician=${FlowRouter.getQueryParam("physician")}`);
+    }
+});
+
+Template.patientRowSide.helpers({
+    readableDate() {
+        let date = new Date();
+        return date.toLocaleString();
+    }
+});
+
+Handlebars.registerHelper("isInSearch", function(patient) {
+    let searchParam = FlowRouter.getQueryParam("search");
+    let filterDepartments = document.getElementById("filterDepartments");
+    if (!searchParam)
+        return true;
+    
+    let searchStr = FlowRouter.getQueryParam("search").toLowerCase().replaceAll(filterRegex, "").trim();
+    if (searchStr.length === 0
+        || patient.patientInformation.patientName.toLowerCase().replaceAll(filterRegex, "").trim().includes(searchStr)
+        || patient.patientInformation.patientID.toLowerCase().replaceAll(filterRegex, "").trim().includes(searchStr)
+        || patient.patientInformation.physicianName.toLowerCase().replaceAll(filterRegex, "").trim().includes(searchStr)
+        || patient.macAddress.toLowerCase().replaceAll(filterRegex, "").trim().includes(searchStr)) {
+            return true;
+    }
+});
+
+Handlebars.registerHelper("isInDepartment", function(patient) {
+    let departmentParam = FlowRouter.getQueryParam("department");
+    if(!departmentParam){
+        return true;
+    }else if(departmentParam == "allDepartments"){
+        return true;
+    }
+
+    if(patient.location == departmentParam){
+        return true;
+    }
+});
+
+Handlebars.registerHelper("hasPhysician", function(patient) {
+    let physicianParam = FlowRouter.getQueryParam("physician");
+
+    if(!physicianParam){
+        return true;
+    }else if(physicianParam == "allPhysicians"){
+        return true;
+    }
+
+    if(patient.patientInformation.physicianName == physicianParam){
+        return true;
+    }
 });
