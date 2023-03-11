@@ -77,7 +77,7 @@ Template.main.helpers({
 
     getLastLocation(beacon) {
         let beaconHistory = deviceHistorydb.findOne({macAddress: beacon.macAddress});
-        if (!beaconHistory || beaconHistory.history.length < 2)
+        if (!beaconHistory)
             return undefined;
         else {
             return beaconHistory.history[beaconHistory.history.length - 2].location;
