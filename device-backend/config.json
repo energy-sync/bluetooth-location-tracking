@@ -3,7 +3,7 @@
     "measuredPower": -59,
     "environmentalFactor": 2.5,
     "distanceChangeToTransmit": 1,
-    "controllerUrl": "http://10.71.4.52:3002",
+    "controllerUrl": "http://10.13.11.80:3002",
     "beacons": [
         {
             "beaconID": "Bobby",
@@ -32,7 +32,7 @@
     ],
     "radios": [
         {
-            "location": "Libre Computer 1 (lab)",
+            "location": "Lab",
             "macAddress": "18:66:c7:e8:e6:db"
         },
         {
@@ -44,11 +44,11 @@
             "macAddress": "18:66:c7:fe:82:cf"
         },
         {
-            "location": "Libre Computer 4 (study room)",
+            "location": "Dermatology",
             "macAddress": "18:66:c7:b4:73:7d"
         },
         {
-            "location": "Libre Computer 5 (reception)",
+            "location": "Receptionist",
             "macAddress": "18:66:c7:ba:38:6e"
         },
         {

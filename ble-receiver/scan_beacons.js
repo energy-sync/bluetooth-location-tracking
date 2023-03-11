@@ -68,7 +68,7 @@ let scanTimeout = function() {
             console.log(`Signal strength: ${avgRssi}\nDistance: ${distance}\nOld distance: ${oldDistance}\n`);
             if (distance && movedEnough) {
                 //send update to server
-                axios.post(`${config.controllerUrl}/location`, {
+                axios.post(`${config.controllerUrl}/testLocation`, {
                     beaconMacAddress: device,
                     radioMacAddress: getMAC(),
                     distance: distance

@@ -67,7 +67,7 @@ Meteor.startup(() => {
 
 //the farest away in meters the beacon can be from the radio before it will not update location
 
-const distanceToUpdate = 20;
+const distanceToUpdate = 2;
 //handle request from ble-reciever to update db with location of device
 WebApp.connectHandlers.use("/location", function (req, res, next) {
   if (req.method === 'POST') {
@@ -82,13 +82,13 @@ WebApp.connectHandlers.use("/location", function (req, res, next) {
           if (radioMacAddress === radio.macAddress) {
             //calling functions to add location to deviceDB and then send updated information to patientDB
             addLocation(beaconMacAddress, radio.location, distance)
-            updateLocation(beaconMacAddress);
+            updateLocation(beaconMacAddress, radio.location);
             break;
           }
         }
       }
     }));
-    res.end(Meteor.release)
+    res.end(Meteor.release) 
   }
 });
 
@@ -128,7 +128,7 @@ WebApp.connectHandlers.use("/testLocation", function (req, res, next) {
         updateLocation(beaconMacAddress, location)
       }
     }));
-    res.end(Meteor.release)
+    res.end(Meteor.release) 
   }
 });
 

@@ -30,7 +30,7 @@ function movePatient() {
         .then(response => {
             setTimeout(() => {
                 movePatient();
-            }, random(300)); //0 to 60 seconds
+            }, random(30000)); //0 to 60 seconds
         })
         .catch(error => {
             console.error(error);
