@@ -43,7 +43,8 @@
             </tr>
         </table>
     </div>
-
+    
+<!--
     {{#if isInLab}}
     {{> lab}}
     {{/if}}
@@ -55,6 +56,32 @@
     {{#if isInDermatology}}
     {{> dermatology}}
     {{/if}}
+    -->
+    {{#if equals department 'lab'}}
+    {{> labWork}}
+  {{/if}}
+
+  {{#if equals department 'practitioner'}}
+    {{> vitals}}
+    {{> prescriptions}}
+  {{/if}}
+
+  {{#if equals department 'dermatology'}}
+    {{> dermatology}}
+  {{/if}}
+
+  {{#if isInLab}}
+    {{> lab}}
+  {{/if}}
+
+  {{#if isWithPractitioner}}
+    {{> practitioner}}
+  {{/if}}
+
+  {{#if isInDermatology}}
+    {{> dermatology}}
+  {{/if}}
+
 </template>
 
 <template name="vitals">

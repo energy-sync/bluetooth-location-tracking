@@ -1,6 +1,7 @@
 <head>
   <link rel="stylesheet" href="/stylesheets/Visual.css">
-  <script src="/scripts/Visual.js"></script>
+  <link rel=" "   href="patient.html">
+  <link rel=" " href="Visual.js">
 </head>
 
 <template name="Visual">
@@ -16,40 +17,11 @@
   </div>
 
   <div class="container">
-    <div class="controls">
-      <button class="btn1">{{#if dot1}}Off{{else}}Reception{{/if}}</button>
-      <button class="btn2">{{#if dot2}}Off{{else}}Lab{{/if}}</button>
-      <button class="btn3">{{#if dot3}}Off{{else}}Practioner{{/if}}</button>
-      <button class="btn4">{{#if dot4}}Off{{else}}Dermatology{{/if}}</button>
-    </div>
-    <div class="box">
-      {{#if dot1}}
-      <div class="dot top-left"><button disabled class="button"></button></div>
-      {{/if}}
-      {{#if dot2}}
-      <div class="dot top-right"><button disabled class="button"></button></div>
-      {{/if}}
-      {{#if dot3}}
-      <div class="dot bottom-left"><button disabled class="button"></button></div>
-      {{/if}}
-      {{#if dot4}}
-      <div class="dot bottom-right"><button disabled class="button"></button></div>
-      {{/if}}
-
-    </div>
+    <button class="reception-btn">Reception</button>
+    <button id="lab-btn">Lab</button>
+    <button id="practitioner-btn">Practitioner</button>
+    <button id="dermatology-btn">Dermatology</button>
+  </div>
+  
+  </template>
    
-  </div>
-</template>
-
-<template name="Questions">
-  <div class="popup">
-    <h2>Questions</h2>
-    <ul>
-      {{#each questions}}
-        <li>{{this}}</li>
-      {{/each}}
-    </ul>
-    <button class="close">Close</button>
-  </div>
-</template>
-
