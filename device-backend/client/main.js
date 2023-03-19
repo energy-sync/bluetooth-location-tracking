@@ -80,7 +80,7 @@ Template.main.helpers({
         if (!beaconHistory)
             return undefined;
         else {
-            return beaconHistory.history[beaconHistory.history.length - 2].location;
+            return beaconHistory.history[beaconHistory.history.length - 1].location;
         }
     },
 
