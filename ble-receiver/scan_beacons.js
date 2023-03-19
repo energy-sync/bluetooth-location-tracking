@@ -3,6 +3,7 @@ const BeaconScanner = require('node-beacon-scanner');
 const axios = require("axios");
 const dotenv = require("dotenv");
 const getMAC = require("getmac").default;
+const { exec } = require("child_process");
 
 const scanner = new BeaconScanner();
 let config;
@@ -67,7 +68,7 @@ let scanTimeout = function() {
             console.log(`Signal strength: ${avgRssi}\nDistance: ${distance}\nOld distance: ${oldDistance}\n`);
             if (distance && movedEnough) {
                 //send update to server
-                axios.post(`${config.controllerUrl}/location`, {
+                axios.post(`${config.controllerUrl}/testLocation`, {
                     beaconMacAddress: device,
                     radioMacAddress: getMAC(),
                     distance: distance
@@ -85,12 +86,25 @@ setTimeout(scanTimeout, 1000 * config.refreshTime);
 //fetching config.json from controller server and updating local copy if changed
 setInterval(() => {
     console.log("Checking for config update");
-    axios.get(`${config.controllerUrl}/config`)
+    axios.post(`${config.controllerUrl}/config`, {macAddress: getMAC(), restart: config})
     .then(response => {
         if (JSON.stringify(config) !== JSON.stringify(response.data)) {
             config = response.data;
             saveConfig();
             console.log("Config updated");
+
+            //restart the script if the restart field is true
+            if (config.restart) {
+                console.log("RESTART");
+                exec("pm2 restart 0", (error, stdout, stderr) => {
+                    if (error)
+                        console.error(error);
+                    if (stderr)
+                        console.error(`stderr: ${stderr}`);
+                    if (stdout)
+                        console.log(stdout);
+                });
+            }
         }
     });
 }, 5000);

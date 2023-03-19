@@ -26,8 +26,8 @@ FlowRouter.route("/patient/:patientID", {
 
 //patient overview page
 FlowRouter.route("/patient-overview", {
-    name: "patientOverview",
+    name: "patient-overview",
     action() {
-        this.render("patientOverview");
+        this.render("landing");
     }
 });
