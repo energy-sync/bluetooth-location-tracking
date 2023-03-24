@@ -51,6 +51,7 @@ Meteor.methods({
     //printArray(arrayofdevices)
     return arrayofdevices.map(ids => ids.beaconID);
   }
+
 })
 
 function printArray(arr) {

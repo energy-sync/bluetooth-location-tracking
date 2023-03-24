@@ -1,124 +1,123 @@
-import { Template } from "meteor/templating";
-import { FlowRouter } from 'meteor/ostrio:flow-router-extra';
-import { deviceInformationdb, deviceHistorydb, radiodb } from "../lib/database"
-import "./bootstrap.min.css";
-import "./main.css"
 
-Template.main.onCreated(function () {
-    this.showBeaconMenu = new ReactiveVar(false);
-    this.showRadioMenu = new ReactiveVar(false);
-    this.currentBeacon = new ReactiveVar();
-    this.currentBeaconHistory = new ReactiveVar();
-    this.currentRadio = new ReactiveVar();
-});
+import { Template } from 'meteor/templating';
+import { ReactiveVar } from 'meteor/reactive-var';
 
-Template.main.helpers({
-    beacons() {
-        return deviceInformationdb.find();
+Template.patientOverview.onCreated(function() {
+  this.department = new ReactiveVar(null);
+    this.averageWaitTimeGP = new ReactiveVar([]);
+    this.averageWaitTimeLab = new ReactiveVar([]);
+    this.averageWaitTimeReception = new ReactiveVar([]);
+    this.averageWaitTimeDermatology = new ReactiveVar([]);
+    this.patientNumGP=new ReactiveVar([]);
+    this.patientNumLab=new ReactiveVar([]);
+    this.patientNumReception=new ReactiveVar([]);
+    this.patientNumDermatology=new ReactiveVar([]);
+    
+  
+    Meteor.call('getWaitTimes','General Practitioner', (error, result) => {
+      if (error) {
+        console.error(error);
+        return;
+      }
+      this.averageWaitTimeGP.set(result);
+    });
+    Meteor.call('getWaitTimes','Lab', (error, result) => {
+      if (error) {
+        console.error(error);
+        return;
+      }
+      this.averageWaitTimeLab.set(result);
+    });
+    Meteor.call('getWaitTimes','Receptionist', (error, result) => {
+      if (error) {
+        console.error(error);
+        return;
+      }
+      this.averageWaitTimeReception.set(result);
+    });
+
+    Meteor.call('getWaitTimes','Dermatology', (error, result) => {
+      if (error) {
+        console.error(error);
+        return;
+      }
+      this.averageWaitTimeDermatology.set(result);
+    });
+    
+    Meteor.call('getPatientNum','General Practitioner', (error, result) => {
+      if (error) {
+        console.error(error);
+        return;
+      }
+      this.patientNumGP.set(result);
+    });
+    Meteor.call('getPatientNum','Lab', (error, result) => {
+      if (error) {
+        console.error(error);
+        return;
+      }
+      this.patientNumLab.set(result);
+    });
+    Meteor.call('getPatientNum','Receptionist', (error, result) => {
+      if (error) {
+        console.error(error);
+        return;
+      }
+      this.patientNumReception.set(result);
+    });
+    Meteor.call('getPatientNum','Dermatology', (error, result) => {
+      if (error) {
+        console.error(error);
+        return;
+      }
+      this.patientNumDermatology.set(result);
+    });
+  });
+  
+  
+ 
+  
+  
+  
+  
+
+
+
+
+
+  Template.patientOverview.helpers({
+    averageWaitTimeGP() {
+      return Template.instance().averageWaitTimeGP.get();
     },
-
-    isMenuOpen() {
-        let isBeaconMenuOpen = Template.instance().showBeaconMenu.get();
-        let isRadioMenuOpen = Template.instance().showRadioMenu.get();
-        return isBeaconMenuOpen || isRadioMenuOpen;
+    averageWaitTimeLab() {
+      return Template.instance().averageWaitTimeLab.get();
     },
-
-    isBeaconMenuOpen() {
-        return Template.instance().showBeaconMenu.get();
+    averageWaitTimeReception() {
+      return Template.instance().averageWaitTimeReception.get();
     },
-
-    isRadioMenuOpen() {
-        return Template.instance().showRadioMenu.get();
+    averageWaitTimeDermatology() {
+      return Template.instance().averageWaitTimeDermatology.get();
     },
+    patientNumGP() {
+    return Template.instance().patientNumGP.get();
+  },
+  patientNumLab() {
+    return Template.instance().patientNumLab.get();
+  },
+  patientNumReception() {
+    return Template.instance().patientNumReception.get();
+  },
+  patientNumDermatology() {
+    return Template.instance().patientNumDermatology.get();
+  },
 
-    getLastLocation(beacon) {
-        let beaconHistory = deviceHistorydb.findOne({macAddress: beacon.macAddress});
-        if (!beaconHistory || beaconHistory.history.length < 2)
-            return undefined;
-        else {
-            return beaconHistory.history[beaconHistory.history.length - 2].location;
-        }
-    },
-
-    getBeaconName() {
-        return Template.instance().currentBeacon.curValue.beaconID;
-    },
-
-    getcurrentBeacon() {
-        return Template.instance().currentBeacon.curValue;
-    },
-
-    getCurrentLocation() {
-        let historyLog = Template.instance().currentBeaconHistory.curValue;
-        if (!historyLog)
-            return "None";
-        let history = historyLog.history;
-        return history[history.length - 1].location;
-    },
-
-    beaconHasHistory() {
-        return Template.instance().currentBeaconHistory.curValue !== undefined;
-    },
-
-    getcurrentBeaconHistory() {
-        return Template.instance().currentBeaconHistory.curValue.history.reverse();
-    },
-
-    getReadableTimestamp(date) {
-        let days = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
-        let day = days[date.getDay()];
-        return `${day} ${date.getMonth()}/${date.getDate()}/${date.getFullYear()} ${date.getHours()}:${date.getMinutes()}`;
-    },
-
-    radios() {
-        return radiodb.find();
-    },
-
-    radioOnline(radio) {
-        return radiodb.findOne({macAddress: radio.macAddress}).online;
-    },
-
-    getRadioName() {
-        return Template.instance().currentRadio.curValue.location;
-    },
-
-    getRefreshTime() {
-        return Template.instance().currentRadio.curValue.config.refreshTime;
-    },
-
-    getMeasuredPower() {
-        return Template.instance().currentRadio.curValue.config.measuredPower;
-    },
-
-    getEnvironmentalFactor() {
-        return Template.instance().currentRadio.curValue.config.environmentalFactor;
-    },
-
-    getDistanceChangeToTransmit() {
-        return Template.instance().currentRadio.curValue.config.distanceChangeToTransmit;
-    }
-});
-
-Template.main.events({
-    "click .beacon-row": (event, templateInstance) => {
-        templateInstance.showBeaconMenu.set(true);
-        let beaconName = event.currentTarget.children[0].innerHTML;
-        let beacon = deviceInformationdb.findOne({beaconID: beaconName});
-        templateInstance.currentBeacon.set(beacon);
-        let beaconHistory = deviceHistorydb.findOne({macAddress: beacon.macAddress});
-        if (beaconHistory)
-            templateInstance.currentBeaconHistory.set(beaconHistory);
-    },
-
-    "click .radio-row": (event, templateInstance) => {
-        templateInstance.showRadioMenu.set(true);
-        let radioName = event.currentTarget.children[0].innerHTML;
-        let radio = radiodb.findOne({location: radioName});
-        templateInstance.currentRadio.set(radio);
-    },
-
-    "click .x-button": (event, templateInstance) => {
-        templateInstance.showBeaconMenu.set(false);
-        templateInstance.showRadioMenu.set(false);
-    }
-});
+    isWithPractitioner() {
+      return Template.instance().department.get() === "practitioner";
+  },
+  isInLab() {
+      return Template.instance().department.get() === "lab";
+  },
+  isInDermatology() {
+      return Template.instance().department.get() === "dermatology";
+  }
+  });
