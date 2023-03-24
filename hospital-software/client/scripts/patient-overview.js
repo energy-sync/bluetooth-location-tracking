@@ -4,9 +4,13 @@ import '../pages/patient-overview.html';
 
 Template.receptionistTemplate.onCreated(function () {
     initializeSpecialty('Receptionist', this)
+    
+});
+
+Template.receptionistTemplate.onRendered(function (){
     initializeSpecialtyChartDays('Receptionist', this);
     initializeSpecialtyChartHours('Receptionist', this);
-});
+})
 
 Template.generalPractitionerTemplate.onCreated(function () {
     initializeSpecialty('General Practitioner', this);
@@ -56,17 +60,34 @@ function initializeSpecialty(specialtyName, instance) {
 
 function initializeSpecialtyChartDays(specialty) {
     Meteor.call('getNumberOfPeoplePerDay', specialty, (err, res) => {
-        let chart = anychart.pie(res);
-        chart.title('Number of Patients Per Day in ' + specialty)
+        let pieChart = anychart.pie(res);
+        pieChart.title('Number of Patients Per Day in ' + specialty)
             .radius('43%')
             .innerRadius('30%');
-        chart.legend()
+        pieChart.legend()
             .position('bottom')
             .itemsLayout('horizontal')
             .align('center')
             .title('Days Of Week');
-        chart.animation(true);
-        chart.container(specialty + 'Days').draw();
+       
+
+        let counter = 0;
+        pieChart.listen('pointClick', function(e){
+            let selectedSlice = e.point;
+            console.log(selectedSlice.value)
+
+            Meteor.call('getNumberOFPeoplePerDayPerHour', specialty, selectedSlice.x, (err,res) =>{
+                console.log(res)
+                let chart = anychart.column(res);
+                chart.title('Number of Patients Per Hour in ' + specialty + ' on ' + selectedSlice.x)
+                chart.animation(true);
+                chart.xAxis().title('Hours')
+                chart.yAxis().title('Number Of Patients')
+                chart.container(specialty + 'Hours').draw();
+            })
+        })
+        pieChart.animation(true);
+        pieChart.container(specialty + 'Days').draw();
     });
 }
 

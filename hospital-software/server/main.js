@@ -4,6 +4,7 @@ import '../lib/database.js';
 import { patientInformationdb } from "../lib/database"
 import { historicalPatientInformationDB } from '../lib/database';
 import { WebApp } from 'meteor/webapp';
+import { data } from 'jquery';
 
 let arrayofdevices = [];
 
@@ -124,6 +125,16 @@ Meteor.methods({
     let avg = totalWaitTime / arrayofpatients.length;
     return Math.round(avg);
 
+  },
+  getNumberOFPeoplePerDayPerHour: (location, day) => {
+    let dataArray = []
+    console.log(location, day)
+    for (let i = 0; i < 24; i++) {
+      data = historicalPatientInformationDB.find({ location: location, day: day, hour: i }).count()
+      dataArray.push([i, data])
+    }
+
+    return dataArray;
   }
 });
 
@@ -254,16 +265,21 @@ function storeInfo(body) {
 
 //function to update location
 function updateLocation(beaconID, location) {
-  patientInformationdb.update({ beaconID: beaconID }, { $set: { location: location, timeOfUpdate: getCurrentTime() } })
-  historicalPatientInformationDB.insert({
-    'beaconID': beaconID,
-    'location': location,
-    'hour': readHour(getCurrentTime()),
-    'minute': readMinute(getCurrentTime()),
-    'day': readDays(getCurrentTime())
-  })
-}
+  let beaconToUpdate = patientInformationdb.findOne({ beaconID: beaconID });
+  console.log(beaconToUpdate.location)
+  console.log(beaconToUpdate.location != location)
+  if (beaconToUpdate.location != location) {
+    patientInformationdb.update({ beaconID: beaconID }, { $set: { location: location, timeOfUpdate: getCurrentTime() } })
+    historicalPatientInformationDB.insert({
+      'beaconID': beaconID,
+      'location': location,
+      'hour': readHour(getCurrentTime()),
+      'minute': readMinute(getCurrentTime()),
+      'day': readDays(getCurrentTime())
+    })
+  }
 
+}
 //function to get current time
 function getCurrentTime() {
   return Date(Date.now())
