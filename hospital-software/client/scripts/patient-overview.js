@@ -4,10 +4,10 @@ import '../pages/patient-overview.html';
 
 Template.receptionistTemplate.onCreated(function () {
     initializeSpecialty('Receptionist', this)
-    
+
 });
 
-Template.receptionistTemplate.onRendered(function (){
+Template.receptionistTemplate.onRendered(function () {
     initializeSpecialtyChartDays('Receptionist', this);
     initializeSpecialtyChartHours('Receptionist', this);
 })
@@ -53,7 +53,7 @@ function initializeSpecialty(specialtyName, instance) {
         instance['busiestTime' + specialtyName].set(res);
     });
 
-    Meteor.call('getAvgWaitTime', specialtyName, (err,res) =>{
+    Meteor.call('getAvgWaitTime', specialtyName, (err, res) => {
         instance['avgWaitTime' + specialtyName].set(res);
     })
 }
@@ -63,40 +63,43 @@ function initializeSpecialtyChartDays(specialty) {
         let pieChart = anychart.pie(res);
         pieChart.title('Number of Patients Per Day in ' + specialty)
             .radius('43%')
-            .innerRadius('30%');
         pieChart.legend()
             .position('bottom')
             .itemsLayout('horizontal')
             .align('center')
             .title('Days Of Week');
-       
-
-        let counter = 0;
-        pieChart.listen('pointClick', function(e){
-            let selectedSlice = e.point;
-            console.log(selectedSlice.value)
-
-            Meteor.call('getNumberOFPeoplePerDayPerHour', specialty, selectedSlice.x, (err,res) =>{
-                console.log(res)
-                let chart = anychart.column(res);
-                chart.title('Number of Patients Per Hour in ' + specialty + ' on ' + selectedSlice.x)
-                chart.animation(true);
-                chart.xAxis().title('Hours')
-                chart.yAxis().title('Number Of Patients')
-                chart.container(specialty + 'Hours').draw();
-            })
-        })
+        pieChart.labels().position('outside')
         pieChart.animation(true);
         pieChart.container(specialty + 'Days').draw();
+
+        pieChart.listen('pointClick', function (e) {
+            console.log(specialty)
+            $('#peoplePerDayPerHour' + specialty).empty()
+            let selectedSlice = e.iterator.get('x');
+             Meteor.call('getNumberOFPeoplePerDayPerHour', specialty, selectedSlice, (err,res) =>{
+                data = res;
+                clearData = [];
+                 let chart = anychart.column(res);
+                 chart.title('Number of Patients Per Hour in ' + specialty + ' on ' + selectedSlice)
+                 chart.animation(true);
+                 chart.xAxis().title('Hours (In 24 standard)')
+                 chart.yAxis().title('Number Of Patients')
+                 chart.container('peoplePerDayPerHour' + specialty).draw();
+             });
+        });
+
+
     });
 }
+
+
 
 function initializeSpecialtyChartHours(specialty) {
     Meteor.call('getNumberOfPeoplePerHour', specialty, (err, res) => {
         let chart = anychart.column(res);
         chart.title('Number of Patients Per Hour in ' + specialty)
         chart.animation(true);
-        chart.xAxis().title('Hours')
+        chart.xAxis().title('Hours (In 24 standard)')
         chart.yAxis().title('Number Of Patients')
         chart.container(specialty + 'Hours').draw();
     });
@@ -114,7 +117,7 @@ function createTemplateHelpers(templateName) {
     helpers.busiestTime = function () {
         return Template.instance()[`busiestTime${templateName}`].get();
     };
-    helpers.avgWaitTime = function (){
+    helpers.avgWaitTime = function () {
         return Template.instance()[`avgWaitTime${templateName}`].get();
     }
     return helpers;
