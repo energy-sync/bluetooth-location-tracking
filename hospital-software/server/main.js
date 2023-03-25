@@ -50,6 +50,11 @@ Meteor.methods({
   getDevices: () => {
     //printArray(arrayofdevices)
     return arrayofdevices.map(ids => ids.beaconID);
+  },
+  getDeviceLocation: (location) => {
+   
+     return arrayofpatients=patientInformationdb.find({location:location}).fetch()
+      
   }
 
 })
