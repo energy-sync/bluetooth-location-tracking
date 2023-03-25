@@ -11,21 +11,21 @@ Template.visualization.onCreated(function() {
     this.deviceDermatology = new ReactiveVar([]);
     
   
-    Meteor.call('getDeviceLocation','General Practitioner', (error, result) => {
+    Meteor.call('getDevices2','General Practitioner', (error, result) => {
       if (error) {
         console.error(error);
         return;
       }
       this.deviceGP.set(result);
     });
-    Meteor.call('getDeviceLocation','Lab', (error, result) => {
+    Meteor.call('getDevices2','Lab', (error, result) => {
       if (error) {
         console.error(error);
         return;
       }
       this.deviceLab.set(result);
     });
-    Meteor.call('getDeviceLocation','Receptionist', (error, result) => {
+    Meteor.call('getDevices2','Receptionist', (error, result) => {
       if (error) {
         console.error(error);
         return;
@@ -33,7 +33,7 @@ Template.visualization.onCreated(function() {
       this.deviceReception.set(result);
     });
 
-    Meteor.call('getDeviceLocation','Dermatology', (error, result) => {
+    Meteor.call('getDevices2','Dermatology', (error, result) => {
       if (error) {
         console.error(error);
         return;
