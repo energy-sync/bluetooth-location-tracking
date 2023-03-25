@@ -2,6 +2,7 @@
 import { Template } from 'meteor/templating';
 import { ReactiveVar } from 'meteor/reactive-var';
 import { FlowRouter } from 'meteor/ostrio:flow-router-extra';
+import { patientInformationdb } from '../../lib/database.js';
 
 
 Template.visualization.onCreated(function() {
@@ -11,35 +12,38 @@ Template.visualization.onCreated(function() {
     this.deviceDermatology = new ReactiveVar([]);
     
   
-    Meteor.call('getDevices2','General Practitioner', (error, result) => {
-      if (error) {
-        console.error(error);
-        return;
-      }
-      this.deviceGP.set(result);
-    });
-    Meteor.call('getDevices2','Lab', (error, result) => {
-      if (error) {
-        console.error(error);
-        return;
-      }
-      this.deviceLab.set(result);
-    });
+     Meteor.call('getDevices2','General Practitioner', (error, result) => {
+       if (error) {
+         console.error(error);
+         return;
+       }
+       this.deviceGP.set(result);
+     });
+     Meteor.call('getDevices2','Lab', (error, result) => {
+       if (error) {
+         console.error(error);
+         return;
+       }
+       this.deviceLab.set(result);
+     });
     Meteor.call('getDevices2','Receptionist', (error, result) => {
       if (error) {
         console.error(error);
         return;
       }
+      
       this.deviceReception.set(result);
+      
+      
     });
 
-    Meteor.call('getDevices2','Dermatology', (error, result) => {
-      if (error) {
-        console.error(error);
-        return;
-      }
-      this.deviceDermatology.set(result);
-    });
+     Meteor.call('getDevices2','Dermatology', (error, result) => {
+       if (error) {
+         console.error(error);
+         return;
+       }
+       this.deviceDermatology.set(result);
+     });
   });
   
   
@@ -66,5 +70,5 @@ Template.visualization.onCreated(function() {
     deviceDermatology() {
       return Template.instance().deviceDermatology.get();
     }
-   
+    
   });

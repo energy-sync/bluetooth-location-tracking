@@ -2,7 +2,8 @@
 <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>device visual</title>
+    <h1 class="text-decoration-underline">Device Visual</h1>
+    <br>
   </head>
 
 <template name="visualization">
@@ -12,8 +13,18 @@
         <div class="w-25 corner top-right border border-dark">Lab</div>
       </div>
       <div class="container d-flex justify-content-between align-items-center ">
-        <div class="w-50  corner top-left border border-dark"> {{deviceReception}} </div>
-        <div class="w-50 corner top-right border border-dark">{{deviceLab}}</div>
+        
+        <div class="corner top-left ">
+          {{#each device in deviceReception}}
+          <span class="rounded-circle">{{device}}</span> 
+            {{/each}}
+          </div>
+        
+        <div class="corner top-right ">
+          {{#each device in deviceLab}}
+          <span class="rounded-circle">{{device}}</span> 
+          {{/each}}
+        </div>
       </div>
       <br>
       <br>
@@ -23,8 +34,16 @@
       <br>
       <br>
       <div class="container d-flex justify-content-between align-items-center">
-        <div class=" w-50 corner bottom-left border border-dark">{{deviceGP}}</div>
-        <div class="w-50 corner bottom-right border border-dark">{{deviceDermatology}}</div>
+        <div class="corner bottom-left ">
+          {{#each device in deviceGP}}
+          <span class="rounded-circle">{{device}}</span> 
+          {{/each}}
+        </div>
+        <div class="corner bottom-right">
+          {{#each device in deviceDermatology}}
+          <span class="rounded-circle">{{device}}</span> 
+          {{/each}}
+        </div>
       </div>
       <div class="container d-flex justify-content-between align-items-center">
         <div class=" w-25 corner bottom-left border border-dark">General Practicioner</div>

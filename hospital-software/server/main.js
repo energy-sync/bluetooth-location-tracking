@@ -53,9 +53,10 @@ Meteor.methods({
   },
  
   getDevices2: (location) => {
-   
-    return patientInformationdb.find({location:location}).map(ids => ids.beaconID).slice(0,arrayofdevices.length);
-  },
+    let devices = patientInformationdb.find({}, { limit: 6 }).fetch();
+    return devices.filter(device => device.location === location).map(device => device.beaconID);
+  }
+  ,
  
   getPatientNum: (location) => {
     let locationArray = ['Receptionist', 'General Practitioner', 'Lab', 'Dermatology']
