@@ -1,27 +1,50 @@
-<head>
-  <link rel="stylesheet" href="/stylesheets/Visual.css">
-  <link rel=" "   href="patient.html">
-  <link rel=" " href="Visual.js">
-</head>
-
 <template name="Visual">
-  <div class="Locator">
-    <h1>Beacon Locator</h1>
-    <p>Current location: {{currentLocation}}</p>
-    <p>Locations in area:</p>
-    <ul>
-      {{#each locations}}
-        <li>{{this}}</li>
-      {{/each}}
-    </ul>
-  </div>
-
   <div class="container">
-    <button class="reception-btn">Reception</button>
-    <button id="lab-btn">Lab</button>
-    <button id="practitioner-btn">Practitioner</button>
-    <button id="dermatology-btn">Dermatology</button>
+    <h1>{{title}}</h1>
+    <link rel="stylesheet" href="stylesheets/Visual.css">
+    <div class="container">
+      <div class="">
+        <div class="reception-devices">
+          <h2>Devices at Reception</h2>
+          <ul>
+            {{#each device in devicesReception}}
+              <li>{{device}}</li>
+            {{/each}}
+          </ul>
+        </div>
+      </div>
+      <div class="col-md-6">
+        <div class="lab-devices">
+          <h2>Devices at Lab</h2>
+          <ul>
+            {{#each device in devicesLab}}
+              <li>{{device}}</li>
+            {{/each}}
+          </ul>
+        </div>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-md-6">
+        <div class="gp-devices">
+          <h2>Devices at General Practitioner</h2>
+          <ul>
+            {{#each device in devicesGP}}
+              <li>{{device}}</li>
+            {{/each}}
+          </ul>
+        </div>
+      </div>
+      <div class="col-md-6">
+        <div class="dermatology-devices">
+          <h2>Devices at Dermatology</h2>
+          <ul>
+            {{#each device in devicesDermatology}}
+              <li>{{device}}</li>
+            {{/each}}
+          </ul>
+        </div>
+      </div>
+    </div>
   </div>
-  
-  </template>
-   
+</template>
