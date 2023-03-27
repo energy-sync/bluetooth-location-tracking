@@ -1,39 +1,24 @@
 .container {
-    position: relative;
-    width: 400px;
-    height: 400px;
-    margin: 0 auto;
-    border: 2px solid black;
-  }
-  
-  .reception-btn {
-    position: absolute;
-    top: 0;
-    left: 0;
-    background-color: rgb(250, 245, 245);
-  }
-  
-  .lab-btn{
-    position: absolute;
-    top: 0;
-    right: 0;
-    background-color: rgb(250, 245, 245);
-  }
-  
-  .practitioner-btn {
-    position: absolute;
-    bottom: 0;
-    left: 0;
-    background-color: rgb(250, 245, 245);
-  }
-  
-  .dermatology-btn {
-    position: absolute;
-    bottom: 0;
-    right: 0;
-    background-color: rgb(250, 245, 245);
-  }
-  
- 
-  
-  
+  max-width: 800px;
+  margin: 0 auto;
+  padding: 20px;
+}
+
+.reception-devices h2,
+.lab-devices h2,
+.gp-devices h2,
+.dermatology-devices h2 {
+  font-size: 24px;
+  font-weight: bold;
+}
+
+ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+li {
+  margin-bottom: 10px;
+  font-size: 18px;
+}
