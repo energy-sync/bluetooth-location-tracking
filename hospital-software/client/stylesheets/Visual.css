@@ -1,24 +1,10 @@
-.container {
-  max-width: 800px;
-  margin: 0 auto;
-  padding: 20px;
-}
-
-.reception-devices h2,
-.lab-devices h2,
-.gp-devices h2,
-.dermatology-devices h2 {
-  font-size: 24px;
-  font-weight: bold;
-}
-
-ul {
-  list-style: none;
-  padding: 0;
-  margin: 0;
-}
-
-li {
-  margin-bottom: 10px;
-  font-size: 18px;
+span {
+  display: inline-block;
+  width: 60px;
+  height: 60px;
+  line-height: 50px;
+  text-align: center;
+  border-radius: 50%;
+  background-color: wheat;
+  color: #fff;
 }
