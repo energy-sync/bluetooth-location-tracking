@@ -128,7 +128,6 @@ Meteor.methods({
   },
   getNumberOfPeoplePerDayPerHour: (location, day) => {
     let dataArray = []
-    console.log(location, day)
     if(location === 'GeneralPractitioner'){
       location = 'General Practitioner'
     }
