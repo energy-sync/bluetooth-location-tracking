@@ -126,7 +126,7 @@ Meteor.methods({
     return Math.round(avg);
 
   },
-  getNumberOFPeoplePerDayPerHour: (location, day) => {
+  getNumberOfPeoplePerDayPerHour: (location, day) => {
     let dataArray = []
     console.log(location, day)
     for (let i = 0; i < 24; i++) {

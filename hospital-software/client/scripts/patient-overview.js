@@ -76,7 +76,7 @@ function initializeSpecialtyChartDays(specialty) {
             console.log(specialty)
             $('#peoplePerDayPerHour' + specialty).empty()
             let selectedSlice = e.iterator.get('x');
-             Meteor.call('getNumberOFPeoplePerDayPerHour', specialty, selectedSlice, (err,res) =>{
+             Meteor.call('getNumberOfPeoplePerDayPerHour', specialty, selectedSlice, (err,res) =>{
                 data = res;
                 clearData = [];
                  let chart = anychart.column(res);
