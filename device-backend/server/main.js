@@ -8,6 +8,7 @@ const fs = Npm.require('fs')
 let configPath = process.cwd().split('.meteor')[0] + "config.json";
 let config;
 
+
 if (!fs.existsSync(configPath)) {
   config = {
     refreshTime: 1,

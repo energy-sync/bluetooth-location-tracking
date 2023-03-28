@@ -44,6 +44,13 @@ Meteor.methods({
   clearRecords: () => {
     patientInformationdb.remove({});
   },
+
+getLocationPatient:(location) => {
+   
+    let devices=patientInformationdb.find({}, {limit:6}).fetch()
+    return devices.filter(device => device.location === location).map(device => device.beaconID);
+},
+
   //return array of the beacon ids
   getDevices: () => {
     //printArray(arrayofdevices)
