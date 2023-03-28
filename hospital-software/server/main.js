@@ -129,6 +129,9 @@ Meteor.methods({
   getNumberOfPeoplePerDayPerHour: (location, day) => {
     let dataArray = []
     console.log(location, day)
+    if(location === 'GeneralPractitioner'){
+      location = 'General Practitioner'
+    }
     for (let i = 0; i < 24; i++) {
       data = historicalPatientInformationDB.find({ location: location, day: day, hour: i }).count()
       dataArray.push([i, data])

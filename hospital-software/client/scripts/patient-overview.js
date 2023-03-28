@@ -73,12 +73,25 @@ function initializeSpecialtyChartDays(specialty) {
         pieChart.container(specialty + 'Days').draw();
 
         pieChart.listen('pointClick', function (e) {
-            console.log(specialty)
+            if(specialty === 'General Practitioner'){
+                specialty = 'GeneralPractitioner';
+                $('#peoplePerDayPerHour' + specialty).empty()
+                let selectedSlice = e.iterator.get('x');
+                 Meteor.call('getNumberOfPeoplePerDayPerHour', specialty, selectedSlice, (err,res) =>{
+                    data = res;
+                    clearData = [];
+                     let chart = anychart.column(res);
+                     chart.title('Number of Patients Per Hour in General Practitioner on ' + selectedSlice)
+                     chart.animation(true);
+                     chart.xAxis().title('Hours (In 24 standard)')
+                     chart.yAxis().title('Number Of Patients')
+                     chart.container('peoplePerDayPerHour' + specialty).draw();
+                 });
+            }else{
             $('#peoplePerDayPerHour' + specialty).empty()
             let selectedSlice = e.iterator.get('x');
              Meteor.call('getNumberOfPeoplePerDayPerHour', specialty, selectedSlice, (err,res) =>{
                 data = res;
-                clearData = [];
                  let chart = anychart.column(res);
                  chart.title('Number of Patients Per Hour in ' + specialty + ' on ' + selectedSlice)
                  chart.animation(true);
@@ -86,7 +99,9 @@ function initializeSpecialtyChartDays(specialty) {
                  chart.yAxis().title('Number Of Patients')
                  chart.container('peoplePerDayPerHour' + specialty).draw();
              });
+            }
         });
+    
 
 
     });
