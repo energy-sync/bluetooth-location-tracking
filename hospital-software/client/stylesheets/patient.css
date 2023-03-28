@@ -1,11 +1,10 @@
-div.col {
-    border-style:groove;
-    border-color:rgb(147, 147, 255);
-    border-width:2px;
+table{
+    text-align: left;
 }
 
-h2{
-    border-bottom-style:solid;
-    border-color:rgb(147, 147, 255);
-    border-width:2px;
+h5{
+    text-align: left;
+    font-weight: bold;
+    text-decoration: underline;
+    text-transform: uppercase;
 }

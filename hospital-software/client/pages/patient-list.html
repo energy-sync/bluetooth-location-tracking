@@ -12,20 +12,20 @@
             <button class="btn btn-primary" id="searchButton">Search</button>
         </div>
         <div class="vstack">
-            <table class="table">
-                <thead>
+            <table class="table table-striped table-bordered table-hover">
+                <thead class="col text-bg-secondary">
                     <th scope="col">Name</th>
-                    <th scope="col">Patient ID</th> 
+                    <th scope="col">Patient ID</th>
                     <th scope="col">Physician Name</th>
                     <th scope="col">Location</th>
-                    <th scope="col">Device MAC</th>
-                    <th scope="col">Last Updated</th>
+                    <th scope="col">Beacon ID</th>
+                    <th scope="col">Wait Time</th>
                 </thead>
                 <tbody>
                     {{#each patient in patients}}
-                        {{#if isInSearch patient}}
-                            {{> patientRow patient=patient}}
-                        {{/if}}
+                    {{#if isInSearch patient}}
+                    {{> patientRow patient=patient}}
+                    {{/if}}
                     {{/each}}
                 </tbody>
             </table>
@@ -38,8 +38,8 @@
         <td>{{patient.patientInformation.patientName}}</td>
         <td>{{patient.patientInformation.patientID}}</td>
         <td>{{patient.patientInformation.physicianName}}</td>
-        <td>{{patient.patientInformation.location}}</td>
-        <td>{{patient.macAddress}}</td>
-        <td>{{readableDate}}</td>
+        <td class="namecase">{{patient.location}}</td>
+        <td>{{patient.beaconID}}</td>
+        <td>{{waitTime patient}}</td>
     </tr>
 </template>

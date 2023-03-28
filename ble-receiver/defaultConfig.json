@@ -1,9 +1,9 @@
 {
     "refreshTime": 1,
     "measuredPower": -59,
-    "environmentalFactor": 3,
-    "distanceChangeToTransmit": 3,
-    "controllerUrl": "http://localhost:3002",
+    "environmentalFactor": 4,
+    "distanceChangeToTransmit": 1,
+    "controllerUrl": "http://10.13.10.92:3002",
     "beacons": [
         {
             "beaconID": "Bob",
@@ -44,7 +44,7 @@
             "macAddress": "18:66:c7:fe:82:cf"
         },
         {
-            "location": "Libre Computer 4",
+            "location": "Libre Computer 4 (study room)",
             "macAddress": "18:66:c7:b4:73:7d"
         },
         {

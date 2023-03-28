@@ -6,93 +6,78 @@
 <template name="patientInformation">
     <p>Select Department:</p>
     <div class="container-fluid w-50">
-    <select class="form-select" name="departments" id="departments">
-        <option value="reception">Reception</option>
-        <option value="practitioner">General Practitioner</option>
-        <option value="lab">Lab</option>
-        <option value="dermatology">Dermatology</option>
-        <option value="devices">Devices</option>
-    </select>
-</div>
-<br>
+        <select class="form-select" name="departments" id="departments">
+            <option value="reception">Reception</option>
+            <option value="practitioner">General Practitioner</option>
+            <option value="lab">Lab</option>
+            <option value="dermatology">Dermatology</option>
+        </select>
+    </div>
+    <br>
 </template>
 
 <template name="patient">
-    {{> patientInformation}}
-    <h2>Name: {{patient.patientInformation.patientName}}</h2>
-    <p>Device MAC: {{patient.macAddress}}</p>
+   <!-- {{> patientInformation}}-->
+    <h1>Name: {{patient.patientInformation.patientName}}</h1>
+    <h2><b>Location:</b> {{patient.location}}</h2>
+    <h3><b>Assigned Beacon:</b> {{patient.beaconID}}</h3>
     <select id="beaconIDs">
-        <option disabled="disabled" selected="selected">Please Choose BeaconID</option>
         {{#each id in ids}}
         <option value="{{id}}">{{id}}</option>
         {{/each}}
+        <option value="" selected>Un-Assign Beacon</option>
     </select>
-    <button id="assignBtn">Assign Device</button>
-    <h5>Basic Information:</h5>
+    <button id="assignBtn">Assign Beacon</button>
+    
     <div class="vstack">
-        <table class="table">
+        <table class="table table-striped table-bordered table-hover">
+            <th><h5>Basic Information:</h5></th>
             <tr>
-
-                <th>Date of Birth: {{patient.patientInformation.DOB}}</th>
-                <th>Age: {{patient.patientInformation.age}}</th>
-                <th>Address: {{patient.patientInformation.address}}</th>
+                <th>Date of Birth:</th>
+                <td>{{patient.patientInformation.DOB}}</td>
+                </tr>
+            <tr>
+                <th>Age:</th> 
+                <td>{{patient.patientInformation.age}}</td>
+            </tr>
+                <tr>
+                    <th>Address:</th>
+                    <td> {{patient.patientInformation.address}}</td>
+                </tr>
+                
+            <tr>
+                <th>Patient ID:</th>
+                <td>{{patient.patientInformation.patientID}}</td>
             </tr>
             <tr>
-                <th>Patient ID: {{patient.patientInformation.patientID}}</th>
-                <th>Assigned Physician: {{patient.patientInformation.physicianName}}</th>
+                <th>Assigned Physician:</th>
+                <td>{{patient.patientInformation.physicianName}}</td>
             </tr>
         </table>
     </div>
-    
-<!--
-    {{#if isInLab}}
-    {{> lab}}
+    {{#if inLab}}
+    {{>lab}}
     {{/if}}
-
-    {{#if isWithPractitioner}}
-    {{> practitioner}}
+    {{#if inDerma}}
+    {{>dermatology}}
     {{/if}}
-
-    {{#if isInDermatology}}
-    {{> dermatology}}
+    {{#if inReception}}
+    {{>receptionist}}
     {{/if}}
-    -->
-    {{#if equals department 'lab'}}
-    {{> labWork}}
-  {{/if}}
-
-  {{#if equals department 'practitioner'}}
-    {{> vitals}}
-    {{> prescriptions}}
-  {{/if}}
-
-  {{#if equals department 'dermatology'}}
-    {{> dermatology}}
-  {{/if}}
-
-  {{#if isInLab}}
-    {{> lab}}
-  {{/if}}
-
-  {{#if isWithPractitioner}}
-    {{> practitioner}}
-  {{/if}}
-
-  {{#if isInDermatology}}
-    {{> dermatology}}
-  {{/if}}
-
+    {{#if inPractitioner}}
+    {{>practitioner}}
+    {{/if}}
 </template>
 
 <template name="vitals">
-    <h5>Vitals:</h5>
     <div class="vstack">
-        <table class="table">
+        <table class="table table-striped table-bordered table-hover">
+            <th><h5>Vitals:</h5></th>
             <tr>
-                <th>Blood Pressure: {{patient.vitals.bloodPressure}}</th>
-                <th>Heart Rate: {{patient.vitals.heartRate}}</th>
-                <th>Height: {{patient.vitals.height}}</th>
-                <th>Weight: {{patient.vitals.weight}}</th>
+                <td><b>Blood Pressure:</b> {{patient.vitals.bloodPressure}}</td>
+                <td><b>Heart Rate:</b> {{patient.vitals.heartRate}}</td>
+                <td><b>Height:</b> {{patient.vitals.height}}</td>
+                <td><b>Weight:</b> {{patient.vitals.weight}}</td>
             </tr>
         </table>
     </div>
@@ -100,23 +85,23 @@
 </template>
 
 <template name="labWork">
-    <h5>Lab Work:</h5>
     <div class="vstack">
-        <table class="table">
+        <table class="table table-striped table-bordered table-hover">
+            <th><h5>Lab Work:</h5></th>
             <tr>
-                <th>RBC: {{patient.labWork.RBC}}</th>
-                <th>Blood Glucose Level: {{patient.labWork.bloodGlucose}}</th>
-                <th>Hemoglobin: {{patient.labWork.hemoglobin}}</th>
+                <td><b>RBC:</b> {{patient.labWork.RBC}}</td>
+                <td><b>Blood Glucose Level:</b> {{patient.labWork.bloodGlucose}}</td>
+                <td><b>Hemoglobin:</b> {{patient.labWork.hemoglobin}}</td>
             </tr>
             <tr>
-                <th>Hematocrit: {{patient.labWork.hematocrit}}</th>
-                <th>MCV: {{patient.labWork.MCV}}</th>
-                <th>WBC: {{patient.labWork.WBC}}</th>
+                <td><b>Hematocrit:</b> {{patient.labWork.hematocrit}}</td>
+                <td><b>MCV:</b> {{patient.labWork.MCV}}</td>
+                <td><b>WBC:</b> {{patient.labWork.WBC}}</td>
             </tr>
             <tr>
-                <th>Sodium: {{patient.labWork.sodium}}</th>
-                <th>Potassium: {{patient.labWork.potassium}}</th>
-                <th>Platelet Count: {{patient.labWork.plateletCount}}</th>
+                <td><b>Sodium:</b> {{patient.labWork.sodium}}</td>
+                <td><b>Potassium:</b> {{patient.labWork.potassium}}</td>
+                <td><b>Platelet Count:</b> {{patient.labWork.plateletCount}}</td>
             </tr>
         </table>
     </div>
@@ -124,39 +109,42 @@
 </template>
 
 <template name="prescriptions">
-    <h5>Prescriptions:</h5>
-    <ul class="list-group">
+    <table class="table table-striped table-bordered table-hover">
+        <th><h5>Prescriptions:</h5></th>
         {{#each prescription in patient.prescriptions}}
-        <li>{{prescription}}</li>
+        <tr>{{prescription}}</tr>
         {{/each}}
-    </ul>
+    </table>
 </template>
 <template name="dermatology">
-    <h5>Dermatology:</h5>
-    <div class="container text-center">
-        <div class="row">
-            <div class="col"><b>Acne:</b> {{printBool patient.dermatology.acne}}</div>
-            <div class="col"><b>Acne Scars:</b> {{printBool patient.dermatology.acneScars}}</div>
-            <div class="col"><b>Eczema and Dermatitis:</b> {{printBool patient.dermatology.eczemaAndDermatitis}}</div>
-            <div class="col"><b>Hair Loss:</b> {{printBool patient.dermatology.hairLoss}}</div>
-            </div>
-        <div class="row">
-            <div class="col"><b>Nail Problems:</b> {{printBool patient.dermatology.nailProblems}}</div>
-            <div class="col"><b>Warts:</b> {{printBool patient.dermatology.warts}}</div>
-            <div class="col"><b>Fungal Infections:</b> {{printBool patient.dermatology.fungalInfections}}</div>
-            <div class="col"><b>Skin Cancer:</b> {{printBool patient.dermatology.skinCancer}}</div>
-        </div>
-        <div class="row">
-            <div class="col"><b>Shingles:</b> {{printBool patient.dermatology.shingles}}</div>
-            <div class="col"><b>Rosacea:</b> {{printBool patient.dermatology.rosacea}}</div>
-            <div class="col"><b>Psoriasis:</b> {{printBool patient.dermatology.psoriasis}}</div>
-            <div class="col"><b>Vitiligo:</b> {{printBool patient.dermatology.vitiligo}}</div>
-        </div>
+    
+    <div class="vstack">
+        <table class="table table-striped table-bordered table-hover">
+            <th><h5>Dermatology:</h5></th>
+            <tr>
+            <td><b>Acne:</b> {{printBool patient.dermatology.acne}}</td>
+            <td><b>Acne Scars:</b> {{printBool patient.dermatology.acneScars}}</td>
+            <td><b>Eczema and Dermatitis:</b> {{printBool patient.dermatology.eczemaAndDermatitis}}</td>
+            <td><b>Hair Loss:</b> {{printBool patient.dermatology.hairLoss}}</td>
+        </tr>
+        <tr>
+            <td><b>Nail Problems:</b> {{printBool patient.dermatology.nailProblems}}</td>
+            <td><b>Warts:</b> {{printBool patient.dermatology.warts}}</td>
+            <td><b>Fungal Infections:</b> {{printBool patient.dermatology.fungalInfections}}</td>
+            <td><b>Skin Cancer:</b> {{printBool patient.dermatology.skinCancer}}</td>
+        </tr>
+        <tr>
+            <td><b>Shingles:</b> {{printBool patient.dermatology.shingles}}</td>
+            <td><b>Rosacea:</b> {{printBool patient.dermatology.rosacea}}</td>
+            <td><b>Psoriasis:</b> {{printBool patient.dermatology.psoriasis}}</td>
+            <td><b>Vitiligo:</b> {{printBool patient.dermatology.vitiligo}}</td>
+        </tr>
+        </table>
     </div>
     <br>
 </template>
 
-<template name="reception">
+<template name="receptionist">
 
 </template>
 

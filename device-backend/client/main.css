@@ -1,0 +1,98 @@
+body{
+    background-color: rgb(237, 232, 232);
+}
+
+tr{
+    border-bottom-style:solid;
+    border-color:rgba(0, 0, 0, 0.986);
+    border-width:2px;
+}
+
+.clickable-row:hover {
+    background-color: #aaa;
+    cursor: pointer;
+}
+
+.darkened {
+    background-color: rgba(0, 0, 0, 0.5);
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+}
+
+.device-menu {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    -webkit-transform: translate(-50%, -50%);
+    transform: translateX(-50%, -50%);
+    width: fit-content;
+    min-width: 40%;
+    max-width: 90%;
+    max-height: 90vh;
+    border: 1px solid black;
+    background-color: rgb(237, 232, 232);
+    max-height: 90%;
+    overflow: hidden;
+    padding-bottom: 10px;
+}
+
+.history-table {
+    display: flex;
+    flex-flow: column;
+    height: fit-content;
+    max-height: 70vh;
+    overflow-y: scroll;
+    line-height: 50%;
+}
+
+.modal-header {
+    margin-bottom: 5px;
+    border-bottom: 1px solid gray;
+}
+
+.small-header {
+    border-bottom: 1px solid gray;
+    width: fit-content;
+    padding-bottom: 3px;
+}
+
+.gray-text {
+    color: gray;
+}
+
+.subtext {
+    color: gray;
+    padding: 0;
+    margin-bottom: 4px;
+}
+
+.number-input {
+    max-width: 100px;
+}
+
+button:disabled {
+    pointer-events: all !important;
+}
+
+button:disabled:hover {
+    cursor: not-allowed;
+}
+
+h5 {
+    margin-bottom: 4px;
+}
+
+.online {
+    color: green !important;
+}
+
+.offline {
+    color: red !important;
+}
+
+.btn-group {
+    padding-top: 5px;
+}
