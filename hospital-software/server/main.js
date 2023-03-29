@@ -50,27 +50,7 @@ Meteor.methods({
   getDevices: () => {
     //printArray(arrayofdevices)
     return arrayofdevices.map(ids => ids.beaconID);
-  },
- 
-  getDevices2: (location) => {
-    let devices = patientInformationdb.find({}, { limit: 6 }).fetch();
-    return devices.filter(device => device.location === location).map(device => device.beaconID);
   }
-  ,
- 
-  getPatientNum: (location) => {
-    let locationArray = ['Receptionist', 'General Practitioner', 'Lab', 'Dermatology']
-    for(let i=0; i<locationArray.length; i++)
-    {
-      locationArray[i]
-      let arrayofpatients=patientInformationdb.find({location:location}).fetch()
-      
-      beaconIDs=arrayofpatients.map(ids=>ids.beaconID);
-     // let total=arrayofpatients.length;
-      return arrayofpatients;
-    }
-  }
-
 })
 
 function printArray(arr) {

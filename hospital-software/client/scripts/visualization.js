@@ -1,74 +1,24 @@
 
 import { Template } from 'meteor/templating';
-import { ReactiveVar } from 'meteor/reactive-var';
-import { FlowRouter } from 'meteor/ostrio:flow-router-extra';
 import { patientInformationdb } from '../../lib/database.js';
 
-
-Template.visualization.onCreated(function() {
-    this.deviceLab = new ReactiveVar([]);
-    this.deviceReception = new ReactiveVar([]);
-    this.deviceGP = new ReactiveVar([]);
-    this.deviceDermatology = new ReactiveVar([]);
-    
-  
-     Meteor.call('getDevices2','General Practitioner', (error, result) => {
-       if (error) {
-         console.error(error);
-         return;
-       }
-       this.deviceGP.set(result);
-     });
-     Meteor.call('getDevices2','Lab', (error, result) => {
-       if (error) {
-         console.error(error);
-         return;
-       }
-       this.deviceLab.set(result);
-     });
-    Meteor.call('getDevices2','Receptionist', (error, result) => {
-      if (error) {
-        console.error(error);
-        return;
-      }
-      
-      this.deviceReception.set(result);
-      
-      
-    });
-
-     Meteor.call('getDevices2','Dermatology', (error, result) => {
-       if (error) {
-         console.error(error);
-         return;
-       }
-       this.deviceDermatology.set(result);
-     });
-  });
-  
-  
- 
-  
-  
-  
-  
-
-
-
-
-
   Template.visualization.helpers({
-    deviceLab() {
-      return Template.instance().deviceLab.get();
-    },
-    deviceReception() {
-      return Template.instance().deviceReception.get();
-    },
-    deviceGP() {
-      return Template.instance().deviceGP.get();
-    },
-    deviceDermatology() {
-      return Template.instance().deviceDermatology.get();
-    }
+  
+    patientsReception() {
+      let devices = patientInformationdb.find({}, { limit: 6 }).fetch();
+      return devices.filter(device => device.location === "Receptionist").map(device => device.beaconID);      
+  },
+  patientsDermatology() {
+    let devices = patientInformationdb.find({}, { limit: 6 }).fetch();
+    return devices.filter(device => device.location === "Dermatology").map(device => device.beaconID);      
+},
+patientsLab() {
+  let devices = patientInformationdb.find({}, { limit: 6 }).fetch();
+  return devices.filter(device => device.location === "Lab").map(device => device.beaconID);      
+},
+patientsGP() {
+  let devices = patientInformationdb.find({}, { limit: 6 }).fetch();
+  return devices.filter(device => device.location === "General Practitioner").map(device => device.beaconID);      
+}
     
   });

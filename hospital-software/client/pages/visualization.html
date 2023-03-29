@@ -17,13 +17,13 @@
       <div class="container d-flex justify-content-between align-items-center ">
         
         <div class="corner top-left ">
-          {{#each device in deviceReception}}
+          {{#each device in patientsReception}}
           <span class="rounded-circle">{{device}}</span> 
             {{/each}}
           </div>
         
         <div class="corner top-right ">
-          {{#each device in deviceLab}}
+          {{#each device in patientsLab}}
           <span class="rounded-circle">{{device}}</span> 
           {{/each}}
         </div>
@@ -37,12 +37,12 @@
       <br>
       <div class="container d-flex justify-content-between align-items-center">
         <div class="corner bottom-left ">
-          {{#each device in deviceGP}}
+          {{#each device in patientsGP}}
           <span class="rounded-circle">{{device}}</span> 
           {{/each}}
         </div>
         <div class="corner bottom-right">
-          {{#each device in deviceDermatology}}
+          {{#each device in patientsDermatology}}
           <span class="rounded-circle">{{device}}</span> 
           {{/each}}
         </div>
