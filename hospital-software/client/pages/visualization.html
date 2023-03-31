@@ -1,0 +1,58 @@
+<head>
+    <title>Beacon Visualizer</title>
+</head>
+
+<template name="visualizer">
+
+    <h1>Beacon Visualizer</h1>
+
+    <div><b>Selected Beacon:</b> {{selectedBeacon}}</div>
+    <div class="mb-2"><b>Assigned to:</b> {{selectedPatient}}</div>
+
+    {{#if selected}}
+        <button id="{{selectedPatientID}}" class="patient-link mb-2">Go to Patient Page -></button>
+    {{/if}}
+
+    <div class="container border border-dark">
+        <div class="d-flex justify-content-between align-self-start">
+            <div class="w-25 border border-dark">
+                <h5 class="me-2">Reception</h5>
+                {{#each beacon in receptionBeacons}}
+                    <button id="{{beacon}}" class="beacon-button">{{beacon}}</button>
+                {{/each}}
+            </div>
+            <div class="w-25 border border-dark">
+                <h5 style="float: right; margin-left:100%;">Lab</h5>
+                {{#each beacon in labBeacons}}
+                    <button id="{{beacon}}" class="beacon-button">{{beacon}}</button>
+                {{/each}}
+            </div>
+        </div>
+
+        <div class="d-flex justify-content-between align-self-end">
+            <div class="w-25 border border-dark">
+                <h5>General Practitioner</h5>
+                {{#each beacon in generalPractitionerBeacons}}
+                    <button id="{{beacon}}" class="beacon-button">{{beacon}}</button>
+                {{/each}}
+            </div>
+            <div class="w-25 border border-dark">
+                <h5 style="float: right; margin-left:100%;">Dermatology</h5>
+                {{#each beacon in dermatologyBeacons}}
+                    <button id="{{beacon}}" class="beacon-button">{{beacon}}</button>
+                {{/each}}
+            </div>
+        </div>
+    </div>
+    <div class="container">
+        <br>
+        <h5 class="position-absolute start-50 translate-middle">Unassigned Beacons:</h5>
+        <br>
+        <div class="container text-center"></div>
+            <div class="row row-cols-2 w-50 mx-auto">
+            {{#each beacon in unassignedBeacons}}
+                <div class="col border border-secondary">{{beacon}}</div>
+            {{/each}}
+            </div>
+    </div>
+</template>

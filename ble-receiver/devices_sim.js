@@ -40,7 +40,7 @@ function movePatient() {
 movePatient();
 
 function getRandomLocation() {
-    return LOCATIONS[random(LOCATIONS.length - 1)];
+    return LOCATIONS[random(LOCATIONS.length)];
 }
 
 function random(max) {

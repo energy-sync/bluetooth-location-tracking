@@ -1,0 +1,15 @@
+.beacon-button{
+    border-radius:50%;
+    background-color:rgb(60, 216, 216);
+    padding: 15px;
+    border: none;
+    margin:2px;
+    box-shadow: none;
+}
+
+.patient-link{
+    background-color:rgb(36, 121, 200);
+    border-color:rgb(36, 121, 200);
+    border-radius:20px;
+    box-shadow: none;
+}

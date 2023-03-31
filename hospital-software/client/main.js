@@ -10,6 +10,9 @@ import "./scripts/patient.js";
 import "./stylesheets/main.css";
 import "./pages/patient-overview.html"; 
 import "./scripts/patient-overview.js";
+import "./pages/visualization.html";
+import "./scripts/visualization.js";
+
 
 //inheritance for accessing patient information between templates
 Template.practitioner.inheritsHelpersFrom("patient");
