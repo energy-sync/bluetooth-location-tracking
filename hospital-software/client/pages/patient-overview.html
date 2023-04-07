@@ -24,7 +24,7 @@
 
 <template name="tabbedInterface">
     <ul class="nav nav-tabs">
-        <li class="nav-item {{isActiveTab 'overview'}}">
+        <li class="nav-item {{isActiveTab 'overview'}} active">
             <a class="nav-link" data-toggle="tab" href="#overview">Overview of Hospital</a>
         </li>
         <li class="nav-item {{isActiveTab 'receptionist'}}">
@@ -62,7 +62,7 @@
 </template>
 
 <template name="receptionistTemplate">
-    <div id="receptionist" class="tab-pane fade show active">
+    <div id="receptionist" class="tab-pane fade">
         <div class="container pt-3 title">
             <h1>Receptionist Information</h1>
             <div class="vstack">

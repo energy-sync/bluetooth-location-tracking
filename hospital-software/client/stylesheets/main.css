@@ -24,7 +24,8 @@ a {
 }
 
 .nav-tabs .nav-link {
-  color:black
+  color:black;
+  background-color: darkgrey;
 }
 
 .nav-tabs .nav-link.active {

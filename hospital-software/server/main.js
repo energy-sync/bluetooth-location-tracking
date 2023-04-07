@@ -98,8 +98,6 @@ Meteor.methods({
     
       dataArray.push([departments[i], data])
     }
-
-    console.log(dataArray)
     
     return dataArray;
   },
