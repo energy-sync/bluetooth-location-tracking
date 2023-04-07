@@ -52,7 +52,7 @@
             
             <div class="corner top-right ">
               {{#each device in patientsLab}}
-              <span class="{{age device}}">{{device}}</span> 
+              <span class="{{age device}} {{specialAssistance device}}">{{device}}</span> 
               {{/each}}
             </div>
           </div> 
@@ -66,12 +66,12 @@
           <div class="container d-flex justify-content-between align-items-center">
             <div class="corner bottom-left ">
               {{#each device in patientsGP}}
-              <span class="{{age device}}">{{device}}</span> 
+              <span class="{{age device}} {{specialAssistance device}}">{{device}}</span> 
               {{/each}}
             </div>
             <div class="corner bottom-right">
               {{#each device in patientsDermatology}}
-              <span class="{{age device}}">{{device}}</span> 
+              <span class="{{age device}} {{specialAssistance device}}">{{device}}</span> 
               {{/each}}
             </div>
           </div>
