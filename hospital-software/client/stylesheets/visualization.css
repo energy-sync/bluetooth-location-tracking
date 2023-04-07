@@ -17,27 +17,24 @@ span {
     box-shadow: none;
 }
 .infant {
-  background-color: rgb(87, 193, 255);
+  background-color: red;
 }
 .child {
-  background-color: rgb(17, 255, 124);
+  background-color: orange;
 }
 .adolecent {
-  background-color: rgb(242, 122, 9);
+  background-color: green;
 }
 
 .adult {
-  background-color: rgb(217, 230, 38);
+  background-color: blue;
 }
 
 .elderly {
-  background-color: rgb(109, 19, 244);
+  background-color:purple;
 }
 
 .assistance {
-  border: 2px solid rgb(246, 6, 6);
+  border: 2px solid black;
 }
 
-.noAssistance {
-  border: 2px solid blue;
-}
