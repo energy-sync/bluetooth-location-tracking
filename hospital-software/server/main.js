@@ -243,9 +243,9 @@ function getBoolean() {
 
 function assistancePatients() {
  if(Math.random()<.5)
-  return "true";
+  return "True";
   else
-  return "false";
+  return "False";
 }
 //function to store body sent from devicedb into arrayofdevices
 function storeInfo(body) {
