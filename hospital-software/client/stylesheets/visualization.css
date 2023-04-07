@@ -4,7 +4,7 @@ span {
     height: 60px;
     line-height: 50px;
     text-align: center;
-    
+   
     border-radius: 50%;
     color: #fff;
   }
@@ -32,4 +32,12 @@ span {
 
 .elderly {
   background-color: rgb(109, 19, 244);
+}
+
+.assistance {
+  border: 2px solid rgb(246, 6, 6);
+}
+
+.noAssistance {
+  border: 2px solid blue;
 }

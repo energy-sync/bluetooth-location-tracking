@@ -40,7 +40,20 @@ age(device) {
      else {
       return "elderly";
     }
+},
+specialAssistance(device) {
+  console.log(device);
+  let patient = patientInformationdb.findOne({'beaconID' : device});
+  let specialAssistance = patient.patientInformation.specialAssistance;
+  
+  if(specialAssistance==="Yes"){
+    return "assistance";
+  }
+  else {
+    return "noAssistance";
+  }
 }
+
 
   })
 

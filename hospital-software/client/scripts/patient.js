@@ -10,6 +10,7 @@ Template.patient.onCreated(function () {
         this.ids.set(result);
     })
     this.beaconID = new ReactiveVar();
+    this.specialAssistance= new ReactiveVar();
 
 });
 
@@ -31,12 +32,21 @@ Template.patient.helpers({
     },
     //assign function to assign patients a beacon id
     assignDevice() {
-        //get _id of the doucment inside of the the patientInformationDB
-        //cannot access db unless using _id of the document
-        const idOfDocuement = patientInformationdb.findOne({ "patientInformation.patientID": FlowRouter.getParam("patientID") })._id
-        //update the patient with beaconID
-        patientInformationdb.update({ _id: idOfDocuement }, { $set: { beaconID: Template.instance().beaconID.curValue } })
-        
+        //specialAssitance radio button value
+        const specialAssistance = $('input[name="specialAssistance"]:checked').val();
+
+//get _id of the document inside of the the patientInformationDB
+//cannot access db unless using _id of the document
+const idOfDocuement = patientInformationdb.findOne({ "patientInformation.patientID": FlowRouter.getParam("patientID") })._id
+
+//update the patient with beaconID and specialAssistance
+patientInformationdb.update({ _id: idOfDocuement },{ $set: {
+    "beaconID": Template.instance().beaconID.curValue, 
+    "patientInformation.specialAssistance": specialAssistance 
+    }}
+  );
+  Template.instance().specialAssistance.set(specialAssistance);
+
     },
     inLab() {
         console.log("inLab")
