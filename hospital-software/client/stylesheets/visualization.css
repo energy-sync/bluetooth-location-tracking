@@ -22,7 +22,7 @@ span {
 .child {
   background-color: orange;
 }
-.adolecent {
+.adolescent {
   background-color: green;
 }
 
@@ -38,3 +38,6 @@ span {
   border: 2px solid black;
 }
 
+.reception{
+  background-color:red;
+}
