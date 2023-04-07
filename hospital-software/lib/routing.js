@@ -32,9 +32,9 @@ FlowRouter.route("/patient-overview", {
     }
 });
 
-FlowRouter.route("/visualizer", {
-    name: "visualizer",
+FlowRouter.route("/visualization", {
+    name: "visualization",
     action() {
-        this.render("visualizer");
+        this.render("visualization");
     }
 })

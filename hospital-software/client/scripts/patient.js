@@ -36,6 +36,7 @@ Template.patient.helpers({
         const idOfDocuement = patientInformationdb.findOne({ "patientInformation.patientID": FlowRouter.getParam("patientID") })._id
         //update the patient with beaconID
         patientInformationdb.update({ _id: idOfDocuement }, { $set: { beaconID: Template.instance().beaconID.curValue } })
+        
     },
     inLab() {
         console.log("inLab")
@@ -78,12 +79,12 @@ Template.patient.events({
     "click #assignBtn": (event, templateInstance) => {
         Template.patient.__helpers.get("assignDevice")()
         var selectedBeacon = $('#beaconIDs').val()
-        if (!selectedBeacon) {
-            alert('Patient beacon was unassigned');
-        }
-        else {
-            alert('Patient was assigned beacon ' + templateInstance.beaconID.get(event.currentTarget.value) + '!');
-        }
+         if (!selectedBeacon) {
+             alert('Patient beacon was unassigned');
+         }
+         else {
+             alert('Patient was assigned beacon ' + templateInstance.beaconID.get(event.currentTarget.value) + '!');
+         }
     },
     //grab the value of the dropdown #beaconIDs
     "change #beaconIDs": (event, templateInstance) => {

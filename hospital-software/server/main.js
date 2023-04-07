@@ -240,6 +240,13 @@ function getBoolean() {
   return random_boolean_value;
 }
 
+
+function assistancePatients() {
+ if(Math.random()<.5)
+  return "true";
+  else
+  return "false";
+}
 //function to store body sent from devicedb into arrayofdevices
 function storeInfo(body) {
   //reset array to stop duplicate beaconIDs being stored
@@ -362,7 +369,8 @@ function generateDummyPatients(numberToGenerate) {
         "patientID": patientID,
         "DOB": DOB,
         "age": age,
-        "physicianName": physicianName
+        "physicianName": physicianName,
+        "specialAssistance":assistancePatients()
       },
       "vitals": {
         "bloodPressure": bloodPressure,

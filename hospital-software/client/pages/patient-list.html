@@ -5,6 +5,28 @@
     <title>Patient List</title>
 </head>
 <template name="patientList">
+
+
+    <nav class="navbar navbar-expand-sm bg-primary navbar-dark">
+        <div class="container-fluid">
+          <ul class="navbar-nav">
+            <li class="nav-item">
+              <a class="nav-link active" href="/">Home</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="/patient-overview">Overview</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="/patient-list">Patient-List</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="/visualization">Visualization</a>
+            </li>
+          </ul>
+        </div>
+      </nav>
+
+
     <div class="container pt-3 title">
         <h1>Patient List</h1>
         <div class="d-md-flex justify-content-md-end pe-3 gap-2">
@@ -20,6 +42,7 @@
                     <th scope="col">Location</th>
                     <th scope="col">Beacon ID</th>
                     <th scope="col">Wait Time</th>
+                    <th scope="col">Special Assistance</th>
                 </thead>
                 <tbody>
                     {{#each patient in patients}}
@@ -41,5 +64,6 @@
         <td class="namecase">{{patient.location}}</td>
         <td>{{patient.beaconID}}</td>
         <td>{{waitTime patient}}</td>
+        <td>{{patient.patientInformation.specialAssistance}}</td>
     </tr>
 </template>

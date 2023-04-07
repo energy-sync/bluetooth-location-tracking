@@ -1,15 +1,35 @@
-.beacon-button{
-    border-radius:50%;
-    background-color:rgb(60, 216, 216);
-    padding: 15px;
-    border: none;
-    margin:2px;
-    box-shadow: none;
-}
+span {
+    display: inline-block;
+    width: 60px;
+    height: 60px;
+    line-height: 50px;
+    text-align: center;
+    
+    border-radius: 50%;
+    color: #fff;
+  }
+
 
 .patient-link{
     background-color:rgb(36, 121, 200);
     border-color:rgb(36, 121, 200);
     border-radius:20px;
     box-shadow: none;
+}
+.infant {
+  background-color: rgb(87, 193, 255);
+}
+.child {
+  background-color: rgb(17, 255, 124);
+}
+.adolecent {
+  background-color: rgb(242, 122, 9);
+}
+
+.adult {
+  background-color: rgb(217, 230, 38);
+}
+
+.elderly {
+  background-color: rgb(109, 19, 244);
 }

@@ -8,3 +8,6 @@ h5{
     text-decoration: underline;
     text-transform: uppercase;
 }
+.form-check-input{
+    margin-right: 0.5rem;
+  }

@@ -1,58 +1,84 @@
 <head>
-    <title>Beacon Visualizer</title>
-</head>
+    <meta charset="UTF-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Device Visual</title>
+        
+      </head>
 
-<template name="visualizer">
+     
+    <template name="visualization">
 
-    <h1>Beacon Visualizer</h1>
 
-    <div><b>Selected Beacon:</b> {{selectedBeacon}}</div>
-    <div class="mb-2"><b>Assigned to:</b> {{selectedPatient}}</div>
-
-    {{#if selected}}
-        <button id="{{selectedPatientID}}" class="patient-link mb-2">Go to Patient Page -></button>
-    {{/if}}
-
-    <div class="container border border-dark">
-        <div class="d-flex justify-content-between align-self-start">
-            <div class="w-25 border border-dark">
-                <h5 class="me-2">Reception</h5>
-                {{#each beacon in receptionBeacons}}
-                    <button id="{{beacon}}" class="beacon-button">{{beacon}}</button>
-                {{/each}}
+        <nav class="navbar navbar-expand-sm bg-primary navbar-dark">
+            <div class="container-fluid">
+              <ul class="navbar-nav">
+                <li class="nav-item">
+                  <a class="nav-link active" href="/">Home</a>
+                </li>
+                <li class="nav-item">
+                  <a class="nav-link" href="/patient-overview">Overview</a>
+                </li>
+                <li class="nav-item">
+                  <a class="nav-link" href="/patient-list">Patient-List</a>
+                </li>
+                <li class="nav-item">
+                  <a class="nav-link" href="/visualization">Visualization</a>
+                </li>
+              </ul>
             </div>
-            <div class="w-25 border border-dark">
-                <h5 style="float: right; margin-left:100%;">Lab</h5>
-                {{#each beacon in labBeacons}}
-                    <button id="{{beacon}}" class="beacon-button">{{beacon}}</button>
-                {{/each}}
+          </nav>
+    
+        
+
+
+      <h1 class="text-decoration-underline">Device Visual</h1>
+      <br>
+        <div class="container  border border-dark">
+        <div class="container d-flex justify-content-between align-items-center ">
+            <div class="w-25 corner top-left border border-dark">Reception</div>
+            <div class="w-25 corner top-right border border-dark">Lab</div>
+          </div>
+          <div class="container d-flex justify-content-between align-items-center ">
+            
+            <div class="corner top-left">
+              {{#each device in patientsReception}}
+                
+                  <span class="{{age device}}">{{device}}</span> 
+               
+              {{/each}}
             </div>
+            
+            
+            <div class="corner top-right ">
+              {{#each device in patientsLab}}
+              <span class="{{age device}}">{{device}}</span> 
+              {{/each}}
+            </div>
+          </div> 
+          <br>
+          <br>
+          <br>
+          <br>
+          <br>
+          <br>
+          <br>
+          <div class="container d-flex justify-content-between align-items-center">
+            <div class="corner bottom-left ">
+              {{#each device in patientsGP}}
+              <span class="{{age device}}">{{device}}</span> 
+              {{/each}}
+            </div>
+            <div class="corner bottom-right">
+              {{#each device in patientsDermatology}}
+              <span class="{{age device}}">{{device}}</span> 
+              {{/each}}
+            </div>
+          </div>
+          <div class="container d-flex justify-content-between align-items-center">
+            <div class=" w-25 corner bottom-left border border-dark">General Practicioner</div>
+            <div class="w-25 corner bottom-right border border-dark">Dermatology</div>
+          </div>
         </div>
-
-        <div class="d-flex justify-content-between align-self-end">
-            <div class="w-25 border border-dark">
-                <h5>General Practitioner</h5>
-                {{#each beacon in generalPractitionerBeacons}}
-                    <button id="{{beacon}}" class="beacon-button">{{beacon}}</button>
-                {{/each}}
-            </div>
-            <div class="w-25 border border-dark">
-                <h5 style="float: right; margin-left:100%;">Dermatology</h5>
-                {{#each beacon in dermatologyBeacons}}
-                    <button id="{{beacon}}" class="beacon-button">{{beacon}}</button>
-                {{/each}}
-            </div>
-        </div>
-    </div>
-    <div class="container">
-        <br>
-        <h5 class="position-absolute start-50 translate-middle">Unassigned Beacons:</h5>
-        <br>
-        <div class="container text-center"></div>
-            <div class="row row-cols-2 w-50 mx-auto">
-            {{#each beacon in unassignedBeacons}}
-                <div class="col border border-secondary">{{beacon}}</div>
-            {{/each}}
-            </div>
-    </div>
-</template>
+    </template>
+    
