@@ -22,3 +22,11 @@ a {
 .namecase {
   text-transform: capitalize;
 }
+
+.nav-tabs .nav-link {
+  color:black
+}
+
+.nav-tabs .nav-link.active {
+  color:black
+}

@@ -90,7 +90,19 @@ Meteor.methods({
     }
     return dataArray;
   },
+  getNumberOfPeoplePerDepartment:() =>{
+    let departments = ['Receptionist', 'Lab', 'General Practitioner', 'Dermatology'];
+    let dataArray = []
+    for(let i =0;i<departments.length;i++){
+      data = historicalPatientInformationDB.find({location:departments[i]}).count()
+    
+      dataArray.push([departments[i], data])
+    }
 
+    console.log(dataArray)
+    
+    return dataArray;
+  },
   //get the busiest day of each location
   getBusiestDay: (location) => {
     const dayArray = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
@@ -136,6 +148,19 @@ Meteor.methods({
       dataArray.push([i, data])
     }
 
+    return dataArray;
+  },
+  getWaitTimesPerDepartment:() =>{
+    let departments = ['Receptionist', 'Lab', 'General Practitioner', 'Dermatology'];
+    let dataArray = []
+
+    for(let i =0;i<departments.length;i++){
+    let arrayofpatients = patientInformationdb.find({ location: departments[i] }).fetch().map(waitTime => waitTime.waitTime).filter(Boolean)
+
+    let totalWaitTime = arrayofpatients.reduce((sum, waitTime) => sum + waitTime, 0)
+    let avg = totalWaitTime / arrayofpatients.length;
+    dataArray.push([departments[i], Math.round(avg)])
+    }
     return dataArray;
   }
 });
