@@ -10,44 +10,48 @@ import { patientInformationdb } from '../../lib/database.js';
  });
 
  Template.visualization.onRendered(function() {
-  Tracker.autorun(() => {
+  this.autorun(() => {
     let devices2 = patientInformationdb.find({}, { limit: 6 }).fetch();
     // store the devices array in a reactive variable
- this.devices = new ReactiveVar(devices2);
-    let devices = document.querySelectorAll('.corner span');
+    this.devices = new ReactiveVar(devices2);
+    let devices = this.$('.corner');
 
-    devices.forEach(device => {
-      device.addEventListener('click', () => {
-        const modal = document.getElementById('myModal');
-        const deviceId = device.textContent.trim();
-        const patient = this.devices.get().find(device => device.beaconID === deviceId);
-        const modalBody = modal.querySelector('.modal-body');
-        modalBody.innerHTML = `
-          <table>
-            <tr>
-              <td>Age:</td>
-              <td>${patient.patientInformation.age}</td>
-            </tr>
-            <tr>
-              <td>Patient ID:</td>
-              <td>${patient.patientInformation.patientID}</td>
-            </tr>
-            <tr>
-              <td>Location:</td>
-              <td>${patient.location}</td>
-            </tr>
-          </table>
-        `;
-        modal.style.display = 'block';
+    devices.on('click', 'span', (event) => {
+      const modal = this.$('#myModal');
+      const deviceId = $(event.currentTarget).text().trim();
+      const patient = this.devices.get().find(device => device.beaconID === deviceId);
+      const modalBody = modal.find('.modal-body');
+      modalBody.html(`
+        <table>
+          <tr>
+          <td>Beacon ID:</td>
+          <td>${patient.beaconID}</td>
+          </tr>
+          <tr>
+            <td>Age:</td>
+            <td>${patient.patientInformation.age}</td>
+          </tr>
+          <tr>
+            <td>Patient ID:</td>
+            <td>${patient.patientInformation.patientID}</td>
+          </tr>
+          <tr>
+            <td>Location:</td>
+            <td>${patient.location}</td>
+          </tr>
+        </table>
+      `);
+      modal.css('display', 'block');
 
-        const closeButton = modal.querySelector('.close-modal');
-        closeButton.addEventListener('click', () => {
-          modal.style.display = 'none';
-        });
+      const closeButton = modal.find('.close-modal');
+      closeButton.on('click', () => {
+        modal.css('display', 'none');
       });
     });
   });
 });
+
+
 
 
   
@@ -109,15 +113,3 @@ specialAssistance(device) {
 
   })
 
-  Template.visualization.events({
-    'click #devices'(event, template) {
-      const modal = document.getElementById('myModal');
-      modal.style.display = 'block';
-  
-      const closeButton = modal.querySelector('.close-modal');
-      closeButton.addEventListener('click', () => {
-        modal.style.display = 'none';
-      });
-    }
-  });
-  
