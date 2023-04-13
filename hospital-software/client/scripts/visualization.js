@@ -2,6 +2,52 @@
 import { Template } from 'meteor/templating';
 import { patientInformationdb } from '../../lib/database.js';
 
+ Template.visualization.onCreated(function() {
+   // get all the device elements
+   const devices = patientInformationdb.find({}, { limit: 6 }).fetch();
+      // store the devices array in a reactive variable
+   this.devices = new ReactiveVar(devices);
+ });
+
+ Template.visualization.onRendered(function() {
+  Tracker.autorun(() => {
+    const devices = document.querySelectorAll('.corner span');
+
+    devices.forEach(device => {
+      device.addEventListener('click', () => {
+        const modal = document.getElementById('myModal');
+        const deviceId = device.textContent.trim();
+        const patient = this.devices.get().find(device => device.beaconID === deviceId);
+        const modalBody = modal.querySelector('.modal-body');
+        modalBody.innerHTML = `
+          <table>
+            <tr>
+              <td>Age:</td>
+              <td>${patient.patientInformation.age}</td>
+            </tr>
+            <tr>
+              <td>Patient ID:</td>
+              <td>${patient.patientInformation.patientID}</td>
+            </tr>
+            <tr>
+              <td>Location:</td>
+              <td>${patient.location}</td>
+            </tr>
+          </table>
+        `;
+        modal.style.display = 'block';
+
+        const closeButton = modal.querySelector('.close-modal');
+        closeButton.addEventListener('click', () => {
+          modal.style.display = 'none';
+        });
+      });
+    });
+  });
+});
+
+
+  
   Template.visualization.helpers({
   
     patientsReception() {
@@ -57,3 +103,15 @@ specialAssistance(device) {
 
   })
 
+  Template.visualization.events({
+    'click #devices'(event, template) {
+      const modal = document.getElementById('myModal');
+      modal.style.display = 'block';
+  
+      const closeButton = modal.querySelector('.close-modal');
+      closeButton.addEventListener('click', () => {
+        modal.style.display = 'none';
+      });
+    }
+  });
+  
