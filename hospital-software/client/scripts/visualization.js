@@ -4,14 +4,17 @@ import { patientInformationdb } from '../../lib/database.js';
 
  Template.visualization.onCreated(function() {
    // get all the device elements
-   const devices = patientInformationdb.find({}, { limit: 6 }).fetch();
+   let devices = patientInformationdb.find({}, { limit: 6 }).fetch();
       // store the devices array in a reactive variable
    this.devices = new ReactiveVar(devices);
  });
 
  Template.visualization.onRendered(function() {
   Tracker.autorun(() => {
-    const devices = document.querySelectorAll('.corner span');
+    let devices2 = patientInformationdb.find({}, { limit: 6 }).fetch();
+    // store the devices array in a reactive variable
+ this.devices = new ReactiveVar(devices2);
+    let devices = document.querySelectorAll('.corner span');
 
     devices.forEach(device => {
       device.addEventListener('click', () => {
@@ -49,7 +52,10 @@ import { patientInformationdb } from '../../lib/database.js';
 
   
   Template.visualization.helpers({
-  
+    devices() {
+      //returns all the beacon ids
+      return Template.instance().devices.get();
+  },
     patientsReception() {
       let devices = patientInformationdb.find({}, { limit: 6 }).fetch();
       return devices.filter(device => device.location === "Receptionist").map(device => device.beaconID);      
