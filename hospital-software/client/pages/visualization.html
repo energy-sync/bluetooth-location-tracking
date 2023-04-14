@@ -133,20 +133,22 @@
         </div>
       </div>
 
+<br>
 
-<div class="container">
-        <br>
-        <h5 class="position-absolute start-50 translate-middle">Unassigned Beacons:</h5>
-        <br>
-        <div class="container text-center"></div>
-            <div class="row row-cols-2 w-50 mx-auto">
-            {{#each beacon in unassignedBeacons}}
-                <div class="col border border-secondary">{{beacon}}</div>
-            {{/each}}
-            </div>
-    </div>
-
-
+<div class="container text-center fw-bold mx-auto">
+        <table class="table table-bordered table-striped ">
+            <thead class="col text-bg-secondary text-center">
+              <th>Unassigned Devices</th>
+            </thead>
+            <tbody class="text-center">
+              {{#each device in unassignedBeacons}}
+              <tr>
+                <td>{{device}}</td>
+              </tr>
+              {{/each}}
+            </tbody>
+          </table>
+      </div> 
 
     </template>
     
