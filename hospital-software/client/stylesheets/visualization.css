@@ -35,9 +35,65 @@ span {
 }
 
 .assistance {
-  border: 2px solid black;
+  border: 5px solid black;
 }
 
 .reception{
   background-color:red;
 }
+
+
+
+
+.device-legend {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+
+.device-legend-item {
+  display: flex;
+  align-items: center;
+  margin: 0 10px;
+}
+
+.device-color {
+  width: 20px;
+  height: 20px;
+  margin-right: 5px;
+}
+
+.device-label {
+  font-size: 14px;
+  font-weight: bold;
+}
+
+.device-infant {
+  background-color: red;
+}
+.device-child {
+  background-color: orange;
+}
+.device-adolescent {
+  background-color: green;
+}
+.device-adult {
+  background-color: blue;
+}
+.device-elderly {
+  background-color:purple;
+}
+
+
+.legend-container {
+  background-color: white !important;
+  padding: 10px;
+  margin-top: 10px;
+  width: 38%;
+}
+
+.modal-header {
+  margin-bottom: 5px;
+  border-bottom: 1px solid gray;
+}
+

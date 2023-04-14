@@ -1,6 +1,7 @@
 
 import { Template } from 'meteor/templating';
 import { patientInformationdb } from '../../lib/database.js';
+import { FlowRouter } from 'meteor/ostrio:flow-router-extra';
 
  Template.visualization.onCreated(function() {
    // get all the device elements
@@ -22,30 +23,25 @@ import { patientInformationdb } from '../../lib/database.js';
       const patient = this.devices.get().find(device => device.beaconID === deviceId);
       const modalBody = modal.find('.modal-body');
       modalBody.html(`
-        <table>
-          <tr>
-          <td>Beacon ID:</td>
-          <td>${patient.beaconID}</td>
-          </tr>
-          <tr>
-            <td>Age:</td>
-            <td>${patient.patientInformation.age}</td>
-          </tr>
-          <tr>
-            <td>Patient ID:</td>
-            <td>${patient.patientInformation.patientID}</td>
-          </tr>
-          <tr>
-            <td>Location:</td>
-            <td>${patient.location}</td>
-          </tr>
-        </table>
+        
+        <p><u><b> Beacon ID</b></u>: ${patient.beaconID}</p>
+        <p><u><b> Patient ID</b></u> :${patient.patientInformation.patientID}</p>
+        <p><u><b> Age</b></u>: ${patient.patientInformation.age}</p>
+        <p><u><b> Location</b></u> :${patient.location}</p>
+        <p><u><b> Special Assistance</b></u>: ${patient.patientInformation.specialAssistance}</p>
+        
       `);
       modal.css('display', 'block');
 
       const closeButton = modal.find('.close-modal');
       closeButton.on('click', () => {
         modal.css('display', 'none');
+      });
+
+      const viewPatientPageButton = modal.find('#view-patient-page');
+      viewPatientPageButton.on('click', () => {
+        // Navigate to the patient page using the patient ID
+        FlowRouter.go('/patient/' + patient.patientInformation.patientID);
       });
     });
   });
