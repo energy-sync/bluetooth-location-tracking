@@ -133,6 +133,21 @@
         </div>
       </div>
 
+
+<div class="container">
+        <br>
+        <h5 class="position-absolute start-50 translate-middle">Unassigned Beacons:</h5>
+        <br>
+        <div class="container text-center"></div>
+            <div class="row row-cols-2 w-50 mx-auto">
+            {{#each beacon in unassignedBeacons}}
+                <div class="col border border-secondary">{{beacon}}</div>
+            {{/each}}
+            </div>
+    </div>
+
+
+
     </template>
     
 

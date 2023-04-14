@@ -8,6 +8,23 @@ import { FlowRouter } from 'meteor/ostrio:flow-router-extra';
    let devices = patientInformationdb.find({}, { limit: 6 }).fetch();
       // store the devices array in a reactive variable
    this.devices = new ReactiveVar(devices);
+
+   this.ids = new ReactiveVar([]);
+   Meteor.call('getDevices', (error, result) => {
+       if(error){
+           console.error(error);
+       }else{
+       this.ids.set(result);
+       console.log(this.ids);
+       }
+   })
+   console.log(this.ids);
+
+   this.selectedBeacon = new ReactiveVar();
+   this.selectedPatient = new ReactiveVar();
+   this.selectedPatientID = new ReactiveVar()  
+
+
  });
 
  Template.visualization.onRendered(function() {
@@ -104,8 +121,69 @@ specialAssistance(device) {
   else {
     return "noAssistance";
   }
+},
+unassignedBeacons(){
+  let patients = patientInformationdb.find({}, {limit:6}).fetch();
+  console.log(patients);
+  let assignedBeacons = patients.map(beacon => beacon.beaconID);
+  let remainingBeacons = new Array();
+
+  console.log(assignedBeacons);
+
+  console.log(remainingBeacons);
+
+  let beacons = new Array();
+  beacons = Template.instance().ids.get();
+  console.log(Template.instance().ids.get());
+  console.log(beacons);
+
+  for(let i=0; i < beacons.length; i++){
+      let assigned = false;
+      for(let e=0; e < assignedBeacons.length; e++){
+          if(beacons[i] === assignedBeacons[e]){
+              assigned = true;
+          }
+          }
+      if(!assigned){
+          remainingBeacons.push(beacons[i]);
+      }
+  }
+  console.log(remainingBeacons);
+  return remainingBeacons;
+},
+
+selectedBeacon(){
+  return Template.instance().selectedBeacon.get();
+},
+
+selectedPatient(){
+  return Template.instance().selectedPatient.get();
+},
+
+selected(){
+  return Template.instance().selectedPatientID.get() != undefined;
+},
+
+selectedPatientID(){
+  return Template.instance().selectedPatientID.get();
 }
+});
 
+Template.visualizer.events({
+"click .beacon-button"(event, templateInstance){
+  let clicked = event.target;
+  console.log(clicked);
+  console.log(clicked.id);
 
+  templateInstance.selectedBeacon.set(clicked.id);
+  console.log(templateInstance.selectedBeacon.get());
+
+  this.assignedPatient = new ReactiveVar(patientInformationdb.findOne({ "beaconID": clicked.id}));
+  console.log(patientInformationdb.findOne({ "beaconID": clicked.id}));
+
+  templateInstance.selectedPatient.set(this.assignedPatient.get().patientInformation.patientName);
+  templateInstance.selectedPatientID.set(this.assignedPatient.get().patientInformation.patientID);
+
+}
   })
 
