@@ -28,6 +28,10 @@ import { FlowRouter } from 'meteor/ostrio:flow-router-extra';
  });
 
  Template.visualization.onRendered(function() {
+
+
+
+
   this.autorun(() => {
     let devices2 = patientInformationdb.find({}, { limit: 6 }).fetch();
     // store the devices array in a reactive variable
@@ -71,23 +75,24 @@ import { FlowRouter } from 'meteor/ostrio:flow-router-extra';
   Template.visualization.helpers({
     devices() {
       //returns all the beacon ids
-      return Template.instance().devices.get();
+      return Template.instance().devices.get().filter(device => device.beaconID );
   },
     patientsReception() {
       let devices = patientInformationdb.find({}, { limit: 6 }).fetch();
-      return devices.filter(device => device.location === "Receptionist").map(device => device.beaconID);      
+      return devices.filter(device => device.location === "Receptionist" && device.beaconID).map(device => device.beaconID);  
+       
   },
   patientsDermatology() {
     let devices = patientInformationdb.find({}, { limit: 6 }).fetch();
-    return devices.filter(device => device.location === "Dermatology").map(device => device.beaconID);      
+    return devices.filter(device => device.location === "Dermatology" && device.beaconID).map(device => device.beaconID);      
 },
 patientsLab() {
   let devices = patientInformationdb.find({}, { limit: 6 }).fetch();
-  return devices.filter(device => device.location === "Lab").map(device => device.beaconID);      
+  return devices.filter(device => device.location === "Lab" && device.beaconID).map(device => device.beaconID);      
 },
 patientsGP() {
   let devices = patientInformationdb.find({}, { limit: 6 }).fetch();
-  return devices.filter(device => device.location === "General Practitioner").map(device => device.beaconID);      
+  return devices.filter(device => device.location === "General Practitioner" && device.beaconID).map(device => device.beaconID);      
 },
 age(device) {
   console.log(device);
