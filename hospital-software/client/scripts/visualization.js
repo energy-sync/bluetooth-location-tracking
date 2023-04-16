@@ -174,7 +174,7 @@ selectedPatientID(){
 }
 });
 
-Template.visualizer.events({
+Template.visualization.events({
 "click .beacon-button"(event, templateInstance){
   let clicked = event.target;
   console.log(clicked);
