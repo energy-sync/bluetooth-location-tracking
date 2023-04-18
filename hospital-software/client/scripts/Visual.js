@@ -54,10 +54,10 @@ Template.Visual.helpers({
 
 
 function setDeviceColor(waitingTime) {
-  if (waitingTime ==='a few seconds ago' || waitingTime ==='a minute ago' || waitingTime ==='2 minutes ago') {
+  if (waitingTime ==='a few seconds ago') {
     console.log('green')
     return 'green'
-  } else if (waitingTime ==='3 minutes ago' || waitingTime ==='4 minutes ago' || waitingTime ==='5 minutes ago') {
+  } else if (waitingTime ==='a minute ago') {
     console.log('yellow')
     return 'yellow'
   } else {
@@ -65,3 +65,9 @@ function setDeviceColor(waitingTime) {
     return 'red'
   }
 }
+
+
+//refresh page every 30 seconds
+setInterval(function(){
+  window.location.reload(1);
+}, 30000);
