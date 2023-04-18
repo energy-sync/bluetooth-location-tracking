@@ -1,35 +1,33 @@
 
-    .outer-container, .corner {
-      border: 2px solid black;
-    }
-    .corner {
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      height: 100%;
-      width: 100%;
-      border: 2px solid black;
-      padding: 10px;
-      margin: 10px;
-    }
-    .rounded-circle {
-      display: inline-block;
-      width: 60px;
-      height: 60px;
-      line-height: 50px;
-      text-align: center;
-      border-radius: 50%;
-      background-color: blue;
-      color: #fff;
-      margin: 5px;
-    }
-    .outer-container {
-      border: 2px solid black;
-      padding: 10px;
-      margin-bottom: 10px;
-    }
- 
-        
-   
-    
-    
+.corner {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 150px;
+  width: 150px;
+}
+.container-fixed {
+  overflow: hidden; 
+}
+
+.green {
+  background-color: #32CD32;
+}
+.yellow {
+  background-color: #FFFF00;
+}
+.red {
+  background-color: #FF0000;
+}
+.corner.top-left{
+  height: 200px;
+}
+.corner.top-right{
+  width:200px;
+}
+
+.corner.bottom-left{
+  height: 200px;
+}
+
+
