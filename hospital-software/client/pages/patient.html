@@ -5,6 +5,21 @@
 
 <template name="patientInformation">
 
+  
+
+    <p>Select Department:</p>
+    <div class="container-fluid w-50">
+        <select class="form-select" name="departments" id="departments">
+            <option value="reception">Reception</option>
+            <option value="practitioner">General Practitioner</option>
+            <option value="lab">Lab</option>
+            <option value="dermatology">Dermatology</option>
+        </select>
+    </div>
+    <br>
+</template>
+
+<template name="patient">
     <nav class="navbar navbar-expand-sm bg-primary navbar-dark">
         <div class="container-fluid">
           <ul class="navbar-nav">
@@ -24,19 +39,7 @@
         </div>
       </nav>
 
-    <p>Select Department:</p>
-    <div class="container-fluid w-50">
-        <select class="form-select" name="departments" id="departments">
-            <option value="reception">Reception</option>
-            <option value="practitioner">General Practitioner</option>
-            <option value="lab">Lab</option>
-            <option value="dermatology">Dermatology</option>
-        </select>
-    </div>
-    <br>
-</template>
 
-<template name="patient">
    <!-- {{> patientInformation}}-->
     <h1>Name: {{patient.patientInformation.patientName}}</h1>
     <h2><b>Location:</b> {{patient.location}}</h2>
