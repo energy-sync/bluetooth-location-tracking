@@ -223,7 +223,7 @@ function saveConfig() {
   fs.writeFileSync(configPath, JSON.stringify(config, null, 4));
   fs.chmodSync(configPath, "0777");
 }
-
+ 
 Meteor.methods({
   updateRadioConfig: (macAddress, config) => {
     radiodb.update({macAddress: macAddress}, {$set: {config: config}});

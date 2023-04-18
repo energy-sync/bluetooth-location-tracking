@@ -1,84 +1,67 @@
 import { Template } from 'meteor/templating';
 import { ReactiveVar } from 'meteor/reactive-var';
-import '/Visual.html';
-import '/Visual.css';
 import { patientInformationdb } from '../../lib/database';
 
 Template.Visual.onCreated(function() {
-  this.reception = new ReactiveVar([]);
-  this.dermatology = new ReactiveVar([]);
-  this.lab = new ReactiveVar([]);
-  this.practitioner = new ReactiveVar([]);
+// get all the device elements
+let devices = patientInformationdb.find({}, { limit: 6 }).fetch();
+// store the devices array in a reactive variable
+this.devices = new ReactiveVar(devices);
 
-  Meteor.call("getLocationPatient", "Receptionist", (err, res) => {
-    this.reception.set(res);
-  });
-
-  Meteor.call("getLocationPatient", "Dermatology", (err, res) => {
-    this.dermatology.set(res);
-  });
-
-  Meteor.call("getLocationPatient", "Lab", (err, res) => {
-    this.lab.set(res);
-  });
-
-  Meteor.call("getLocationPatient", "General Practitioner", (err, res) => {
-    this.practitioner.set(res);
-  });
+this.ids = new ReactiveVar([]);
+Meteor.call('getDevices', (error, result) => {
+ if(error){
+     console.error(error);
+ }else{
+ this.ids.set(result);
+ console.log(this.ids);
+ }
+})
+console.log(this.ids);
 });
 
 Template.Visual.helpers({
+  devices() {
+    //returns all the beacon ids
+    return Template.instance().devices.get().filter(device => device.beaconID );
+},
   deviceLab() {
-    return Template.instance().lab.get();
+    let devices = patientInformationdb.find({}, { limit: 6 }).fetch();
+  return devices.filter(device => device.location === "Lab" && device.beaconID).map(device => device.beaconID);    
   },
   deviceReception() {
-    return Template.instance().reception.get();
+    let devices = patientInformationdb.find({}, { limit: 6 }).fetch();
+      return devices.filter(device => device.location === "Receptionist" && device.beaconID).map(device => device.beaconID);  
   },
   deviceGP() {
-    return Template.instance().practitioner.get();
+    let devices = patientInformationdb.find({}, { limit: 6 }).fetch();
+   
+  return devices.filter(device => device.location === "General Practitioner" && device.beaconID).map(device => device.beaconID);  
   },
   deviceDermatology() {
-    return Template.instance().dermatology.get();
+    let devices = patientInformationdb.find({}, { limit: 6 }).fetch();
+    return devices.filter(device => device.location === "Dermatology" && device.beaconID).map(device => device.beaconID);  
+  },
+  waitTime(beaconID){
+    let beacon= patientInformationdb.findOne({'beaconID': beaconID})
+    const waitingTime = moment(beacon.timeOfUpdate).fromNow()
+
+    //console.log(beacon,waitingTime)
+    return setDeviceColor(waitingTime);
   }
 });
 
-Template.Visual.onRendered(function() {
-  const green = "#32CD32";
-  const yellow = "#FFFF00";
-  const red = "#FF0000";
-  const timeThreshold1 = 30 * 60 * 1000; // 30 minutes
-  const timeThreshold2 = 60 * 60 * 1000; // 60 minutes
-  const allDevices = document.querySelectorAll(".rounded-circle");
 
-  function setDeviceColor(device, waitingTime) {
-    if (waitingTime > timeThreshold2) {
-      device.classList.remove('green', 'yellow');
-      device.classList.add('red');
-    } else if (waitingTime > timeThreshold1) {
-      device.classList.remove('green', 'red');
-      device.classList.add('yellow');
-    } else {
-      device.classList.remove('yellow', 'red');
-      device.classList.add('green');
-    }
+
+function setDeviceColor(waitingTime) {
+  if (waitingTime ==='a few seconds ago' || waitingTime ==='a minute ago' || waitingTime ==='2 minutes ago') {
+    console.log('green')
+    return 'green'
+  } else if (waitingTime ==='3 minutes ago' || waitingTime ==='4 minutes ago' || waitingTime ==='5 minutes ago') {
+    console.log('yellow')
+    return 'yellow'
+  } else {
+    console.log('red')
+    return 'red'
   }
-  
-  function updateTime() {
-    allDevices.forEach(device => {
-      let beacon= patientInformationdb.findOne({'beaconID': device})
-      const waitingTime = moment(beacon.timeOfUpdate).fromNow()
-      console.log(beacon,waitingTime)
-      setDeviceColor(device, waitingTime);
-    });
-  }
-
-  function startUpdatingTime() {
-    setInterval(updateTime, 5000); // update every 5 seconds
-    setInterval(updateTime, 10000); // update every 10 seconds
-    setInterval(updateTime, 15000); // update every 15 seconds
-  }
-
-  startUpdatingTime();
-});
-
-
+}
