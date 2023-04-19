@@ -85,12 +85,15 @@ Template.Visual.onRendered(function() {
       const deviceId = $(event.currentTarget).text().trim();
       const patient = this.devices.get().find(device => device.beaconID === deviceId);
       const modalBody = modal.find('.modal-body');
+      const waitingTime = setDeviceColor(moment(patient.timeOfUpdate).fromNow());
       modalBody.html(`
         
         <p><u><b> Beacon ID</b></u>: ${patient.beaconID}</p>
         <p><u><b> Patient ID</b></u> :${patient.patientInformation.patientID}</p>
         <p><u><b> Age</b></u>: ${patient.patientInformation.age}</p>
-        <p><u><b> Location</b></u> :${patient.location}</p>        
+        <p><u><b> Location</b></u> :${patient.location}</p> 
+        <p><u><b> Waiting Time</b></u> :${waitingTime}</p>      
+      
       `);
       modal.css('display', 'block');
 
