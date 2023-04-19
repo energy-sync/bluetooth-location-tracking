@@ -173,6 +173,15 @@ function updateLocation(beaconMacAddress, location) {
   })
   .catch(function (error) {
     console.log(error)
+  });
+ 
+  //https://bletracking.webchartnow.com/webchart.cgi?f=layoutnouser&name=TrackingGateway&apikey=12345Tracking&pat_id=18&station_name=${location.replace(/\s/g, '')}&raw
+  axios.get(`https://bletracking.webchartnow.com/webchart.cgi?f=layoutnouser&name=TrackingGateway&apikey=12345Tracking&pat_id=18&station_name=${location.replace(/\s/g, '')}&raw`)
+  .then(function (response) {
+    console.log(response.data);
+  })
+  .catch(function (error) {
+    console.log(error);
   })
 }
 

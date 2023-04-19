@@ -119,6 +119,7 @@ Template.main.helpers({
     },
 
     radioOnline(radio) {
+        return true;
         if (radio)
             return radiodb.findOne({macAddress: radio.macAddress}).online;
         else {
