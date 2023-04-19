@@ -1,6 +1,7 @@
 import { Template } from 'meteor/templating';
 import { ReactiveVar } from 'meteor/reactive-var';
 import { patientInformationdb } from '../../lib/database';
+import { FlowRouter } from 'meteor/ostrio:flow-router-extra';
 
 Template.Visual.onCreated(function() {
 // get all the device elements
@@ -71,3 +72,39 @@ function setDeviceColor(waitingTime) {
 setInterval(function(){
   window.location.reload(1);
 }, 30000);
+
+Template.Visual.onRendered(function() {
+ this.autorun(() => {
+    let devices2 = patientInformationdb.find({}, { limit: 6 }).fetch();
+    // store the devices array in a reactive variable
+    this.devices = new ReactiveVar(devices2);
+    let devices = this.$('.corner');
+
+    devices.on('click', 'span', (event) => {
+      const modal = this.$('#myModal');
+      const deviceId = $(event.currentTarget).text().trim();
+      const patient = this.devices.get().find(device => device.beaconID === deviceId);
+      const modalBody = modal.find('.modal-body');
+      modalBody.html(`
+        
+        <p><u><b> Beacon ID</b></u>: ${patient.beaconID}</p>
+        <p><u><b> Patient ID</b></u> :${patient.patientInformation.patientID}</p>
+        <p><u><b> Age</b></u>: ${patient.patientInformation.age}</p>
+        <p><u><b> Location</b></u> :${patient.location}</p>        
+      `);
+      modal.css('display', 'block');
+
+      const closeButton = modal.find('.close-modal');
+      closeButton.on('click', () => {
+        modal.css('display', 'none');
+      });
+
+      const viewPatientPageButton = modal.find('#view-patient-page');
+      viewPatientPageButton.on('click', () => {
+        // Navigate to the patient page using the patient ID
+        FlowRouter.go('/patient/' + patient.patientInformation.patientID);
+      });
+    });
+  });
+});
+
