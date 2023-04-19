@@ -6,7 +6,7 @@ const fs = require("fs");
 const config = JSON.parse(fs.readFileSync("config.json", "utf-8"));
 dotenv.config();
 const POST_URL = `${config.controllerUrl}/testLocation`;
-const LOCATIONS = ["Receptionist", "General Practitioner", "Lab", "Dermatology"];
+const LOCATIONS = ["Receptionist", "General Practitioner", "Dermatology","Lab"];
 
 let devices = [];
 for (device of config.beacons) {
@@ -40,7 +40,7 @@ function movePatient() {
 movePatient();
 
 function getRandomLocation() {
-    return LOCATIONS[random(LOCATIONS.length - 1)];
+    return LOCATIONS[random(LOCATIONS.length )];
 }
 
 function random(max) {

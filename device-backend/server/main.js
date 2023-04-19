@@ -203,7 +203,7 @@ function sendData() {
     })
     .catch(function (error) {
       console.log(error)
-    })
+    }) 
 }
 
 function getCurrentTime() {
