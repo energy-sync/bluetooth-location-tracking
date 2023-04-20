@@ -20,7 +20,7 @@ for (device of config.beacons) {
 console.log(devices);
 
 function movePatient() {
-    let index = random(devices.length);
+    let index = 1; //random(devices.length);
     console.log(devices[index].location);
     devices[index].location = getRandomLocation();
     devices[index].distance = 1 //random(10);
@@ -30,7 +30,7 @@ function movePatient() {
         .then(response => {
             setTimeout(() => {
                 movePatient();
-            }, random(3000)); //0 to 60 seconds
+            }, random(30000)); //0 to 60 seconds
         })
         .catch(error => {
             console.error(error);
@@ -40,7 +40,7 @@ function movePatient() {
 movePatient();
 
 function getRandomLocation() {
-    return LOCATIONS[random(LOCATIONS.length - 1)];
+    return LOCATIONS[random(LOCATIONS.length)];
 }
 
 function random(max) {

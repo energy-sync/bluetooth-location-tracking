@@ -165,24 +165,30 @@ function testUpdateLocation(beaconID) {
 function updateLocation(beaconMacAddress, location) {
   let beaconToUpdate = deviceInformationdb.findOne({ macAddress: beaconMacAddress });
   deviceInformationdb.update({ macAddress: beaconMacAddress }, { $set: { location: location } });
-  axios.post('http://localhost:3000/update', {
-    beaconID: beaconToUpdate.beaconID,
-    location: location
-  })
-  .then(function (response) {
-  })
-  .catch(function (error) {
-    console.log(error)
-  });
- 
-  //https://bletracking.webchartnow.com/webchart.cgi?f=layoutnouser&name=TrackingGateway&apikey=12345Tracking&pat_id=18&station_name=${location.replace(/\s/g, '')}&raw
-  axios.get(`https://bletracking.webchartnow.com/webchart.cgi?f=layoutnouser&name=TrackingGateway&apikey=12345Tracking&pat_id=18&station_name=${location.replace(/\s/g, '')}&raw`)
-  .then(function (response) {
-    console.log(response.data);
-  })
-  .catch(function (error) {
-    console.log(error);
-  })
+
+  if (beaconToUpdate.location !== location) {
+    axios.post('http://localhost:3000/update', {
+      beaconID: beaconToUpdate.beaconID,
+      location: location
+    })
+    .then(function (response) {
+    })
+    .catch(function (error) {
+      console.log(error)
+    });
+   
+    //webchart update (only for Larry)
+    //https://bletracking.webchartnow.com/webchart.cgi?f=layoutnouser&name=TrackingGateway&apikey=12345Tracking&pat_id=18&station_name=${location.replace(/\s/g, '')}&raw
+    if (beaconToUpdate.beaconID === "Larry") {
+      axios.get(`https://bletracking.webchartnow.com/webchart.cgi?f=layoutnouser&name=TrackingGateway&apikey=12345Tracking&pat_id=18&station_name=${location.replace(/\s/g, '')}&raw`)
+      .then(function (response) {
+        console.log(response.data);
+      })
+      .catch(function (error) {
+        console.log(error);
+      })
+    }
+  }
 }
 
 //add location to beacon history
