@@ -189,6 +189,30 @@ Template.visualization.events({
   templateInstance.selectedPatient.set(this.assignedPatient.get().patientInformation.patientName);
   templateInstance.selectedPatientID.set(this.assignedPatient.get().patientInformation.patientID);
 
+},
+
+"click .device-modal-button"(event){
+  let deviceModal = document.getElementById("unassigned-devices");
+  console.log(deviceModal);
+
+  deviceModal.style.display = "block";
+},
+
+"click .device-modal-close"(event){
+  let deviceModal = document.getElementById("unassigned-devices");
+  console.log(deviceModal);
+
+  deviceModal.style.display = "none";
+},
+
+"click #unassigned-devices"(event){
+  console.log(event.target);
+  let deviceModal = document.getElementById("unassigned-devices")
+
+  let clicked = event.target;
+  if(clicked == deviceModal){
+    deviceModal.style.display="none";
+  }
 }
   })
 
