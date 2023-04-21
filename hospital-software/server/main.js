@@ -8,7 +8,6 @@ import { WebApp } from 'meteor/webapp';
 let arrayofdevices = [];
 
 Meteor.startup(() => {
-  // code to run on server at startup
   patientInformationdb.remove({});
   historicalPatientInformationDB.remove({});
   generateRealPatients(6);
@@ -44,9 +43,9 @@ Meteor.methods({
   clearRecords: () => {
     patientInformationdb.remove({});
   },
+
   //return array of the beacon ids
   getDevices: () => {
-    //printArray(arrayofdevices)
     return arrayofdevices.map(ids => ids.beaconID);
   },
 
@@ -55,10 +54,12 @@ Meteor.methods({
     let totalNumOfPatients = historicalPatientInformationDB.find({ location: location }).count()
     return totalNumOfPatients;
   },
+
   getTimes: (location) => {
     let info = historicalPatientInformationDB.find({ location: location }).fetch()
     return info.map(times => times.time)
   },
+
   getDays: (location) => {
     let info = historicalPatientInformationDB.find({ location: location }).fetch()
     return info.map(days => days.day)
@@ -75,8 +76,7 @@ Meteor.methods({
       busiestTime = '0' + busiestTime;
     }
     return busiestTime;
-  }
-  ,
+  },
 
   getNumberOfPeoplePerDay: (location) => {
     let dayArray = ["Sunday", "Monday", "Tuesday",
@@ -116,22 +116,16 @@ Meteor.methods({
     return dataArray;
   },
   getAvgWaitTime: (location) => {
-
     // locationArray[i]
     let arrayofpatients = patientInformationdb.find({ location: location }).fetch().map(waitTime => waitTime.waitTime).filter(Boolean)
 
     let totalWaitTime = arrayofpatients.reduce((sum, waitTime) => sum + waitTime, 0)
     let avg = totalWaitTime / arrayofpatients.length;
     return Math.round(avg);
-
   }
 });
 
-function printArray(arr) {
-  console.log(arr)
-}
 //functions for randomizing patient db
-
 
 //array for first and last names
 const firstNames = ["Michael", "Christopher", "Jessica", "Matthew", "Ashley", "Jennifer", "Joshua", "Amanda", "Daniel", "David", "James", "Robert", "John",
@@ -144,10 +138,8 @@ const lastNames = ["Smith", "Johnson", "Williams", "Brown", "Jones", "Garcia", "
   "Robinson", "Walker", "Young", "Allen", "King", "Wright", "Scott", "Torres", "Nguyen", "Hill", "Flores", "Green", "Adams", "Nelson", "Baker", "Hall", "Rivera",
   "Campbell", "Mitchell", "Carter", "Roberts"];
 
-
 //random number
 const getRandomNumber = (max) => Math.floor(Math.random() * max);
-
 
 //getting random names
 function getRandomName(arr1, arr2) {
@@ -572,7 +564,6 @@ function getRandomDayOfWeek() {
 
   return day;
 }
-
 
 function readHour() {
   let now = new Date();

@@ -3,6 +3,7 @@
     "measuredPower": -59,
     "environmentalFactor": 2.5,
     "distanceChangeToTransmit": 1,
+    "clientSoftwareUrl": "http://localhost:3000",
     "controllerUrl": "http://10.71.4.52:3002",
     "beacons": [
         {

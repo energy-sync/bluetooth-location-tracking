@@ -2,7 +2,6 @@ const axios = require("axios");
 const dotenv = require("dotenv");
 const fs = require("fs");
 
-
 const config = JSON.parse(fs.readFileSync("config.json", "utf-8"));
 dotenv.config();
 const POST_URL = `${config.controllerUrl}/testLocation`;
@@ -30,7 +29,7 @@ function movePatient() {
         .then(response => {
             setTimeout(() => {
                 movePatient();
-            }, random(30000)); //0 to 60 seconds
+            }, random(30000));
         })
         .catch(error => {
             console.error(error);
