@@ -23,17 +23,13 @@ a {
   text-transform: capitalize;
 }
 
-button {
-  margin-left: 7%;
-  margin-right: 7%;
- ;
-}
-.container{
-  overflow: auto;
+
+
+
+.vertical-line {
+  position: absolute;
+  border-left: 3px solid black;
+  height: 100%;
 }
 
-@media (max-width: 768px) {
-  button {
-    margin:auto;
-  }
-}
+
