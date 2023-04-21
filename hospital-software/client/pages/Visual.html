@@ -36,7 +36,7 @@
         </div>
       </div>
 
-      <div class="inner-container d-flex justify-content-between align-items-center">
+      <div class="inner-container d-flex">
         <div class="corner bottom-left bg-gp">General Practitioner</div>
         <div class="corner bottom-right bg-derm">Dermatology</div>
       </div>
@@ -44,27 +44,45 @@
   </div>
   <div class="modal" id="myModal">
     <div class="modal-dialog">
-      <div class="modal-content">
-  
-        
-        <div class="modal-header">
-          <h4 class="modal-title">Patient Information</h4>
-          <button type="button" class="btn-close close-modal" data-bs-dismiss="modal"></button>
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title">Patient Information</h4>
+                <button type="button" class="btn-close close-modal" data-bs-dismiss="modal"></button>
+            </div>
+            <div class="modal-body">
+                <div class="row">
+                    <div class="col-md-6" id="patient-info">
+                        <!-- Placeholder div for patient information -->
+                    </div>
+                    <div class="col-md-6">
+                        <!-- Patient History -->
+                        <h4 class="small-header">History</h4>
+                        {{#if beaconHasHistory}}
+                            <table class="history-table table table-bordered table-striped text-center">
+                                <tbody>
+                                    {{#each record in getcurrentBeaconHistory}}
+                                        <tr class="col table-active device-row">
+                                            <td>{{record.location}}</td>
+                                            <td>{{getReadableTimestamp record.timestamp}}</td>
+                                        </tr>
+                                    {{/each}}
+                                </tbody>
+                            </table>
+                        {{else}}
+                            <p class="gray-text">No history</p>
+                        {{/if}}
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-primary" id="view-patient-page">Patient Page</button>
+                <button class="btn btn-danger float-end" id="deleteBeaconButton">Delete</button>
+            </div>
         </div>
-  
-        
-        <div class="modal-body">
-        
-        </div>
-  
-        
-        <div class="modal-footer">
-          <button type="button" class="btn btn-primary" id="view-patient-page">Patient Page</button>
-        </div>
-  
-      </div>
-    </div>
-  </div> 
+    </div> 
+
+</div>
+
   
 </template>
 
