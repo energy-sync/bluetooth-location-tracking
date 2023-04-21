@@ -20,3 +20,17 @@ h5{
 .row{
     border-bottom: 2px solid black;
   }
+
+#assignBtn{
+  border-radius:25px;
+  background-color:rgb(60, 164, 216);
+  padding: 15px;
+  border:0px;
+  margin:2px;
+  box-shadow: none;
+}
+
+#assignBtn:hover,
+#assignBtn:focus{
+    background-color:rgb(43, 119, 156);
+}
