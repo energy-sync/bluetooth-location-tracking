@@ -84,7 +84,39 @@ getcurrentBeaconHistory() {
 
     //console.log(beacon,waitingTime)
     return setDeviceColor(waitingTime);
-  }
+
+  },
+  
+  unassignedBeacons(){
+    let patients = patientInformationdb.find({}, {limit:6}).fetch();
+    console.log(patients);
+    let assignedBeacons = patients.map(beacon => beacon.beaconID);
+    let remainingBeacons = new Array();
+  
+    console.log(assignedBeacons);
+  
+    console.log(remainingBeacons);
+  
+    let beacons = new Array();
+    beacons = Template.instance().ids.get();
+    console.log(Template.instance().ids.get());
+    console.log(beacons);
+  
+    for(let i=0; i < beacons.length; i++){
+        let assigned = false;
+        for(let e=0; e < assignedBeacons.length; e++){
+            if(beacons[i] === assignedBeacons[e]){
+                assigned = true;
+            }
+            }
+        if(!assigned){
+            remainingBeacons.push(beacons[i]);
+        }
+    }
+    console.log(remainingBeacons);
+    return remainingBeacons;
+  },
+  
 });
 
 

@@ -81,7 +81,26 @@
     </div> 
 
 </div>
+<div class="device-modal" id="unassigned-devices">
+  <div class ="container text-center fw-bold device-modal-content">
+    <div class="device-modal-header">
+      <div class="device-modal-close">&times;</div>
+    </div>
+    <table class="table table-bordered table-striped">
+      <thead class="col text-bg-secondary text-center">
+        <th>Unassigned Devices</th>
+      </thead>
+      <tbody class="text-center">
+        {{#each device in unassignedBeacons}}
+        <tr>
+          <td>{{device}}</td>
+        </tr>
+        {{/each}}
+      </tbody>
+    </table>
+  </div>
+</div>
 
-  
-</template>
+
+
 
