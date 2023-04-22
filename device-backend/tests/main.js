@@ -1,23 +1,4 @@
-import assert from "assert";
 
-describe("device-backend", function () {
-  it("package.json has correct name", async function () {
-    const { name } = await import("../package.json");
-    assert.strictEqual(name, "device-backend");
-  });
-
-  if (Meteor.isClient) {
-    it("client is not server", function () {
-      assert.strictEqual(Meteor.isServer, false);
-    });
-  }
-
-  if (Meteor.isServer) {
-    it("server is not client", function () {
-      assert.strictEqual(Meteor.isClient, false);
-    });
-  }
-});
 const chai = require('chai');
 const chaiHttp = require('chai-http');
 const expect = chai.expect;
@@ -53,7 +34,7 @@ chai.use(chaiHttp);
     //test data, has to have a relevant beaconID and location to work properly
     const testDataset = 
     {
-      beaconID: "Bob",
+      beaconID: "Bobby",
       location: "General Practitioner"
     } 
      //chai post request
