@@ -21,12 +21,14 @@ WebApp.connectHandlers.use("/getBLEs", function (req, res, next) {
   res.writeHead(200, { "Content-Type": "application/json" })
   req.on('data', Meteor.bindEnvironment((data) => {
     const body = JSON.parse(data);
-    //console.log(body)
+    console.log(body)
     storeInfo(body);
 
-
+    res.end(data)
+    
   }));
-  res.end(Meteor.release)
+  
+ 
 })
 
 //update location from http request
