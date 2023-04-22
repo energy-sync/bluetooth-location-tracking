@@ -1,5 +1,5 @@
 body {
-  padding: 0px;
+  padding: 10px;
   font-family: sans-serif;
   text-align: center;
   background-color: lightgrey;
@@ -23,9 +23,13 @@ a {
   text-transform: capitalize;
 }
 
-button {
-  margin-left: 7%;
-  margin-right: 7%;
- 
+
+
+
+.vertical-line {
+  position: absolute;
+  border-left: 3px solid black;
+  height: 100%;
 }
+
 
