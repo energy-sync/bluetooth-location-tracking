@@ -28,14 +28,14 @@ span {
   background-color: rgb(172, 0, 0);
 }
 .child {
-  background-color: orange;
+  background-color:rgb(255, 187, 0);
 }
 .child:hover,
 .child:focus{
   background-color: rgb(181, 118, 0);
 }
 .adolescent {
-  background-color: green;
+  background-color: rgb(18, 221, 18);
 }
 .adolescent:hover,
 .adolescent:focus{
@@ -43,7 +43,7 @@ span {
 }
 
 .adult {
-  background-color: blue;
+  background-color: rgb(6, 151, 235);
 }
 .adult:hover,
 .adult:focus{
@@ -51,7 +51,7 @@ span {
 }
 
 .elderly {
-  background-color:purple;
+  background-color:rgb(230, 53, 230);
 }
 .elderly:hover,
 .elderly:focus{
@@ -65,6 +65,11 @@ span {
 .reception{
   background-color:red;
 }
+
+
+
+
+
 
 
 
