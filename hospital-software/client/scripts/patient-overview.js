@@ -1,12 +1,17 @@
 import { Template } from "meteor/templating";
 import { historicalPatientInformationDB } from "../../lib/database";
-import '../pages/patient-overview.html';
+
+
 
 Template.receptionistTemplate.onCreated(function () {
     initializeSpecialty('Receptionist', this)
+
+});
+
+Template.receptionistTemplate.onRendered(function () {
     initializeSpecialtyChartDays('Receptionist', this);
     initializeSpecialtyChartHours('Receptionist', this);
-});
+})
 
 Template.generalPractitionerTemplate.onCreated(function () {
     initializeSpecialty('General Practitioner', this);
@@ -26,11 +31,86 @@ Template.dermaTemplate.onCreated(function () {
     initializeSpecialtyChartHours('Dermatology', this);
 });
 
-
 Template.landing.onCreated(function () {
-    this.location = new ReactiveVar('General Info');
+    this.currentTab = new ReactiveVar("overview");
+})
+
+Template.landing.helpers({
+    currentTab: function () {
+        return Template.instance().currentTab.get();
+    }
 });
 
+Template.overview.onCreated(function(){
+   Meteor.call('getNumberOfPeoplePerDepartment', (err,res)=>{
+        let chart = anychart.column()
+        chart.animation(true)
+        chart.padding([10, 40, 5, 20])
+        chart.title('Number of People in Each Department')
+
+        let series = chart.column(res)
+        series
+        .tooltip()
+        .position('right')
+        .anchor('left-center')
+        .offsetX(5)
+        .offsetY(0)
+        .titleFormat('{%X}')
+        .format('{%Value}');
+
+        chart.yAxis().labels().format('{%Value}{groupsSeparator: }');
+
+        chart.xAxis().title('Departments');
+        chart.yAxis().title('Number of People');
+        chart.interactivity().hoverMode('by-x');
+        chart.tooltip().positionMode('point');
+        // set scale minimum
+        chart.yScale().minimum(0);
+  
+        // set container id for the chart
+        chart.container('numberOfPeopleInHospital');
+        // initiate chart drawing
+        chart.draw();
+   })
+
+   Meteor.call('getWaitTimesPerDepartment', (err,res)=>{
+    let chart = anychart.column()
+    chart.animation(true)
+    chart.padding([10, 40, 5, 20])
+    chart.title('Average Waiting Time of Each Department')
+
+    let series = chart.column(res)
+    series
+    .tooltip()
+    .position('right')
+    .anchor('left-center')
+    .offsetX(5)
+    .offsetY(0)
+    .titleFormat('{%X}')
+    .format('{%Value}');
+
+    chart.yAxis().labels().format('{%Value}{groupsSeparator: }');
+
+    chart.xAxis().title('Departments');
+    chart.yAxis().title('Wait Time in Minutes');
+    chart.interactivity().hoverMode('by-x');
+    chart.tooltip().positionMode('point');
+    // set scale minimum
+    chart.yScale().minimum(0);
+
+    // set container id for the chart
+    chart.container('waitTimesOfDepartments');
+    // initiate chart drawing
+    chart.draw();
+})
+    
+})
+
+Template.overview.helpers({
+    currentNumberOfPeople(){
+        return historicalPatientInformationDB.find().count()
+    }
+})
 function initializeSpecialty(specialtyName, instance) {
     instance['patientNum' + specialtyName] = new ReactiveVar([]);
     instance['busiestDay' + specialtyName] = new ReactiveVar([]);
@@ -49,33 +129,68 @@ function initializeSpecialty(specialtyName, instance) {
         instance['busiestTime' + specialtyName].set(res);
     });
 
-    Meteor.call('getAvgWaitTime', specialtyName, (err,res) =>{
+    Meteor.call('getAvgWaitTime', specialtyName, (err, res) => {
         instance['avgWaitTime' + specialtyName].set(res);
     })
 }
 
 function initializeSpecialtyChartDays(specialty) {
     Meteor.call('getNumberOfPeoplePerDay', specialty, (err, res) => {
-        let chart = anychart.pie(res);
-        chart.title('Number of Patients Per Day in ' + specialty)
+        let pieChart = anychart.pie(res);
+        pieChart.title('Number of Patients Per Day in ' + specialty)
             .radius('43%')
-            .innerRadius('30%');
-        chart.legend()
+        pieChart.legend()
             .position('bottom')
             .itemsLayout('horizontal')
             .align('center')
             .title('Days Of Week');
-        chart.animation(true);
-        chart.container(specialty + 'Days').draw();
+        pieChart.labels().position('outside')
+        pieChart.animation(true);
+        pieChart.container(specialty + 'Days').draw();
+
+        pieChart.listen('pointClick', function (e) {
+            if (specialty === 'General Practitioner') {
+                specialty = 'GeneralPractitioner';
+                $('#peoplePerDayPerHour' + specialty).empty()
+                let selectedSlice = e.iterator.get('x');
+                Meteor.call('getNumberOfPeoplePerDayPerHour', specialty, selectedSlice, (err, res) => {
+                    data = res;
+                    clearData = [];
+                    let chart = anychart.column(res);
+                    chart.title('Number of Patients Per Hour in General Practitioner on ' + selectedSlice)
+                    chart.animation(true);
+                    chart.xAxis().title('Hours (In 24 standard)')
+                    chart.yAxis().title('Number Of Patients')
+                    chart.container('peoplePerDayPerHour' + specialty).draw();
+                });
+            } else {
+                $('#peoplePerDayPerHour' + specialty).empty()
+                let selectedSlice = e.iterator.get('x');
+                Meteor.call('getNumberOfPeoplePerDayPerHour', specialty, selectedSlice, (err, res) => {
+                    data = res;
+                    let chart = anychart.column(res);
+                    chart.title('Number of Patients Per Hour in ' + specialty + ' on ' + selectedSlice)
+                    chart.animation(true);
+                    chart.xAxis().title('Hours (In 24 standard)')
+                    chart.yAxis().title('Number Of Patients')
+                    chart.container('peoplePerDayPerHour' + specialty).draw();
+                });
+            }
+        });
+
+
+
     });
 }
+
+
 
 function initializeSpecialtyChartHours(specialty) {
     Meteor.call('getNumberOfPeoplePerHour', specialty, (err, res) => {
         let chart = anychart.column(res);
         chart.title('Number of Patients Per Hour in ' + specialty)
         chart.animation(true);
-        chart.xAxis().title('Hours')
+        chart.xAxis().title('Hours (In 24 standard)')
         chart.yAxis().title('Number Of Patients')
         chart.container(specialty + 'Hours').draw();
     });
@@ -93,7 +208,7 @@ function createTemplateHelpers(templateName) {
     helpers.busiestTime = function () {
         return Template.instance()[`busiestTime${templateName}`].get();
     };
-    helpers.avgWaitTime = function (){
+    helpers.avgWaitTime = function () {
         return Template.instance()[`avgWaitTime${templateName}`].get();
     }
     return helpers;
@@ -103,3 +218,28 @@ Template.receptionistTemplate.helpers(createTemplateHelpers('Receptionist'));
 Template.generalPractitionerTemplate.helpers(createTemplateHelpers('General Practitioner'));
 Template.labTemplate.helpers(createTemplateHelpers('Lab'));
 Template.dermaTemplate.helpers(createTemplateHelpers('Dermatology'));
+
+
+Template.tabbedInterface.helpers({
+    isActiveTab(tabName) {
+        const currentTab = window.location.hash.slice(1);
+        return currentTab === tabName ? 'active' : '';
+    },
+});
+
+
+Template.tabbedInterface.events({
+    'click .nav-link': function (event) {
+        event.preventDefault();
+
+        const targetTabId = event.currentTarget.hash;
+
+        $('.nav-item').removeClass('active');
+        $(event.currentTarget).parent().addClass('active');
+
+        $('.tab-pane').removeClass('show active');
+        $(targetTabId).addClass('show active');
+
+
+    }
+});

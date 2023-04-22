@@ -4,6 +4,7 @@ import '../lib/database.js';
 import { patientInformationdb } from "../lib/database"
 import { historicalPatientInformationDB } from '../lib/database';
 import { WebApp } from 'meteor/webapp';
+import { data } from 'jquery';
 
 let arrayofdevices = [];
 
@@ -89,7 +90,17 @@ Meteor.methods({
     }
     return dataArray;
   },
-
+  getNumberOfPeoplePerDepartment:() =>{
+    let departments = ['Receptionist', 'Lab', 'General Practitioner', 'Dermatology'];
+    let dataArray = []
+    for(let i =0;i<departments.length;i++){
+      data = historicalPatientInformationDB.find({location:departments[i]}).count()
+    
+      dataArray.push([departments[i], data])
+    }
+    
+    return dataArray;
+  },
   //get the busiest day of each location
   getBusiestDay: (location) => {
     const dayArray = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
@@ -122,6 +133,32 @@ Meteor.methods({
     let totalWaitTime = arrayofpatients.reduce((sum, waitTime) => sum + waitTime, 0)
     let avg = totalWaitTime / arrayofpatients.length;
     return Math.round(avg);
+
+  },
+  getNumberOfPeoplePerDayPerHour: (location, day) => {
+    let dataArray = []
+    if(location === 'GeneralPractitioner'){
+      location = 'General Practitioner'
+    }
+    for (let i = 0; i < 24; i++) {
+      data = historicalPatientInformationDB.find({ location: location, day: day, hour: i }).count()
+      dataArray.push([i, data])
+    }
+
+    return dataArray;
+  },
+  getWaitTimesPerDepartment:() =>{
+    let departments = ['Receptionist', 'Lab', 'General Practitioner', 'Dermatology'];
+    let dataArray = []
+
+    for(let i =0;i<departments.length;i++){
+    let arrayofpatients = patientInformationdb.find({ location: departments[i] }).fetch().map(waitTime => waitTime.waitTime).filter(Boolean)
+
+    let totalWaitTime = arrayofpatients.reduce((sum, waitTime) => sum + waitTime, 0)
+    let avg = totalWaitTime / arrayofpatients.length;
+    dataArray.push([departments[i], Math.round(avg)])
+    }
+    return dataArray;
   }
 });
 
@@ -246,16 +283,21 @@ function storeInfo(body) {
 
 //function to update location
 function updateLocation(beaconID, location) {
-  patientInformationdb.update({ beaconID: beaconID }, { $set: { location: location, timeOfUpdate: getCurrentTime() } })
-  historicalPatientInformationDB.insert({
-    'beaconID': beaconID,
-    'location': location,
-    'hour': readHour(getCurrentTime()),
-    'minute': readMinute(getCurrentTime()),
-    'day': readDays(getCurrentTime())
-  })
-}
+  let beaconToUpdate = patientInformationdb.findOne({ beaconID: beaconID });
+  console.log(beaconToUpdate.location)
+  console.log(beaconToUpdate.location != location)
+  if (beaconToUpdate.location != location) {
+    patientInformationdb.update({ beaconID: beaconID }, { $set: { location: location, timeOfUpdate: getCurrentTime() } })
+    historicalPatientInformationDB.insert({
+      'beaconID': beaconID,
+      'location': location,
+      'hour': readHour(getCurrentTime()),
+      'minute': readMinute(getCurrentTime()),
+      'day': readDays(getCurrentTime())
+    })
+  }
 
+}
 //function to get current time
 function getCurrentTime() {
   return Date(Date.now())

@@ -6,155 +6,220 @@
 </head>
 
 <template name="landing">
-    {{>receptionistTemplate}}
-    {{>labTemplate}}
-    {{>generalPractitionerTemplate}}
-    {{>dermaTemplate}}
+    <div>
+        <h2>Data Overview of Hospital</h2>
+        <p>Click on the below tabs to view different deparments within the hospital or to view a generalized overview</p>
+    </div>
+    <div class="container">
+        {{> tabbedInterface}}
+    </div>
+    <div class='tab-content'>
+        {{>overview}}
+        {{>receptionistTemplate}}
+        {{>labTemplate}}
+        {{>generalPractitionerTemplate}}
+        {{>dermaTemplate}}
+    </div>
+</template>
+
+<template name="tabbedInterface">
+    <ul class="nav nav-tabs">
+        <li class="nav-item {{isActiveTab 'overview'}} active">
+            <a class="nav-link" data-toggle="tab" href="#overview">Overview of Hospital</a>
+        </li>
+        <li class="nav-item {{isActiveTab 'receptionist'}}">
+            <a class="nav-link" data-toggle="tab" href="#receptionist">Receptionist</a>
+        </li>
+        <li class="nav-item {{isActiveTab 'lab'}}">
+            <a class="nav-link" data-toggle="tab" href="#lab">Lab</a>
+        </li>
+        <li class="nav-item {{isActiveTab 'general-practitioner'}}">
+            <a class="nav-link" data-toggle="tab" href="#general-practitioner">General Practitioner</a>
+        </li>
+        <li class="nav-item {{isActiveTab 'derma'}}">
+            <a class="nav-link" data-toggle="tab" href="#derma">Dermatology</a>
+        </li>
+    </ul>
+</template>
+
+<template name="overview">
+    <div id="overview" class="tab-pane fade show active">
+        <div class="container pt-3 title">
+            <h1>Overview of Whole Hospital</h1>
+            <table>
+                <tr>
+                    <td>
+                <div id="numberOfPeopleInHospital" style="width:700px; height: 550px;"
+                    class="container d-flex align-items-center justify-content-center"></div></td>
+        <td>
+        <div id="waitTimesOfDepartments" style="width:700px; height: 550px;"
+            class="container d-flex align-items-center justify-content-center"></div></td>
+                </tr>
+        </table>
+    </div>
+    </div>
 
 </template>
+
 <template name="receptionistTemplate">
-    <div class="container pt-3 title">
-        <h1>Receptionist Information</h1>
-        <div class="vstack">
-            <table class="table table-striped table-bordered table-hover">
-                <thead class="col text-bg-secondary">
-                    <th scope="col">Number of Patients</th>
-                    <th scope="col">Busiest Time</th>
-                    <th scope="col">Busiest Day</th>
-                    <th scope="col">Avg Wait Time</th>
-                </thead>
-                <tbody>
-                    <tr class="receptionistRow">
-                        <td>{{patientNum}}</td>
-                        <td>{{busiestTime}}:00 </td>
-                        <td>{{busiestDay}}</td>
-                        <td>{{avgWaitTime}} minutes</td>
-                    </tr>
-                </tbody>
+    <div id="receptionist" class="tab-pane fade">
+        <div class="container pt-3 title">
+            <h1>Receptionist Information</h1>
+            <div class="vstack">
+                <table class="table table-striped table-bordered table-hover">
+                    <thead class="col text-bg-secondary">
+                        <th scope="col">Number of Patients</th>
+                        <th scope="col">Busiest Time</th>
+                        <th scope="col">Busiest Day</th>
+                        <th scope="col">Avg Wait Time</th>
+                    </thead>
+                    <tbody>
+                        <tr class="receptionistRow">
+                            <td>{{patientNum}}</td>
+                            <td>{{busiestTime}}:00 </td>
+                            <td>{{busiestDay}}</td>
+                            <td>{{avgWaitTime}} minutes</td>
+                        </tr>
+                    </tbody>
+                </table>
+
+            </div>
+            <table>
+                <tr>
+                    <td>
+                        <div id="ReceptionistDays" style="width:700px; height: 550px;"
+                            class="container d-flex align-items-center justify-content-center"></div>
+                    </td>
+                    <td class="hours">
+                        <div id="ReceptionistHours" style="width:550px; height: 550px;"
+                            class="container d-flex align-items-center justify-content-center"></div>
+                    </td>
+                </tr>
             </table>
-
+            <br>
+            <div id="peoplePerDayPerHourReceptionist" style="height: 550px;"
+                class="container d-flex align-items-center justify-content-center"></div>
         </div>
-        <table>
-            <tr>
-                <td>
-                    <div id="ReceptionistDays" style="width:550px; height: 550px;"
-                        class="container d-flex align-items-center justify-content-center"></div>
-                </td>
-                <td class="hours">
-                    <div id="ReceptionistHours" style="width:550px; height: 550px;"
-                        class="container d-flex align-items-center justify-content-center"></div>
-                </td>
-            </tr>
-        </table>
-
     </div>
 </template>
 
 <template name="labTemplate">
-    <div class="container pt-3 title">
-        <h1>Lab Information</h1>
-        <div class="vstack">
-            <table class="table table-striped table-bordered table-hover">
-                <thead class="col text-bg-secondary">
-                    <th scope="col">Number of Patients</th>
-                    <th scope="col">Busiest Time</th>
-                    <th scope="col">Busiest Day</th>
-                    <th scope="col">Avg Wait Time</th>
-                </thead>
-                <tbody>
-                    <tr class="labRow">
-                        <td>{{patientNum}}</td>
-                        <td>{{busiestTime}}:00 </td>
-                        <td>{{busiestDay}}</td>
-                        <td>{{avgWaitTime}} minutes</td>
-                    </tr>
-                </tbody>
+    <div id="lab" class="tab-pane fade">
+        <div class="container pt-3 title">
+            <h1>Lab Information</h1>
+            <div class="vstack">
+                <table class="table table-striped table-bordered table-hover">
+                    <thead class="col text-bg-secondary">
+                        <th scope="col">Number of Patients</th>
+                        <th scope="col">Busiest Time</th>
+                        <th scope="col">Busiest Day</th>
+                        <th scope="col">Avg Wait Time</th>
+                    </thead>
+                    <tbody>
+                        <tr class="labRow">
+                            <td>{{patientNum}}</td>
+                            <td>{{busiestTime}}:00 </td>
+                            <td>{{busiestDay}}</td>
+                            <td>{{avgWaitTime}} minutes</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            <table>
+                <tr>
+                    <td>
+                        <div id="LabDays" style="width:700px; height: 550px;"
+                            class="container d-flex align-items-center justify-content-center"></div>
+                    </td>
+                    <td class="hours">
+                        <div id="LabHours" style="width:550px; height: 550px;"
+                            class="container d-flex align-items-center justify-content-center"></div>
+                    </td>
+                </tr>
             </table>
+            <br>
+            <div id="peoplePerDayPerHourLab" style="height: 550px;"
+                class="container d-flex align-items-center justify-content-center"></div>
         </div>
-        <table>
-            <tr>
-                <td>
-                    <div id="LabDays" style="width:550px; height: 550px;"
-                        class="container d-flex align-items-center justify-content-center"></div>
-                </td>
-                <td class="hours">
-                    <div id="LabHours" style="width:550px; height: 550px;"
-                        class="container d-flex align-items-center justify-content-center"></div>
-                </td>
-            </tr>
-        </table>
-
     </div>
 </template>
 <template name="generalPractitionerTemplate">
-    <div class="container pt-3 title">
-        <h1>General Practitioner Information</h1>
-        <div class="vstack">
-            <table class="table table-striped table-bordered table-hover table-hover">
-                <thead class="col text-bg-secondary">
-                    <th scope="col">Number of Patients</th>
-                    <th scope="col">Busiest Time</th>
-                    <th scope="col">Busiest Day</th>
-                    <th scope="col">Avg Wait Time</th>
-                </thead>
-                <tbody>
-                    <tr class="generalPractitionerRow">
-                        <td>{{patientNum}}</td>
-                        <td>{{busiestTime}}:00 </td>
-                        <td>{{busiestDay}}</td>
-                        <td>{{avgWaitTime}} minutes</td>
-                    </tr>
-                </tbody>
+    <div id="general-practitioner" class="tab-pane fade">
+        <div class="container pt-3 title">
+            <h1>General Practitioner Information</h1>
+            <div class="vstack">
+                <table class="table table-striped table-bordered table-hover table-hover">
+                    <thead class="col text-bg-secondary">
+                        <th scope="col">Number of Patients</th>
+                        <th scope="col">Busiest Time</th>
+                        <th scope="col">Busiest Day</th>
+                        <th scope="col">Avg Wait Time</th>
+                    </thead>
+                    <tbody>
+                        <tr class="generalPractitionerRow">
+                            <td>{{patientNum}}</td>
+                            <td>{{busiestTime}}:00 </td>
+                            <td>{{busiestDay}}</td>
+                            <td>{{avgWaitTime}} minutes</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            <table>
+                <tr>
+                    <td>
+                        <div id="General PractitionerDays" style="width:700px; height: 550px;"
+                            class="container d-flex align-items-center justify-content-center"></div>
+                    </td>
+                    <td class="hours">
+                        <div id="General PractitionerHours" style="width:550px; height: 550px;"
+                            class="container d-flex align-items-center justify-content-center"></div>
+                    </td>
+                </tr>
             </table>
+            <br>
+            <div id="peoplePerDayPerHourGeneralPractitioner" style="height: 550px;"
+                class="container d-flex align-items-center justify-content-center"></div>
         </div>
-        <table>
-            <tr>
-                <td>
-                    <div id="General PractitionerDays" style="width:550px; height: 550px;"
-                        class="container d-flex align-items-center justify-content-center"></div>
-                </td>
-                <td class="hours">
-                    <div id="General PractitionerHours" style="width:550px; height: 550px;"
-                        class="container d-flex align-items-center justify-content-center"></div>
-                </td>
-            </tr>
-        </table>
-
     </div>
 </template>
 <template name="dermaTemplate">
-    <div class="container pt-3 title">
-        <h1>Dermatology Information</h1>
-        <div class="vstack">
-            <table class="table table-striped table-bordered table-hover">
-                <thead class="col text-bg-secondary">
-                    <th scope="col">Number of Patients</th>
-                    <th scope="col">Busiest Time</th>
-                    <th scope="col">Busiest Day</th>
-                    <th scope="col">Avg Wait Time</th>
-                </thead>
-                <tbody>
-                    <tr class="dermaRow">
-                        <td>{{patientNum}}</td>
-                        <td>{{busiestTime}}:00 </td>
-                        <td>{{busiestDay}}</td>
-                        <td>{{avgWaitTime}} minutes</td>
-                    </tr>
-                </tbody>
+    <div id="derma" class="tab-pane fade">
+        <div class="container pt-3 title">
+            <h1>Dermatology Information</h1>
+            <div class="vstack">
+                <table class="table table-striped table-bordered table-hover">
+                    <thead class="col text-bg-secondary">
+                        <th scope="col">Number of Patients</th>
+                        <th scope="col">Busiest Time</th>
+                        <th scope="col">Busiest Day</th>
+                        <th scope="col">Avg Wait Time</th>
+                    </thead>
+                    <tbody>
+                        <tr class="dermaRow">
+                            <td>{{patientNum}}</td>
+                            <td>{{busiestTime}}:00 </td>
+                            <td>{{busiestDay}}</td>
+                            <td>{{avgWaitTime}} minutes</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            <table>
+                <tr>
+                    <td>
+                        <div id="DermatologyDays" style="width:700px; height: 550px;"
+                            class="container d-flex align-items-center justify-content-center"></div>
+                    </td>
+                    <td class="hours">
+                        <div id="DermatologyHours" style="width:550px; height: 550px;"
+                            class="container d-flex align-items-center justify-content-center"></div>
+                    </td>
+                </tr>
             </table>
+            <br>
+            <div id="peoplePerDayPerHourDermatology" style="height: 550px;"
+                class="container d-flex align-items-center justify-content-center"></div>
         </div>
-        <table>
-            <tr>
-                <td>
-                    <div id="DermatologyDays" style="width:550px; height: 550px;"
-                        class="container d-flex align-items-center justify-content-center"></div>
-                </td>
-                <td class="hours">
-                    <div id="DermatologyHours" style="width:550px; height: 550px;"
-                        class="container d-flex align-items-center justify-content-center"></div>
-                </td>
-            </tr>
-        </table>
-
     </div>
 </template>
