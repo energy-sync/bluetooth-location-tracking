@@ -36,9 +36,11 @@ WebApp.connectHandlers.use("/update", function (req, res, next) {
     const body = JSON.parse(data);
     console.log(body, body.beaconID, body.location)
     updateLocation(body.beaconID, body.location)
+    res.end(data)
   }));
-  res.end(Meteor.release)
+  
 })
+
 
 Meteor.methods({
   clearRecords: () => {
