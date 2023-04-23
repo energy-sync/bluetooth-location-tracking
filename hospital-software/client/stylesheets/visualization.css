@@ -69,11 +69,6 @@ span {
 
 
 
-
-
-
-
-
 .device-legend {
   display: flex;
   flex-wrap: wrap;
@@ -114,6 +109,18 @@ span {
   background-color:purple;
 }
 
+.assistance {
+  border: solid rgb(0, 0, 0);
+  
+}
+
+.device-color-SA{
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  color: #000000;
+  margin-right:5px;
+}
 
 .legend-container {
   background-color: white !important;
