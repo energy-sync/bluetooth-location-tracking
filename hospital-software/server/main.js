@@ -21,12 +21,14 @@ WebApp.connectHandlers.use("/getBLEs", function (req, res, next) {
   res.writeHead(200, { "Content-Type": "application/json" })
   req.on('data', Meteor.bindEnvironment((data) => {
     const body = JSON.parse(data);
-    //console.log(body)
+    console.log(body)
     storeInfo(body);
 
-
+    res.end(data)
+    
   }));
-  res.end(Meteor.release)
+  
+ 
 })
 
 //update location from http request
@@ -36,9 +38,11 @@ WebApp.connectHandlers.use("/update", function (req, res, next) {
     const body = JSON.parse(data);
     console.log(body, body.beaconID, body.location)
     updateLocation(body.beaconID, body.location)
+    res.end(data)
   }));
-  res.end(Meteor.release)
+  
 })
+
 
 Meteor.methods({
   clearRecords: () => {
@@ -269,6 +273,13 @@ function getBoolean() {
   return random_boolean_value;
 }
 
+
+function assistancePatients() {
+ if(Math.random()<.5)
+  return "Yes";
+  else
+  return "No";
+}
 //function to store body sent from devicedb into arrayofdevices
 function storeInfo(body) {
   //reset array to stop duplicate beaconIDs being stored
@@ -396,7 +407,8 @@ function generateDummyPatients(numberToGenerate) {
         "patientID": patientID,
         "DOB": DOB,
         "age": age,
-        "physicianName": physicianName
+        "physicianName": physicianName,
+        "specialAssistance":assistancePatients()
       },
       "vitals": {
         "bloodPressure": bloodPressure,
