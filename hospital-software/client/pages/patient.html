@@ -76,7 +76,7 @@
                 
     <div class="vstack">
         <table class="table table-bordered table-striped table-hover">
-            <thead class=" text-bg-secondary">
+            <thead class=" patient text-bg-secondary">
                 <th scope="row">Date of Birth:</th>
                 <th scope="row" >Age:</th> 
                 <th scope="row" >Address:</th>
@@ -85,12 +85,12 @@
             </thead>
             <tbody>
 
-                <tr>                
-                    <td>{{patient.patientInformation.DOB}}</td>
-                    <td>{{patient.patientInformation.age}}</td>
-                    <td>{{patient.patientInformation.address}}</td>  
-                    <td>{{patient.patientInformation.patientID}}</td>
-                    <td>{{patient.patientInformation.physicianName}}</td>
+                <tr class="patient">                
+                    <td class="patient">{{patient.patientInformation.DOB}}</td>
+                    <td class="patient">{{patient.patientInformation.age}}</td>
+                    <td class="patient">{{patient.patientInformation.address}}</td>  
+                    <td class="patient">{{patient.patientInformation.patientID}}</td>
+                    <td class="patient">{{patient.patientInformation.physicianName}}</td>
                 </tr>
 
             </tbody>
@@ -117,7 +117,7 @@
     <h5>Vitals:</h5>
     <div class="vstack">
         <table class="table table-bordered table-striped table-hover">
-            <thead class=" text-bg-secondary">
+            <thead class=" patient text-bg-secondary">
                 <th scope="row">Blood Pressure:</th>
                 <th scope="row">Heart Rate: </th>
                 <th scope="row">Height: </th>
@@ -125,11 +125,11 @@
             </thead>
             <tbody>
 
-            <tr>
-                <td> {{patient.vitals.bloodPressure}}</td>
-                <td>{{patient.vitals.heartRate}}</td>
-                <td>{{patient.vitals.height}}</td>
-                <td> {{patient.vitals.weight}}</td>
+            <tr class="patient">
+                <td class="patient"> {{patient.vitals.bloodPressure}}</td>
+                <td class="patient">{{patient.vitals.heartRate}}</td>
+                <td class="patient">{{patient.vitals.height}}</td>
+                <td class="patient"> {{patient.vitals.weight}}</td>
             </tr>
 
             </tbody>
@@ -143,7 +143,7 @@
     <div class="vstack">
         <table class="table table-striped table-bordered table-hover">
             <thead class=" text-bg-secondary">
-                <tr>
+                <tr class="patient">
                 <th scope="row">RBC:</th>
                 <th scope="row">Blood Glucose Level:</th>
                 <th scope="row">Hemoglobin:</th>
@@ -157,16 +157,16 @@
             </thead>
             <tbody>
 
-            <tr>
-                <td> {{patient.labWork.RBC}}</td>
-                <td> {{patient.labWork.bloodGlucose}}</td>     
-                <td> {{patient.labWork.hemoglobin}}</td> 
-                <td> {{patient.labWork.hematocrit}}</td>
-                <td> {{patient.labWork.MCV}}</td>    
-                <td> {{patient.labWork.WBC}}</td>   
-                <td> {{patient.labWork.sodium}}</td>   
-                <td> {{patient.labWork.potassium}}</td>
-                <td> {{patient.labWork.plateletCount}}</td>
+            <tr class="patient">
+                <td class="patient"> {{patient.labWork.RBC}}</td>
+                <td class="patient"> {{patient.labWork.bloodGlucose}}</td>     
+                <td class="patient"> {{patient.labWork.hemoglobin}}</td> 
+                <td class="patient"> {{patient.labWork.hematocrit}}</td>
+                <td class="patient"> {{patient.labWork.MCV}}</td>    
+                <td class="patient"> {{patient.labWork.WBC}}</td>   
+                <td class="patient"> {{patient.labWork.sodium}}</td>   
+                <td class="patient"> {{patient.labWork.potassium}}</td>
+                <td class="patient"> {{patient.labWork.plateletCount}}</td>
             </tr>
 
         </tbody>
@@ -191,7 +191,7 @@
     <div class="vstack">
         <h5>Dermatology:</h5>
         <table class="table table-striped table-bordered table-hover">
-            <thead class=" text-bg-secondary">
+            <thead class=" patient text-bg-secondary">
                 <th scope="row">Acne:</th>
                 <th scope="row">Acne Scars:</th>
                 <th scope="row">Eczema and Dermatitis:</th>
@@ -209,19 +209,19 @@
             </thead>
             <tbody>
 
-            <tr>
-            <td>{{printBool patient.dermatology.acne}}</td>
-            <td> {{printBool patient.dermatology.acneScars}}</td>
-            <td> {{printBool patient.dermatology.eczemaAndDermatitis}}</td>
-            <td> {{printBool patient.dermatology.hairLoss}}</td>
-            <td> {{printBool patient.dermatology.nailProblems}}</td>
-            <td> {{printBool patient.dermatology.warts}}</td>
-            <td> {{printBool patient.dermatology.fungalInfections}}</td>
-            <td> {{printBool patient.dermatology.skinCancer}}</td>
-            <td> {{printBool patient.dermatology.shingles}}</td>
-            <td> {{printBool patient.dermatology.rosacea}}</td>
-            <td> {{printBool patient.dermatology.psoriasis}}</td>
-            <td> {{printBool patient.dermatology.vitiligo}}</td>
+            <tr class="patient">
+            <td class="patient">{{printBool patient.dermatology.acne}}</td>
+            <td class="patient"> {{printBool patient.dermatology.acneScars}}</td>
+            <td class="patient"> {{printBool patient.dermatology.eczemaAndDermatitis}}</td>
+            <td class="patient"> {{printBool patient.dermatology.hairLoss}}</td>
+            <td class="patient"> {{printBool patient.dermatology.nailProblems}}</td>
+            <td class="patient"> {{printBool patient.dermatology.warts}}</td>
+            <td class="patient"> {{printBool patient.dermatology.fungalInfections}}</td>
+            <td class="patient"> {{printBool patient.dermatology.skinCancer}}</td>
+            <td class="patient"> {{printBool patient.dermatology.shingles}}</td>
+            <td class="patient"> {{printBool patient.dermatology.rosacea}}</td>
+            <td class="patient"> {{printBool patient.dermatology.psoriasis}}</td>
+            <td class="patient"> {{printBool patient.dermatology.vitiligo}}</td>
             </tr>
 
             </tbody>
