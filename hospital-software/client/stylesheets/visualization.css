@@ -62,6 +62,10 @@ span {
   border: 5px solid black;
 }
 
+.noAssistance {
+  border: 5px solid rgb(0,0,0,0);
+}
+
 .reception{
   background-color:red;
 }
@@ -107,11 +111,6 @@ span {
 }
 .device-elderly {
   background-color:purple;
-}
-
-.assistance {
-  border: solid rgb(0, 0, 0);
-  
 }
 
 .device-color-SA{
