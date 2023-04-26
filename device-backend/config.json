@@ -4,10 +4,10 @@
     "environmentalFactor": 2.5,
     "distanceChangeToTransmit": 1,
     "clientSoftwareUrl": "http://localhost:3000",
-    "controllerUrl": "http://10.71.4.52:3002",
+    "controllerUrl": "http://localhost:3002",
     "beacons": [
         {
-            "beaconID": "Bob",
+            "beaconID": "Bobby",
             "macAddress": "ac:23:3f:ac:96:14"
         },
         {
