@@ -5,7 +5,26 @@
     <title>Data Overview</title>
 </head>
 
+
 <template name="landing">
+    <nav class="navbar navbar-expand-sm bg-primary navbar-dark">
+        <div class="container-fluid">
+          <ul class="navbar-nav">
+            <li class="nav-item">
+              <a class="nav-link active" href="/">Home</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="/patient-overview">Overview</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="/patient-list">Patient-List</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="/visualization">Visualization</a>
+            </li>
+          </ul>
+        </div>
+      </nav>
     <div>
         <h2>Data Overview of Hospital</h2>
         <p>Click on the below tabs to view different deparments within the hospital or to view a generalized overview</p>
@@ -14,8 +33,12 @@
         {{> tabbedInterface}}
     </div>
     <div class='tab-content'>
-        {{>overview}}
-        {{>receptionistTemplate}}
+       
+    
+    
+      {{>overview}}
+
+    {{>receptionistTemplate}}
         {{>labTemplate}}
         {{>generalPractitionerTemplate}}
         {{>dermaTemplate}}
@@ -47,7 +70,7 @@
         <div class="container pt-3 title">
             <h1>Overview of Whole Hospital</h1>
             <table>
-                <tr>
+                <tr class="overView">
                     <td>
                 <div id="numberOfPeopleInHospital" style="width:700px; height: 550px;"
                     class="container d-flex align-items-center justify-content-center"></div></td>
@@ -67,14 +90,14 @@
             <h1>Receptionist Information</h1>
             <div class="vstack">
                 <table class="table table-striped table-bordered table-hover">
-                    <thead class="col text-bg-secondary">
+                    <thead class="patient col text-bg-secondary">
                         <th scope="col">Number of Patients</th>
                         <th scope="col">Busiest Time</th>
                         <th scope="col">Busiest Day</th>
                         <th scope="col">Avg Wait Time</th>
                     </thead>
                     <tbody>
-                        <tr class="receptionistRow">
+                        <tr class="patient receptionistRow">
                             <td>{{patientNum}}</td>
                             <td>{{busiestTime}}:00 </td>
                             <td>{{busiestDay}}</td>
@@ -108,7 +131,7 @@
         <div class="container pt-3 title">
             <h1>Lab Information</h1>
             <div class="vstack">
-                <table class="table table-striped table-bordered table-hover">
+                <table class="patient table table-striped table-bordered table-hover">
                     <thead class="col text-bg-secondary">
                         <th scope="col">Number of Patients</th>
                         <th scope="col">Busiest Time</th>
@@ -116,7 +139,7 @@
                         <th scope="col">Avg Wait Time</th>
                     </thead>
                     <tbody>
-                        <tr class="labRow">
+                        <tr class="patient labRow">
                             <td>{{patientNum}}</td>
                             <td>{{busiestTime}}:00 </td>
                             <td>{{busiestDay}}</td>
@@ -148,7 +171,7 @@
         <div class="container pt-3 title">
             <h1>General Practitioner Information</h1>
             <div class="vstack">
-                <table class="table table-striped table-bordered table-hover table-hover">
+                <table class="patient table table-striped table-bordered table-hover table-hover">
                     <thead class="col text-bg-secondary">
                         <th scope="col">Number of Patients</th>
                         <th scope="col">Busiest Time</th>
@@ -156,7 +179,7 @@
                         <th scope="col">Avg Wait Time</th>
                     </thead>
                     <tbody>
-                        <tr class="generalPractitionerRow">
+                        <tr class="patient generalPractitionerRow">
                             <td>{{patientNum}}</td>
                             <td>{{busiestTime}}:00 </td>
                             <td>{{busiestDay}}</td>
@@ -188,7 +211,7 @@
         <div class="container pt-3 title">
             <h1>Dermatology Information</h1>
             <div class="vstack">
-                <table class="table table-striped table-bordered table-hover">
+                <table class="patient table table-striped table-bordered table-hover">
                     <thead class="col text-bg-secondary">
                         <th scope="col">Number of Patients</th>
                         <th scope="col">Busiest Time</th>
@@ -196,7 +219,7 @@
                         <th scope="col">Avg Wait Time</th>
                     </thead>
                     <tbody>
-                        <tr class="dermaRow">
+                        <tr class="patient dermaRow">
                             <td>{{patientNum}}</td>
                             <td>{{busiestTime}}:00 </td>
                             <td>{{busiestDay}}</td>
