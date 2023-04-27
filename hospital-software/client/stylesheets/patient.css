@@ -34,3 +34,8 @@ h5{
 #assignBtn:focus{
     background-color:rgb(43, 119, 156);
 }
+
+.green-text {
+  color: green;
+  font-weight: bold;
+}

@@ -88,13 +88,10 @@ Template.patient.events({
     //click event to assign patient a beacon
     "click #assignBtn": (event, templateInstance) => {
         Template.patient.__helpers.get("assignDevice")()
-        var selectedBeacon = $('#beaconIDs').val()
-         if (!selectedBeacon) {
-             alert('Patient beacon was unassigned');
-         }
-         else {
-             alert('Patient was assigned beacon ' + templateInstance.beaconID.get(event.currentTarget.value) + '!');
-         }
+        assignedText.style.visibility = "visible";
+        setTimeout(() => {
+            assignedText.style.visibility = "hidden";
+        }, 5000);
     },
     //grab the value of the dropdown #beaconIDs
     "change #beaconIDs": (event, templateInstance) => {

@@ -7,7 +7,7 @@
     "controllerUrl": "http://localhost:3002",
     "beacons": [
         {
-            "beaconID": "Bobby",
+            "beaconID": "Bob",
             "macAddress": "ac:23:3f:ac:96:14"
         },
         {
