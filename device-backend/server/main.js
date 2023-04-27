@@ -89,7 +89,6 @@ WebApp.connectHandlers.use("/location", function (req, res, next) {
   if (req.method === 'POST') {
     req.on('data', Meteor.bindEnvironment((data) => {
       const body = JSON.parse(data);
-      //console.log("body:", body);
       const beaconID = body.beaconID
       const location = body.location
       const distance = body.distance
@@ -125,7 +124,7 @@ function updateLocation(beaconMacAddress, location) {
     .then(function (response) {
     })
     .catch(function (error) {
-      console.log(error)
+      console.error(error)
     });
    
     //webchart update (only for Larry)
@@ -133,10 +132,10 @@ function updateLocation(beaconMacAddress, location) {
     if (beaconToUpdate.beaconID === "Larry") {
       axios.get(`https://bletracking.webchartnow.com/webchart.cgi?f=layoutnouser&name=TrackingGateway&apikey=12345Tracking&pat_id=18&station_name=${location.replace(/\s/g, '')}&raw`)
       .then(function (response) {
-        console.log(response.data);
+        console.log(`Webchart: ${response.data.success}`);
       })
       .catch(function (error) {
-        console.log(error);
+        console.error(error);
       })
     }
   }
@@ -162,12 +161,11 @@ function addLocation(beaconMacAddress, location, distance) {
 function sendData() {
   //grab an array of devices
   let arrayOfDevices = deviceInformationdb.find().fetch()
-  //console.log(arrayOfDevices)
   axios.post(`${config.clientSoftwareUrl}/getBLEs`, arrayOfDevices)
     .then(function (response) {
     })
     .catch(function (error) {
-      console.log(error)
+      console.error(error)
     })
 }
 

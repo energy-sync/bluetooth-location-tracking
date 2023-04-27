@@ -21,7 +21,6 @@ WebApp.connectHandlers.use("/getBLEs", function (req, res, next) {
   res.writeHead(200, { "Content-Type": "application/json" })
   req.on('data', Meteor.bindEnvironment((data) => {
     const body = JSON.parse(data);
-    console.log(body)
     storeInfo(body);
 
     res.end(data)
@@ -295,9 +294,7 @@ function storeInfo(body) {
 //function to update location
 function updateLocation(beaconID, location) {
   let beaconToUpdate = patientInformationdb.findOne({ beaconID: beaconID });
-  console.log(beaconToUpdate.location)
-  console.log(beaconToUpdate.location != location)
-  if (beaconToUpdate.location != location) {
+  if (beaconToUpdate && beaconToUpdate.location != location) {
     patientInformationdb.update({ beaconID: beaconID }, { $set: { location: location, timeOfUpdate: getCurrentTime() } })
     historicalPatientInformationDB.insert({
       'beaconID': beaconID,

@@ -25,11 +25,11 @@ There are three components in the system: BLE receivers, the device coordinator,
 A BLE receiver can be any computer that has Bluetooth and local internet capabilities. During development, the library we used for detecting BLE signals stopped working on Windows, so it is recommended to use a device with a Unix-based OS. Receivers can only determine the distance of a BLE beacon with an accuracy of 5-10 meters, so if they are placed too close to each other, then the system may give an incorrect location for a beacon. It is recommended to use [pm2](https://www.npmjs.com/package/pm2) to run the program on the receiver since it is used for remote restarts.
 
 ### Configuration
-Initally, the `controllerUrl` field in `ble-receiver/config.json` will need to be edited to match the IP for the device controller server in order to send beacon location updates and fetch config updates. Ex: `http://127.0.0.1:3002`. Other settings can be changed manually or through the device controller server web page.
+Initially, the `controllerUrl` field in `ble-receiver/config.json` will need to be edited to match the IP for the device controller server in order to send beacon location updates and fetch config updates. Ex: `http://127.0.0.1:3002`. Other settings can be changed manually or through the device controller server web page.
 
 ### Starting
 
-To run the program for detecing BLE signals, run the following commands (Unix):
+To run the program for detecting BLE signals, run the following commands (Unix):
 ```
 cd ble-receiver
 npm i
@@ -62,7 +62,7 @@ meteor --port 3002
 Initially, the `clientSoftwareUrl` field in `device-backend/config.json` will need to be edited to match the IP for the client software that will receive location updates. Ex: `http://127.0.0.1:3000`. Navigating to the device controller server's IP in a browser will open the device management page. Changing settings for the BLE receivers will send out configuration updates to the corresponding devices.
 
 ## Client Software
-The client software can be any software that includes functionality to receive HTTP requests from the device coordinator server with location updates. We create our own web app with mock patient data to simulate a hospital environment. Our software includes patient pages, analytics of the time patients spend at each departments, and a visualization of the beacons at their current locations.
+The client software can be any software that includes functionality to receive HTTP requests from the device coordinator server with location updates. We created our own web app with mock patient data to simulate a hospital environment. Our software includes patient pages, analytics of the time patients spend at each department, and a visualization of the beacons at their current locations.
 
 ### Starting
 If the global npm package for Meteor is not installed, run the following command:
@@ -72,7 +72,7 @@ npm i -g meteor
 
 To run the program for receiving beacon location updates from the device coordinator server, run the following commands:
 ```
-cd hostpital-software
+cd hospital-software
 npm install
 meteor npm install
 meteor

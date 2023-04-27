@@ -49,32 +49,24 @@ patientInformationdb.update({ _id: idOfDocuement },{ $set: {
 
     },
     inLab() {
-        console.log("inLab")
         let patient = patientInformationdb.findOne({ "patientInformation.patientID": FlowRouter.getParam("patientID") });
-        console.log(patient.location === 'Lab')
         if (patient.location == 'Lab') {
             return true;
         }
     }, inDerma() {
-        console.log("inDerma")
         let patient = patientInformationdb.findOne({ "patientInformation.patientID": FlowRouter.getParam("patientID") });
-        console.log(patient.location === 'Dermatology')
         if (patient.location == 'Dermatology') {
             return true;
         }
     },
     inReception() {
-        console.log("inReception")
         let patient = patientInformationdb.findOne({ "patientInformation.patientID": FlowRouter.getParam("patientID") });
-        console.log(patient.location === 'Receptionist')
         if (patient.location == 'Receptionist') {
             return true;
         }
     },
     inPractitioner() {
-        console.log("inPractitioner")
         let patient = patientInformationdb.findOne({ "patientInformation.patientID": FlowRouter.getParam("patientID") });
-        console.log(patient.location === 'General Practitioner')
         if (patient.location == 'General Practitioner') {
             return true;
         }

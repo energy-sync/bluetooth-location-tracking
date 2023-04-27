@@ -18,7 +18,6 @@ Template.patientList.events({
 
 Template.patientList.helpers({
     patients() {
-        console.log(patientInformationdb.find());
         return patientInformationdb.find();
     },
     getSearch() {

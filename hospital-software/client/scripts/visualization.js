@@ -15,10 +15,8 @@ import { FlowRouter } from 'meteor/ostrio:flow-router-extra';
            console.error(error);
        }else{
        this.ids.set(result);
-       console.log(this.ids);
        }
    })
-   console.log(this.ids);
 
    this.selectedBeacon = new ReactiveVar();
    this.selectedPatient = new ReactiveVar();
@@ -95,7 +93,6 @@ patientsGP() {
   return devices.filter(device => device.location === "General Practitioner" && device.beaconID).map(device => device.beaconID);      
 },
 age(device) {
-  console.log(device);
   let patient = patientInformationdb.findOne({'beaconID' : device});
   let age = patient.patientInformation.age;
   
@@ -116,7 +113,6 @@ age(device) {
     }
 },
 specialAssistance(device) {
-  console.log(device);
   let patient = patientInformationdb.findOne({'beaconID' : device});
   let specialAssistance = patient.patientInformation.specialAssistance;
   
@@ -129,18 +125,11 @@ specialAssistance(device) {
 },
 unassignedBeacons(){
   let patients = patientInformationdb.find({}, {limit:6}).fetch();
-  console.log(patients);
   let assignedBeacons = patients.map(beacon => beacon.beaconID);
   let remainingBeacons = new Array();
 
-  console.log(assignedBeacons);
-
-  console.log(remainingBeacons);
-
   let beacons = new Array();
   beacons = Template.instance().ids.get();
-  console.log(Template.instance().ids.get());
-  console.log(beacons);
 
   for(let i=0; i < beacons.length; i++){
       let assigned = false;
@@ -153,7 +142,6 @@ unassignedBeacons(){
           remainingBeacons.push(beacons[i]);
       }
   }
-  console.log(remainingBeacons);
   return remainingBeacons;
 },
 
@@ -177,14 +165,10 @@ selectedPatientID(){
 Template.visualization.events({
 "click .beacon-button"(event, templateInstance){
   let clicked = event.target;
-  console.log(clicked);
-  console.log(clicked.id);
 
   templateInstance.selectedBeacon.set(clicked.id);
-  console.log(templateInstance.selectedBeacon.get());
 
   this.assignedPatient = new ReactiveVar(patientInformationdb.findOne({ "beaconID": clicked.id}));
-  console.log(patientInformationdb.findOne({ "beaconID": clicked.id}));
 
   templateInstance.selectedPatient.set(this.assignedPatient.get().patientInformation.patientName);
   templateInstance.selectedPatientID.set(this.assignedPatient.get().patientInformation.patientID);
@@ -193,20 +177,17 @@ Template.visualization.events({
 
 "click .device-modal-button"(event){
   let deviceModal = document.getElementById("unassigned-devices");
-  console.log(deviceModal);
 
   deviceModal.style.display = "block";
 },
 
 "click .device-modal-close"(event){
   let deviceModal = document.getElementById("unassigned-devices");
-  console.log(deviceModal);
 
   deviceModal.style.display = "none";
 },
 
 "click #unassigned-devices"(event){
-  console.log(event.target);
   let deviceModal = document.getElementById("unassigned-devices")
 
   let clicked = event.target;
