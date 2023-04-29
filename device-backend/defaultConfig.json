@@ -1,0 +1,20 @@
+{
+    "refreshTime": 1,
+    "measuredPower": -59,
+    "environmentalFactor": 4,
+    "distanceChangeToTransmit": 1,
+    "clientSoftwareUrl": "http://localhost:3000",
+    "controllerUrl": "http://localhost:3002",
+    "beacons": [
+        {
+            "beaconID": "Bob",
+            "macAddress": "ac:23:3f:ac:96:14"
+        }
+    ],
+    "radios": [
+        {
+            "location": "Libre Computer 1",
+            "macAddress": "18:66:c7:e8:e6:db"
+        }
+    ]
+}

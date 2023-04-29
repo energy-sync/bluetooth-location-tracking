@@ -95,7 +95,7 @@ setInterval(() => {
 
             //restart the script if the restart field is true
             if (config.restart) {
-                console.log("RESTART");
+                console.log("RESTARTING");
                 exec("pm2 restart 0", (error, stdout, stderr) => {
                     if (error)
                         console.error(error);

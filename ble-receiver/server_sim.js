@@ -15,7 +15,7 @@ let radios = {};
 for (radio of config.radios)
     radios[radio.macAddress] = radio.location;
 
-app.post("/location", (req, res) => {
+app.post("/testLocation", (req, res) => {
     console.log("received");
     let body = req.body;
     console.log(`Beacon "${beacons[body.beaconMacAddress]}" (${body.beaconMacAddress}) is ${body.distance} meters away from ${radios[body.radioMacAddress]} (${body.radioMacAddress}).`);

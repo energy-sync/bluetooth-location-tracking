@@ -10,6 +10,7 @@ Template.patient.onCreated(function () {
         this.ids.set(result);
     })
     this.beaconID = new ReactiveVar();
+    this.specialAssistance= new ReactiveVar();
 
 });
 
@@ -31,39 +32,41 @@ Template.patient.helpers({
     },
     //assign function to assign patients a beacon id
     assignDevice() {
-        //get _id of the doucment inside of the the patientInformationDB
-        //cannot access db unless using _id of the document
-        const idOfDocuement = patientInformationdb.findOne({ "patientInformation.patientID": FlowRouter.getParam("patientID") })._id
-        //update the patient with beaconID
-        patientInformationdb.update({ _id: idOfDocuement }, { $set: { beaconID: Template.instance().beaconID.curValue } })
+        //specialAssitance radio button value
+        const specialAssistance = $('input[name="specialAssistance"]:checked').val();
+
+//get _id of the document inside of the the patientInformationDB
+//cannot access db unless using _id of the document
+const idOfDocuement = patientInformationdb.findOne({ "patientInformation.patientID": FlowRouter.getParam("patientID") })._id
+
+//update the patient with beaconID and specialAssistance
+patientInformationdb.update({ _id: idOfDocuement },{ $set: {
+    "beaconID": Template.instance().beaconID.curValue, 
+    "patientInformation.specialAssistance": specialAssistance 
+    }}
+  );
+  Template.instance().specialAssistance.set(specialAssistance);
+
     },
     inLab() {
-        console.log("inLab")
         let patient = patientInformationdb.findOne({ "patientInformation.patientID": FlowRouter.getParam("patientID") });
-        console.log(patient.location === 'Lab')
         if (patient.location == 'Lab') {
             return true;
         }
     }, inDerma() {
-        console.log("inDerma")
         let patient = patientInformationdb.findOne({ "patientInformation.patientID": FlowRouter.getParam("patientID") });
-        console.log(patient.location === 'Dermatology')
         if (patient.location == 'Dermatology') {
             return true;
         }
     },
     inReception() {
-        console.log("inReception")
         let patient = patientInformationdb.findOne({ "patientInformation.patientID": FlowRouter.getParam("patientID") });
-        console.log(patient.location === 'Receptionist')
         if (patient.location == 'Receptionist') {
             return true;
         }
     },
     inPractitioner() {
-        console.log("inPractitioner")
         let patient = patientInformationdb.findOne({ "patientInformation.patientID": FlowRouter.getParam("patientID") });
-        console.log(patient.location === 'General Practitioner')
         if (patient.location == 'General Practitioner') {
             return true;
         }
@@ -77,13 +80,10 @@ Template.patient.events({
     //click event to assign patient a beacon
     "click #assignBtn": (event, templateInstance) => {
         Template.patient.__helpers.get("assignDevice")()
-        var selectedBeacon = $('#beaconIDs').val()
-        if (!selectedBeacon) {
-            alert('Patient beacon was unassigned');
-        }
-        else {
-            alert('Patient was assigned beacon ' + templateInstance.beaconID.get(event.currentTarget.value) + '!');
-        }
+        assignedText.style.visibility = "visible";
+        setTimeout(() => {
+            assignedText.style.visibility = "hidden";
+        }, 5000);
     },
     //grab the value of the dropdown #beaconIDs
     "change #beaconIDs": (event, templateInstance) => {

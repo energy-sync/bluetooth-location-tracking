@@ -1,8 +1,9 @@
 {
     "refreshTime": 1,
     "measuredPower": -59,
-    "environmentalFactor": 3,
-    "distanceChangeToTransmit": 3,
+    "environmentalFactor": 2.5,
+    "distanceChangeToTransmit": 1,
+    "clientSoftwareUrl": "http://localhost:3000",
     "controllerUrl": "http://localhost:3002",
     "beacons": [
         {
@@ -32,24 +33,28 @@
     ],
     "radios": [
         {
-            "location": "Libre Computer 1",
+            "location": "Exam Room 1",
             "macAddress": "18:66:c7:e8:e6:db"
         },
         {
-            "location": "Libre Computer 2",
+            "location": "General Practitioner",
             "macAddress": "18:66:c7:9e:2b:4e"
         },
         {
-            "location": "Libre Computer 3",
+            "location": "Lab",
             "macAddress": "18:66:c7:fe:82:cf"
         },
         {
-            "location": "Libre Computer 4",
+            "location": "Dermatology",
             "macAddress": "18:66:c7:b4:73:7d"
         },
         {
-            "location": "Libre Computer 5",
+            "location": "Receptionist",
             "macAddress": "18:66:c7:ba:38:6e"
+        },
+        {
+            "location": "Exam Room 2",
+            "macAddress": "b8:27:eb:ac:13:68"
         }
     ]
 }
